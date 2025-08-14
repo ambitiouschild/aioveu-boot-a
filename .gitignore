@@ -1,0 +1,49 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+
+### 根本原因： Git 不支持追踪 Unix 套接字文件 (mysql.sock)。
+            #•核心解决： 将 mysql.sock 或其路径模式（如 *.sock）添加到 .gitignore 文件中 ###
+docker/mysql/data/
+docker/mysql/data/mysql.sock
+
+###始终将运行时生成的临时文件（如日志文件 *.log、缓存文件、套接字文件 *.sock、数据库文件（除非是初始化脚本）、编译产物等）添加到 .gitignore。###
+docker/minio/
+docker/nginx/logs
+docker/radis/data/
+docker/xxljob/

@@ -1,0 +1,343 @@
+server:
+  port: 8989
+
+spring:
+  datasource:
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+##    url: jdbc:mysql://localhost:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#    url: jdbc:mysql://mysql:3306/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#    username: root
+#    password: 775825
+
+    # 随着业务的复杂性增加，单一数据源可能无法满足需求，例如读写分离、多租户独立数据库或独立 Schema 模式等
+    # 使用 dynamic-datasource 轻松实现多数据源支持
+    #配置主库和从库的数据源
+    dynamic:
+      primary: aioveu    # 设置默认数据源  master  aioveu
+      strict: false # 数据源找不到时是否抛出异常
+      datasource:
+        master: # 主库
+          type: com.alibaba.druid.pool.DruidDataSource
+          url: jdbc:mysql://localhost:3309/aioveu_boot_master?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#          url: jdbc:mysql://mysql:3309/aioveu_boot_master?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+          username: root
+          password: 775825
+        slave: # 从库
+          type: com.alibaba.druid.pool.DruidDataSource
+          url: jdbc:mysql://localhost:3309/aioveu_boot_slave?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#          url: jdbc:mysql://mysql:3309/aioveu_boot_slave?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+          username: root
+          password: 775825
+        aioveu: # aioveu库
+          type: com.alibaba.druid.pool.DruidDataSource
+          driver-class-name: com.mysql.cj.jdbc.Driver
+#          url: jdbc:mysql://localhost:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+          url: jdbc:mysql://mysql:3306/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#          url: jdbc:mysql://aioveu.com:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#          url: jdbc:mysql://my.aioveu.com:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+          username: root
+          password: 775825
+
+  data:
+    redis:
+      database: 0
+#      host: localhost         #本地redis 192.168.0.108
+#      host: aioveu.com         #云服务器redis
+#      host: my.aioveu.com         #本地redis 192.168.0.108
+      host: redis              #容器redis
+#      port: 6381     #本地redis 6381     # 将宿主机的6381映射到容器的6379，但应用容器内应该使用6379端口连接，容器外为6381
+      port: 6379     #容器redis 6379
+      # 如果Redis 服务未设置密码，需要将password删掉或注释，而不是设置为空字符串
+      password: 775825
+      timeout: 10s
+      lettuce:
+        pool:
+          # 连接池最大连接数 默认8 ，负数表示没有限制
+          max-active: 8
+          # 连接池最大阻塞等待时间（使用负值表示没有限制） 默认-1
+          max-wait: -1
+          # 连接池中的最大空闲连接 默认8
+          max-idle: 8
+          # 连接池中的最小空闲连接 默认0
+          min-idle: 0
+  cache:
+    enabled: false
+    # 缓存类型 redis、none(不使用缓存)
+    type: redis
+    # 缓存时间(单位：ms)
+    redis:
+      time-to-live: 3600000
+      # 缓存null值，防止缓存穿透
+      cache-null-values: true
+    caffeine:
+      spec: initialCapacity=50,maximumSize=1000,expireAfterWrite=600s
+  # 邮件配置
+  mail:
+    host: smtp.qq.com
+    port: 587  #465 # 或587
+    username: ambitiouschild@qq.com   #腾讯邮箱默认关闭 SMTP 服务，腾讯邮箱要求 SMTP 必须使用授权码（非登录密码）：pwjbkmmfmuspdgjh
+    password: pwjbkmmfmuspdgjh   # 替换为生成的授权码
+    properties:
+      mail:
+        smtp:
+          auth: true
+          ssl: true   # 465端口必开
+          starttls:
+            enable: true    # 587端口必开
+    # 邮件发送者
+    from: ambitiouschild@qq.com
+
+    #GitGuardian是一款专注于源代码泄露防护的软件。它能够实时审计a源代码库，检测敏感数据的泄露，并提供加密功能以确保代码的安全性。
+    #GitGuardian的自动扫描功能能够识别代码库中的硬编码密钥、凭证和其他敏感信息，并提供详细的安全报告和修复建议。这对于防止敏感信息被恶意利用具有重要意义。
+    #此外，GitGuardian还支持与多种版本控制系统的无缝集成，使得开发者在提交代码时无需额外操作即可完成加密过程。
+
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  global-config:
+    db-config:
+      # 主键ID类型
+      id-type: none
+      # 逻辑删除对应的全局属性名（注意：须是对象属性名，不能是表字段名，如 isDeleted 而非 is_deleted，否则逻辑删除失效）
+      logic-delete-field: isDeleted
+      # 逻辑删除-删除值
+      logic-delete-value: 1
+      # 逻辑删除-未删除值
+      logic-not-delete-value: 0
+  configuration:
+    # 驼峰下划线转换
+    map-underscore-to-camel-case: true
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# 安全配置
+security:
+  session:
+    type: jwt # 会话方式 jwt/redis-token
+    access-token-time-to-live: 7200   # 访问令牌 有效期(单位：秒)，默认 2 小时，-1 表示永不过期
+    refresh-token-time-to-live: 604800 # 刷新令牌有效期(单位：秒)，默认 7 天，-1 表示永不过期
+    jwt:
+      secret-key: SecretKey012345678901234567890123456789012345678901234567890123456789 # JWT密钥(HS256算法至少32字符)
+    redis-token:
+      allow-multi-login: true # 是否允许多设备登录
+  # 安全白名单路径，仅跳过 AuthorizationFilter 过滤器，还是会走 Spring Security 的其他过滤器(CSRF、CORS等)
+  ignore-urls:
+    - /api/v1/auth/login/**       # 登录接口(账号密码登录、手机验证码登录和微信登录)
+    - /api/v1/auth/captcha        # 验证码获取接口
+    - /api/v1/auth/refresh-token  # 刷新令牌接口
+    - /api/v1/auth/logout         # 开放退出登录
+    - /ws/**                      # WebSocket接口
+  # 非安全端点路径，完全绕过 Spring Security 的安全控制
+  unsecured-urls:
+    - ${springdoc.swagger-ui.path}
+    - /doc.html
+    - /swagger-ui/**
+    - /v3/api-docs/**
+    - /webjars/**
+    - /favicon.ico
+
+# 文件存储配置
+oss:
+  # OSS 类型 (目前支持aliyun、minio、local)
+  type: minio
+  # MinIO 对象存储服务
+  minio:
+    # MinIO 服务地址
+#    endpoint: http://localhost:9002   # 本地MinIO 服务地址  MinIO的API端口默认是9000，而Web控制台端口默认是9001
+    #MinIO客户端连接配置错误，检查你的MinIO配置，确保在应用程序中配置MinIO的endpoint时使用的是API端口（通常为9000），而不是Web控制台端口。
+#    endpoint: http://minio:9000   # 容器内MinIO 服务地址 http://192.168.25.21:9000    # 关键配置：替换为公网IP或域名
+#      控制台访问端口 http://139.224.209.98:9003  http://minio.aioveu.com:9003 控制台路径/ui后面必须加斜杠访问（如https://minio.aioveu.com/ui/）
+#    endpoint: http://192.168.25.22:9002   # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
+#    endpoint: http://139.224.209.98:9000   # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
+
+    #MinIO服务本身使用HTTP协议（非加密），但外部用户需要通过HTTPS访问。这通常通过反向代理（如Nginx）实现SSL终止（SSL Termination）。
+#    endpoint: http://minio.aioveu.com
+    endpoint: http://minio:9000
+    #    endpoint: http://my.aioveu.com:9000    # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
+#    endpoint: https://minio.aioveu.com
+    #    endpoint: http://aioveu.com:9002
+    #注意在保存图片时，应用程序应该使用外部域名（通过代理）来构造访问地址，而不是直接使用MinIO返回的地址。
+    #MinIO返回的地址应该是代理后的地址，这需要MinIO知道外部域名（如上一步设置）
+    #通过代理访问MinIO时，存储对象的路径变成了MinIO容器内部路径格式，而不是期望的域名格式
+    # 访问凭据
+#    access-key: minioadmin
+    # 凭据密钥
+#    secret-key: minioadmin
+
+
+#    1.
+#    前端上传流程：
+#    前端 -> Nginx（宿主机） -> 后端容器 -> MinIO容器
+#
+#    2.
+#    前端访问图片流程：
+#    前端 -> Nginx（宿主机）代理MinIO -> MinIO容器
+
+#    1.内部通信：
+#    • 后端通过容器网络直接访问 MinIO（http://minio:9000）
+#    • 高速、安全、不经过公网
+#    2.外部访问：
+#    • 用户通过域名访问资源（https://minio.aioveu.com）
+#    • Nginx 代理请求到 MinIO 容器
+#    3.数据库存储：
+#    • 保存完整的公共 URL
+#    • 前端直接使用这些 URL 显示图片
+
+
+    #解决 MinIO 默认凭证安全警告
+    #这个警告表明您的 MinIO 实例正在使用默认管理员凭证（minioadmin:minioadmin），这会造成严重的安全风险。
+    # 访问凭据
+    access-key: minioaioveu
+    # 凭据密钥
+    secret-key: minioaioveu
+
+    # 存储桶名称
+    bucket-name: aioveu
+#    region:  cn-north-1 # 中国区域 北京  #us-east-1 # 添加区域配置   //MinIO 本身不强制要求区域  区域设置主要用于兼容 AWS S3 API 中国用户建议使用 cn-north-1
+    # Region 类在 minio SDK 8.0+ 引入  旧版 SDK 可以忽略区域设置
+    # (可选) 自定义域名：配置后，文件 URL 会使用该域名格式
+    custom-domain: https://minio.aioveu.com
+  # 阿里云OSS对象存储服务
+  aliyun:
+    # 服务Endpoint
+    endpoint: oss-cn-hangzhou.aliyuncs.com
+    # 访问凭据`
+    access-key-id: your-access-key-id
+    # 凭据密钥
+    access-key-secret: your-access-key-secret
+    # 存储桶名称
+    bucket-name: default
+  # 本地存储
+  local:
+    # 文件存储路径 请注意下，mac用户请使用 /Users/your-username/your-path/，否则会有权限问题，windows用户请使用 D:/your-path/
+    storage-path: /Users/theo/home/
+
+
+# 短信配置
+sms:
+  # 阿里云短信
+  aliyun:
+    accessKeyId: LTAI5tSMgfxxxxxxdiBJLyR
+    accessKeySecret: SoOWRqpjtS7xxxxxxZ2PZiMTJOVC
+    domain: dysmsapi.aliyuncs.com
+    regionId: cn-shanghai
+    signName: 可我不敌可爱
+    templates:
+      #  注册短信验证码模板
+      register: SMS_22xxx771
+      # 登录短信验证码模板
+      login: SMS_22xxx772
+      # 修改手机号短信验证码模板
+      change-mobile: SMS_22xxx773
+
+#spring Boot默认配置了1MB(1048576 bytes)的文件上传限制，当上传文件超过这个大小时就会抛出异常。
+# 配置文件路径：src/main/resources/application.properties
+# 设置单个文件最大100MB
+servlet:
+  multipart:
+    max-file-size: 100MB
+    # 设置整个请求最大200MB（支持多文件上传）
+    max-request-size: 200MB
+
+# springdoc配置： https://springdoc.org/properties.html
+#访问 Swagger 接口文档： http://localhost:8989/swagger-ui.html
+#访问 Swagger 接口文档： http://192.168.25.21:8989/swagger-ui.html
+#访问 Swagger 接口文档： http://aioveu.com:8989/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: alpha
+    tags-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+  group-configs:
+    - group: '系统管理'
+      paths-to-match: "/**"
+      packages-to-scan:
+        - com.aioveu.boot.system.controller
+        - com.aioveu.boot.shared.auth.controller
+        - com.aioveu.boot.shared.file.controller
+        - com.aioveu.boot.shared.codegen.controller
+  default-flat-param-object: true
+
+# knife4j 接口文档配置
+#访问 Knife4j 接口文档：http://localhost:8989/doc.html
+#访问 Knife4j 接口文档：http://192.168.25.21:8989/doc.html
+#访问 Knife4j 接口文档：https://139.224.209.98:8989/doc.html
+#访问 Knife4j 接口文档：http://love.aioveu.com:8989/doc.html
+knife4j:
+  # 是否开启 Knife4j 增强功能
+  enable: true  # 设置为 true 表示开启增强功能
+  # 生产环境配置
+  production: false  # 设置为 true 表示在生产环境中不显示文档，为 false 表示显示文档（通常在开发环境中使用）
+  setting:
+    language: zh_cn
+
+# xxl-job 定时任务配置
+xxl:
+  job:
+    # 定时任务开关
+    enabled: false
+#    enabled: true
+    admin:
+      # 调度中心地址,多个逗号分隔    http://139.224.209.98:8080/xxl-job-admin
+#      addresses: http://127.0.0.1:8080/xxl-job-admin   # http://192.168.25.22:8080/xxl-job-admin
+#       addresses: http://my.aioveu.com:8080/xxl-job-admin
+       addresses: http://xxl-job-admin:8080/xxl-job-admin
+    accessToken: default_token
+    # 执行器配置
+    executor:
+      appname: xxl-job-executor-${spring.application.name} # 执行器AppName
+      address: # 执行器注册地址，默认为空，多网卡时可手动设置
+      ip: # 执行器IP，默认为空，多网卡时可手动设置
+      port: 9999 # 执行器通讯端口
+      logpath: /data/applogs/xxl-job/jobhandler # 任务运行日志文件存储磁盘路径
+      logretentiondays: 30 # 日志保存天数，值大于3时生效
+    fail-monitor:
+      interval: 10000 # 从5秒改为10秒  修改告警检测间隔（避免触发限流）
+
+
+
+
+
+# 验证码配置
+captcha:
+  # 验证码类型 circle-圆圈干扰验证码|gif-Gif验证码|line-干扰线验证码|shear-扭曲干扰验证码
+  type: circle
+  # 验证码宽度
+  width: 120
+  # 验证码高度
+  height: 40
+  # 验证码干扰元素个数
+  interfere-count: 2
+  # 文本透明度(0.0-1.0)
+  text-alpha: 0.8
+  # 验证码字符配置
+  code:
+    # 验证码字符类型 math-算术|random-随机字符
+    type: math
+    # 验证码字符长度，type=算术时，表示运算位数(1:个位数运算 2:十位数运算)；type=随机字符时，表示字符个数
+    length: 1
+  # 验证码字体
+  font:
+    # 字体名称 Dialog|DialogInput|Monospaced|Serif|SansSerif
+    name: SansSerif
+    # 字体样式 0-普通|1-粗体|2-斜体
+    weight: 1
+    # 字体大小
+    size: 24
+  # 验证码有效期(秒)
+  expire-seconds: 120
+
+# 微信小程配置
+wx:
+  miniapp:
+    app-id: xxxxxx
+    app-secret: xxxxxx
+
+#增加日志级别配置
+logging:
+  level:
+    root: INFO
+    com.aioveu: DEBUG
+    io.minio: DEBUG

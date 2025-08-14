@@ -1,0 +1,208 @@
+2025/08/06 10:52:05 [error] 29#29: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: _, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://192.168.0.108:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/06 10:54:22 [error] 29#29: *4 open() "/usr/share/nginx/html/undefined" failed (2: No such file or directory), client: 172.18.0.1, server: _, request: "GET /undefined?imageView2/1/w/80/h/80 HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/06 10:59:13 [error] 29#29: *53 client intended to send too large body: 4952029 bytes, client: 172.18.0.1, server: _, request: "POST /prod-api/api/v1/files HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/06 11:42:43 [error] 29#29: *97 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: _, request: "GET /favicon.ico HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/prod-api/api/v1/files"
+2025/08/06 12:05:52 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:05:55 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:05:57 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:00 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:03 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:06 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:10 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:18 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:06:32 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:07:00 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:07:52 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:08:54 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:09:55 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:10:57 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:11:58 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:12:59 [emerg] 1#1: open() "/www/server/panel/vhost/nginx/well-known/minio.aioveu.com.conf" failed (2: No such file or directory) in /etc/nginx/nginx.conf:54
+2025/08/06 12:13:20 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:22 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:25 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:27 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:30 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:33 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:13:38 [emerg] 1#1: open() "/www/wwwlogs/minio.aioveu.com.log" failed (2: No such file or directory)
+2025/08/06 12:30:16 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:19 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:21 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:24 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:26 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:29 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:34 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:42 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:30:56 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:31:23 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:32:15 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:33:17 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:34:18 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:35:24 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:36:25 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:37:31 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:38:32 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:39:34 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:27 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:34 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:36 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:39 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:42 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:45 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:40:49 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:41:02 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:41:16 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:41:43 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:42:36 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:43:37 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:44:39 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:45:40 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:46:41 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:47:47 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:48:49 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:49:50 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:50:52 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:51:57 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:52:59 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:54:09 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:55:14 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:56:16 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:57:17 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:58:19 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 12:59:20 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:00:21 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:01:23 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:02:25 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:03:26 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:04:33 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:05:38 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:06:44 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:07:49 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:08:51 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:09:52 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:10:58 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:00 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:18 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:28 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:31 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:33 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:40 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:43 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:48 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:12:56 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:13:14 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:13:41 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:30 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:32 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:39 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:42 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:44 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:52 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:14:56 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:15:04 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:15:18 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:15:45 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:16:38 [emerg] 1#1: host not found in upstream "aioveu-minio" in /etc/nginx/nginx.conf:66
+2025/08/06 13:18:52 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:18:54 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:18:57 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:00 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:02 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:09 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:18 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:26 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:19:45 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:20:12 [emerg] 1#1: host not found in upstream "minio-server" in /etc/nginx/nginx.conf:118
+2025/08/06 13:31:42 [error] 29#29: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://192.168.0.108:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/06 13:41:55 [error] 29#29: *3 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://192.168.0.108:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/06 13:48:08 [error] 29#29: *6 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://192.168.0.108:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 08:47:17 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:47:29 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:47:40 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:47:50 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:47:59 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:48:06 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:48:13 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:48:25 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:48:40 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 08:49:08 [emerg] 1#1: unexpected ";" in /etc/nginx/nginx.conf:42
+2025/08/07 09:10:02 [error] 29#29: *20 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:10:12 [error] 29#29: *20 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:11:21 [error] 29#29: *1 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:13:14 [error] 29#29: *2 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:13:14 [error] 29#29: *2 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:14:33 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:14:33 [error] 29#29: *3 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /favicon.ico HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/07 09:14:34 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:14:34 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:14:34 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:14:34 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:14:34 [error] 29#29: *3 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/07 09:20:56 [error] 29#29: *22 open() "/usr/share/nginx/html/undefined" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /undefined?imageView2/1/w/80/h/80 HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 07:52:49 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:01 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:12 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:23 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:32 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:40 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:53:52 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:54:02 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:54:17 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:54:45 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:55:37 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:56:39 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:57:40 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:58:42 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 07:59:43 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:00:45 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:01:48 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:02:50 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:03:51 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:04:53 [emerg] 1#1: "location" directive is not allowed here in /etc/nginx/nginx.conf:44
+2025/08/10 08:17:47 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://127.0.0.1:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:47 [error] 29#29: *2 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://127.0.0.1:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:50 [error] 29#29: *2 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:51 [error] 29#29: *2 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:51 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:51 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:52 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:52 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:52 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:52 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:17:52 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:18:16 [error] 29#29: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://127.0.0.1:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:18:16 [error] 29#29: *5 connect() failed (111: Connection refused) while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://127.0.0.1:8989/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:18:17 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 08:18:17 [error] 29#29: *5 no live upstreams while connecting to upstream, client: 172.18.0.1, server: my.aioveu.com, request: "GET /prod-api/api/v1/auth/captcha HTTP/1.1", upstream: "http://localhost/api/v1/auth/captcha", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:53:46 [error] 29#29: *231 open() "/usr/share/nginx/html/css/index.BTFLrvyM.css" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /css/index.BTFLrvyM.css HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:53:46 [error] 29#29: *232 open() "/usr/share/nginx/html/js/index.DqT9fMN_.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DqT9fMN_.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:53:48 [error] 29#29: *232 open() "/usr/share/nginx/html/aioveu.png" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /aioveu.png HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:54:09 [error] 29#29: *232 open() "/usr/share/nginx/html/css/index.BTFLrvyM.css" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /css/index.BTFLrvyM.css HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:54:46 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:46 [error] 29#29: *232 open() "/usr/share/nginx/html/favicon.ico" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /favicon.ico HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:54:46 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:47 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:47 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:47 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:59 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:54:59 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:08 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:09 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:09 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:09 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:14 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:15 [error] 29#29: *232 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:37 [error] 29#29: *233 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:45 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:46 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:47 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:47 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:47 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:47 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:47 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:48 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:55:49 [error] 22#22: *1 directory index of "/usr/share/nginx/html/" is forbidden, client: 172.18.0.1, server: my.aioveu.com, request: "GET / HTTP/1.1", host: "my.aioveu.com"
+2025/08/10 15:57:16 [error] 22#22: *3 open() "/usr/share/nginx/html/js/index.DXdkqAVu.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DXdkqAVu.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:57:16 [error] 22#22: *4 open() "/usr/share/nginx/html/js/index.DXdkqAVu.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DXdkqAVu.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:57:16 [error] 22#22: *4 open() "/usr/share/nginx/html/js/index.DXdkqAVu.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DXdkqAVu.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
+2025/08/10 15:57:17 [error] 22#22: *4 open() "/usr/share/nginx/html/js/index.DXdkqAVu.js" failed (2: No such file or directory), client: 172.18.0.1, server: my.aioveu.com, request: "GET /js/index.DXdkqAVu.js HTTP/1.1", host: "my.aioveu.com", referrer: "http://my.aioveu.com/"
