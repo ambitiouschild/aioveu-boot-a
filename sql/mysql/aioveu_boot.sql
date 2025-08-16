@@ -4,7 +4,7 @@
 
 
 -- ----------------------------
--- 1. 创建数据库
+-- 1. 创建数据库    INSERT INTO `aioveu_position` VALUES(1,'董事长','管理企业人员');
 -- ----------------------------
 CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE utf8mb4_unicode_ci;
 
@@ -14,8 +14,8 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- ----------------------------
 use aioveu_boot;
 
-SET NAMES utf8mb4;  # 设置字符集
-SET FOREIGN_KEY_CHECKS = 0; # 关闭外键检查，加快导入速度
+SET NAMES utf8mb4;  --设置字符集
+SET FOREIGN_KEY_CHECKS = 0; -- 关闭外键检查，加快导入速度
 
 -- ----------------------------
 -- Table structure for sys_dept
