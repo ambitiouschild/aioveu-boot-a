@@ -103,6 +103,17 @@ INSERT INTO `aioveu_performance` (
 
 
 -- 生成绩效等级（虚拟列自动计算）
+-- 这个错误表明您尝试更新数据库中的生成列（generated column）performance_grade，但数据库不允许直接更新生成列的值。
+-- 在MySQL中，生成列的值是根据其他列的值自动计算出来的，不能手动更新。
+    -- 1. 修改实体类（推荐）
+    -- 在实体类中，将生成列标记为只读，避免MyBatis-Plus在更新时包含该字段
+-- 2. 修改数据库表结构（可选）
+
+--  修改数据库表结构（可选） 如果不需要生成列，可以将其改为普通列
+
+ALTER TABLE aioveu_performance
+    MODIFY performance_grade VARCHAR(10) COMMENT '绩效等级';
+
 SELECT
     id,
     employee_id,
@@ -117,3 +128,18 @@ SELECT
         ELSE 'D'
         END AS performance_grade
 FROM aioveu_performance;
+
+
+# //将SQL查询转换为Java代码的几种方法：
+#
+# 1.DTO + Mapper注解：最直接的方式，适合简单查询
+# 2.实体类计算属性：在Java层计算绩效等级，更灵活  //如果您希望在实体类中直接计算绩效等级，可以添加一个计算属性 //在服务层使用计算属性
+# 3.XML映射文件：适合复杂查询，便于维护
+# 4.QueryWrapper动态查询：适合需要动态条件的场景
+# 5.ResultMap映射：提供更细粒度的控制
+# 最佳实践建议：
+# •对于简单查询，使用DTO + Mapper注解
+# •对于需要动态条件的查询，使用QueryWrapper
+# •对于复杂查询，使用XML映射文件
+# •如果需要在多个地方使用绩效等级计算，在实体类中添加计算属性
+# 您可以根据具体需求选择最适合的方法。如果绩效等级计算逻辑可能变化，推荐在Java层实现（方法2），这样更容易修改和维护。
