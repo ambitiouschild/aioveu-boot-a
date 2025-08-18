@@ -35,8 +35,10 @@ public class AioveuPerformance extends BaseEntity {
     private Integer periodQuarter;
     /**
      * KPI评分(1-100分)
+     在表单对象和实体类中都使用BigDecimal
+     避免类型转换问题
      */
-    private Integer kpiScore;
+    private BigDecimal kpiScore;
     /**
      * 生产率百分比(%)
      */
@@ -51,6 +53,6 @@ public class AioveuPerformance extends BaseEntity {
      * insertStrategy = FieldStrategy.NEVER：插入时忽略该字段
      * updateStrategy = FieldStrategy.NEVER：更新时忽略该字段
      */
-    @TableField(value = "performance_grade", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
-    private String performanceGrade;
+//    @TableField(value = "performance_grade", insertStrategy = FieldStrategy.NEVER, updateStrategy = FieldStrategy.NEVER)
+    private String performanceGrade; // 普通字段，不再是生成列
 }

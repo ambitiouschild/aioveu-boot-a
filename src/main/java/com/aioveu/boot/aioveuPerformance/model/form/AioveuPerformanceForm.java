@@ -36,7 +36,8 @@ public class AioveuPerformanceForm implements Serializable {
 
     @Schema(description = "KPI评分(1-100分)")
     @NotNull(message = "KPI评分(1-100分)不能为空")
-    private Integer kpiScore;
+    // 将Integer改为BigDecimal
+    private BigDecimal kpiScore;
 
     @Schema(description = "生产率百分比(%)")
     @NotNull(message = "生产率百分比(%)不能为空")

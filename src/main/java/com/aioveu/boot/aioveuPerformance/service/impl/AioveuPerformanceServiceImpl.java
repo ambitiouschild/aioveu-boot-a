@@ -36,6 +36,10 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
 
     private final AioveuPerformanceConverter aioveuPerformanceConverter;
 
+    private static final BigDecimal GRADE_A_THRESHOLD = new BigDecimal("90.0");
+    private static final BigDecimal GRADE_B_THRESHOLD = new BigDecimal("80.0");
+    private static final BigDecimal GRADE_C_THRESHOLD = new BigDecimal("70.0");
+
     /**
     * 获取员工绩效考评分页列表
     *
@@ -72,6 +76,8 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
     @Override
     public boolean saveAioveuPerformance(AioveuPerformanceForm formData) {
         AioveuPerformance entity = aioveuPerformanceConverter.toEntity(formData);
+        // 4. 计算绩效等级（在Java层计算）
+        calculatePerformanceGrade(entity);
         return this.save(entity);
     }
     
@@ -96,14 +102,40 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
         // 3. 将表单数据转换为实体对象
         AioveuPerformance entity = aioveuPerformanceConverter.toEntity(formData);
 
+
         // 4. 设置绩效考评ID
         entity.setId(id);
+
+        // 4.复制未修改的字段
         entity.setCreateTime(original.getCreateTime());
-        //performance_grade是根据其他字段计算得出的
+
+        // 4. 计算绩效等级（在Java层计算）
+        calculatePerformanceGrade(entity);
+
+
 
 
         // 6. 执行更新 // 6. 使用UpdateWrapper更新，排除生成列  updateWithWrapper(entity);
         return this.updateById(entity);
+    }
+
+    private void calculatePerformanceGrade(AioveuPerformance entity) {
+        if (entity.getKpiScore() == null) {
+            entity.setPerformanceGrade("D");
+            return;
+        }
+
+        //在Java中，不能直接将 Integer赋值给 BigDecimal，需要进行类型转换
+        BigDecimal kpiScore = entity.getKpiScore();
+        if (kpiScore.compareTo(GRADE_A_THRESHOLD) >= 0) {
+            entity.setPerformanceGrade("A");
+        } else if (kpiScore.compareTo(GRADE_B_THRESHOLD) >= 0) {
+            entity.setPerformanceGrade("B");
+        } else if (kpiScore.compareTo(GRADE_C_THRESHOLD) >= 0) {
+            entity.setPerformanceGrade("C");
+        } else {
+            entity.setPerformanceGrade("D");
+        }
     }
 
     /**
