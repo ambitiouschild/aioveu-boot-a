@@ -1,9 +1,12 @@
 package com.aioveu.boot.aioveuDepartment.model.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import com.aioveu.boot.common.base.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -71,9 +74,21 @@ public class AioveuDepartment {
     private Integer managerId;
 
     // 父类中已有 createTime 和 updateTime
+    /**
+     * 创建时间 在实体类中添加双重注解
+     */
     @TableField(fill = FieldFill.INSERT)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")  //处理 JSON 序列化/反序列化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") //处理表单参数绑定 两者使用相同的日期格式
     private LocalDateTime createTime;
 
+    /**
+     * 更新时间 在实体类中添加双重注解
+     */
     @TableField(fill = FieldFill.INSERT_UPDATE)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")  //处理 JSON 序列化/反序列化
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")  //处理表单参数绑定 两者使用相同的日期格式
     private LocalDateTime updateTime;
 }

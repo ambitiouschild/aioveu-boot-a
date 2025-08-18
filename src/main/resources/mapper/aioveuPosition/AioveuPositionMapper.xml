@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuPosition.mapper.AioveuPositionMapper">
+
+    <!-- 获取公司岗位信息分页列表 -->
+    <select id="getAioveuPositionPage" resultType="com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO">
+        SELECT
+                position_id,
+                position_name,
+                dept_id,
+                position_level,
+                description,
+                create_time,
+                update_time
+        FROM
+            aioveu_position
+        <where>
+            <if test="queryParams.positionId != null">
+                AND position_id LIKE CONCAT('%', #{queryParams.positionId}, '%')
+            </if>
+            <if test="queryParams.positionName != null and queryParams.positionName != ''">
+                AND position_name LIKE CONCAT('%', #{queryParams.positionName}, '%')
+            </if>
+            <if test="queryParams.deptId != null">
+                AND dept_id LIKE CONCAT('%', #{queryParams.deptId}, '%')
+            </if>
+            <if test="queryParams.positionLevel != null">
+                AND position_level LIKE CONCAT('%', #{queryParams.positionLevel}, '%')
+            </if>
+            <if test="queryParams.description != null and queryParams.description != ''">
+                AND description LIKE CONCAT('%', #{queryParams.description}, '%')
+            </if>
+            <if test="queryParams.createTime != null">
+                AND create_time LIKE CONCAT('%', #{queryParams.createTime}, '%')
+            </if>
+            <if test="queryParams.updateTime != null">
+                AND update_time LIKE CONCAT('%', #{queryParams.updateTime}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
