@@ -38,7 +38,13 @@ build/
 .DS_Store
 
 ### 根本原因： Git 不支持追踪 Unix 套接字文件 (mysql.sock)。
-            #•核心解决： 将 mysql.sock 或其路径模式（如 *.sock）添加到 .gitignore 文件中 ###
+            #•核心解决： 将 mysql.sock 或其路径模式（如 *.sock）添加到 .gitignore 文件中
+ ###文件已被跟踪：在将目录添加到 .gitignore 之前，这些文件已经被 Git 跟踪。###
+ ###.gitignore 只忽略未被跟踪的文件，对于已经跟踪的文件，即使后来添加到 .gitignore，Git 仍然会继续跟踪。   ###
+            ###
+
+# 忽略整个 MySQL 数据目录
+docker/mysql/data/
 docker/mysql/data/
 docker/mysql/data/mysql.sock
 
@@ -47,3 +53,12 @@ docker/minio/
 docker/nginx/logs
 docker/radis/data/
 docker/xxljob/
+
+# 从 Git 索引中移除目录（但保留本地文件）
+# git rm -r --cached docker/mysql/data
+
+# 提交这个变更
+# git commit -m "停止跟踪 docker/mysql/data 目录"
+
+# 如果不需要保留本地文件（谨慎使用）
+# git rm -r --force docker/mysql/data
