@@ -16,14 +16,14 @@ use aioveu_boot;
 -- 修改数据库表结构
 # ALTER TABLE aioveu_performance
 #     CHANGE COLUMN id id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID';
-
--- 在MySQL中，将INT UNSIGNED改为BIGINT UNSIGNED以支持Long类型，并在Java实体类中使用Long类型
+    -- 在MySQL中，将INT UNSIGNED改为BIGINT UNSIGNED以支持Long类型，并在Java实体类中使用Long类型
 -- ----------------------------
 DROP TABLE IF EXISTS `aioveu_performance`;
 
 CREATE TABLE `aioveu_performance` (
-                                      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID',
-                                      employee_id INT UNSIGNED NOT NULL COMMENT '员工ID',
+                                      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
+                                      `record_id` INT UNSIGNED NOT NULL COMMENT '绩效记录ID',
+                                      `employee_id` INT UNSIGNED NOT NULL COMMENT '员工ID',
                                       `period_year` SMALLINT UNSIGNED NOT NULL COMMENT '考核年份', -- 拆分为年份+季度字段，支持灵活查询季度/年度绩效
                                       `period_quarter` TINYINT UNSIGNED COMMENT '考核季度(1-4)',
                                       `kpi_score` TINYINT UNSIGNED COMMENT 'KPI评分(1-100分)', -- 从模糊的1-5分改为更精确的百分制（0-100） TINYINT UNSIGNED 范围0-255完全够用
