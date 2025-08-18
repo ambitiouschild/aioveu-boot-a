@@ -21,8 +21,7 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_performance`;
 
 CREATE TABLE `aioveu_performance` (
-                                      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT 'ID',
-                                      `record_id` INT UNSIGNED NOT NULL COMMENT '绩效记录ID',
+                                      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID',
                                       `employee_id` INT UNSIGNED NOT NULL COMMENT '员工ID',
                                       `period_year` SMALLINT UNSIGNED NOT NULL COMMENT '考核年份', -- 拆分为年份+季度字段，支持灵活查询季度/年度绩效
                                       `period_quarter` TINYINT UNSIGNED COMMENT '考核季度(1-4)',
@@ -105,7 +104,7 @@ INSERT INTO `aioveu_performance` (
 
 -- 生成绩效等级（虚拟列自动计算）
 SELECT
-    record_id,
+    id,
     employee_id,
     period_year,
     period_quarter,
