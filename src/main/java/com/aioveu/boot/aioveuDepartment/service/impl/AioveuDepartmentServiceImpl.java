@@ -1,6 +1,8 @@
 package com.aioveu.boot.aioveuDepartment.service.impl;
 
+import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,6 +28,7 @@ import cn.hutool.core.util.StrUtil;
  * @author aioveu
  * @since 2025-08-18 14:42
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMapper, AioveuDepartment> implements AioveuDepartmentService {
@@ -80,7 +83,50 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
      */
     @Override
     public boolean updateAioveuDepartment(Long id,AioveuDepartmentForm formData) {
+        log.info("开始更新部门: ID={}", id);
+
+        // 1. 获取原始部门信息
+        AioveuDepartment original = getById(id);
+        if (original == null) {
+            log.error("部门不存在: ID={}", id);
+            throw new ServiceException("部门不存在");
+        }
+
+        // 2. 将表单数据转换为实体对象  表单里没有id,所以要把id传进来
+        /*
+        * 是的，表单对象（通常是前端提交的数据）通常不包含ID，因为ID通常通过URL路径参数传递（对于更新操作）。
+        * 因此，在服务层中，您需要将传入的ID设置到实体对象中，然后再执行更新
+        * 是的，表单对象（通常是前端提交的数据）通常不包含ID，因为ID通常通过URL路径参数传递（对于更新操作）。因此，在服务层中，您需要将传入的ID设置到实体对象中，然后再执行更新。
+          在更新操作中，表单数据通常不包含ID（如 deptId），因为ID是通过URL路径参数传递的。
+        * 因此，在服务层中，您需要将传入的ID设置到实体对象中，然后再执行更新
+        关键步骤
+        1.从路径参数获取ID：
+            •在控制器中，通过 @PathVariable获取ID
+            •将ID传递给服务层
+        2.在服务层设置ID：
+            •将表单数据转换为实体对象
+            •将传入的ID设置到实体对象中
+            •然后执行更新
+
+        为什么需要手动设置ID？
+        1.安全考虑：
+            •不允许前端直接设置ID
+            •ID由后端控制
+        2.RESTful 设计：
+            •资源ID通过URL路径传递
+            •请求体只包含需要更新的字段
+        3.数据完整性：
+            •确保更新的是指定的资源
+            •避免ID被意外修改
+        * */
         AioveuDepartment entity = aioveuDepartmentConverter.toEntity(formData);
+        entity.setDeptId(id); // 设置部门ID
+        log.info("转换后的实体对象: {}", entity);
+
+        // 3. 复制未修改的字段
+        entity.setCreateTime(original.getCreateTime());
+
+
         return this.updateById(entity);
     }
     
