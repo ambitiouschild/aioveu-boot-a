@@ -1,6 +1,9 @@
 server:
   port: 8989
 
+
+
+
 spring:
   datasource:
 #    type: com.alibaba.druid.pool.DruidDataSource
@@ -13,6 +16,13 @@ spring:
     # 随着业务的复杂性增加，单一数据源可能无法满足需求，例如读写分离、多租户独立数据库或独立 Schema 模式等
     # 使用 dynamic-datasource 轻松实现多数据源支持
     #配置主库和从库的数据源
+    jackson:
+      date-format: yyyy-MM-dd HH:mm:ss   #设置日期格式，这里设置为yyyy-MM-dd HH:mm:ss，例如：2025-01-01 12:00:00。
+      time-zone: GMT+8  #设置时区，这里设置为GMT+8，即东八区（北京时间）。
+    mvc:
+      format:
+        date-time: yyyy-MM-dd HH:mm:ss
+
     dynamic:
       primary: aioveu    # 设置默认数据源  master  aioveu
       strict: false # 数据源找不到时是否抛出异常
@@ -32,8 +42,8 @@ spring:
         aioveu: # aioveu库
           type: com.alibaba.druid.pool.DruidDataSource
           driver-class-name: com.mysql.cj.jdbc.Driver
-#          url: jdbc:mysql://localhost:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
-          url: jdbc:mysql://mysql:3306/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+          url: jdbc:mysql://localhost:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
+#          url: jdbc:mysql://mysql:3306/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
 #          url: jdbc:mysql://aioveu.com:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
 #          url: jdbc:mysql://my.aioveu.com:3309/aioveu_boot?zeroDateTimeBehavior=convertToNull&useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&allowMultiQueries=true
           username: root
@@ -42,12 +52,12 @@ spring:
   data:
     redis:
       database: 0
-#      host: localhost         #本地redis 192.168.0.108
+      host: localhost         #本地redis 192.168.0.108
 #      host: aioveu.com         #云服务器redis
 #      host: my.aioveu.com         #本地redis 192.168.0.108
-      host: redis              #容器redis
-#      port: 6381     #本地redis 6381     # 将宿主机的6381映射到容器的6379，但应用容器内应该使用6379端口连接，容器外为6381
-      port: 6379     #容器redis 6379
+#      host: redis              #容器redis
+      port: 6381     #本地redis 6381     # 将宿主机的6381映射到容器的6379，但应用容器内应该使用6379端口连接，容器外为6381
+#      port: 6379     #容器redis 6379
       # 如果Redis 服务未设置密码，需要将password删掉或注释，而不是设置为空字符串
       password: 775825
       timeout: 10s
@@ -106,9 +116,9 @@ mybatis-plus:
       logic-not-delete-value: 0
   configuration:
     # 驼峰下划线转换
-    map-underscore-to-camel-case: true
+    map-underscore-to-camel-case: true  # 强制启用驼峰转下划线
     # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl  # 开启SQL日志
 
 # 安全配置
 security:
@@ -145,14 +155,14 @@ oss:
     # MinIO 服务地址
 #    endpoint: http://localhost:9002   # 本地MinIO 服务地址  MinIO的API端口默认是9000，而Web控制台端口默认是9001
     #MinIO客户端连接配置错误，检查你的MinIO配置，确保在应用程序中配置MinIO的endpoint时使用的是API端口（通常为9000），而不是Web控制台端口。
-#    endpoint: http://minio:9000   # 容器内MinIO 服务地址 http://192.168.25.21:9000    # 关键配置：替换为公网IP或域名
+    endpoint: http://minio:9000   # 容器内MinIO 服务地址 http://192.168.25.21:9000    # 关键配置：替换为公网IP或域名
 #      控制台访问端口 http://139.224.209.98:9003  http://minio.aioveu.com:9003 控制台路径/ui后面必须加斜杠访问（如https://minio.aioveu.com/ui/）
 #    endpoint: http://192.168.25.22:9002   # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
 #    endpoint: http://139.224.209.98:9000   # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
 
     #MinIO服务本身使用HTTP协议（非加密），但外部用户需要通过HTTPS访问。这通常通过反向代理（如Nginx）实现SSL终止（SSL Termination）。
 #    endpoint: http://minio.aioveu.com
-    endpoint: http://minio:9000
+#    endpoint: http://minio:9000
     #    endpoint: http://my.aioveu.com:9000    # 关键配置：替换为公网IP或域名映射  应用程序配置最佳实践，在应用中配置MinIO公共地址，这样数据库会保存ip
 #    endpoint: https://minio.aioveu.com
     #    endpoint: http://aioveu.com:9002
@@ -196,7 +206,8 @@ oss:
 #    region:  cn-north-1 # 中国区域 北京  #us-east-1 # 添加区域配置   //MinIO 本身不强制要求区域  区域设置主要用于兼容 AWS S3 API 中国用户建议使用 cn-north-1
     # Region 类在 minio SDK 8.0+ 引入  旧版 SDK 可以忽略区域设置
     # (可选) 自定义域名：配置后，文件 URL 会使用该域名格式
-    custom-domain: https://minio.aioveu.com
+#    custom-domain: https://minio.aioveu.com
+    ustom-domain: https://my.aioveu.com
   # 阿里云OSS对象存储服务
   aliyun:
     # 服务Endpoint
@@ -341,3 +352,4 @@ logging:
     root: INFO
     com.aioveu: DEBUG
     io.minio: DEBUG
+
