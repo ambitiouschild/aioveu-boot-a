@@ -114,21 +114,29 @@ INSERT INTO `aioveu_performance` (
 ALTER TABLE aioveu_performance
     MODIFY performance_grade VARCHAR(10) COMMENT '绩效等级';
 
-SELECT
-    id,
-    employee_id,
-    period_year,
-    period_quarter,
-    kpi_score,
-    productivity,
-    CASE
-        WHEN kpi_score >= 90 THEN 'A'
-        WHEN kpi_score >= 80 THEN 'B'
-        WHEN kpi_score >= 70 THEN 'C'
-        ELSE 'D'
-        END AS performance_grade
-FROM aioveu_performance;
+-- 1.删除生成列performance_grade
+# SELECT
+#     id,
+#     employee_id,
+#     period_year,
+#     period_quarter,
+#     kpi_score,
+#     productivity,
+#     CASE
+#         WHEN kpi_score >= 90 THEN 'A'
+#         WHEN kpi_score >= 80 THEN 'B'
+#         WHEN kpi_score >= 70 THEN 'C'
+#         ELSE 'D'
+#         END AS performance_grade
+# FROM aioveu_performance;
 
+# ALTER TABLE aioveu_performance
+#     DROP COLUMN performance_grade;
+
+-- 2.添加新的普通列performance_grade
+
+ALTER TABLE aioveu_performance
+    ADD COLUMN performance_grade VARCHAR(10) COMMENT '绩效等级';
 
 # //将SQL查询转换为Java代码的几种方法：
 #
