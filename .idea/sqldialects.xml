@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SqlDialectMappings">
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-1-1_add-aioveu-外键约束.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-1_add-aioveu-department.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-2_add-aioveu-position.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-3_add-aioveu-employee.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-4_add-aioveu-attendance.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-5-2_add-aioveu-performance.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-5_add-aioveu-salary.sql" dialect="MySQL" />
+  </component>
+</project>
