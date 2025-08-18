@@ -11,11 +11,18 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- ----------------------------
 use aioveu_boot;
 -- 人员管理模块 (管理员工信息，包括员工的基本信息、部门、岗位、考勤、工资等。) - 员工绩效考评表
+
+
+-- 修改数据库表结构
+# ALTER TABLE aioveu_performance
+#     CHANGE COLUMN id id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID';
+
+-- 在MySQL中，将INT UNSIGNED改为BIGINT UNSIGNED以支持Long类型，并在Java实体类中使用Long类型
 -- ----------------------------
 DROP TABLE IF EXISTS `aioveu_performance`;
 
 CREATE TABLE `aioveu_performance` (
-                                      record_id INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID',
+                                      id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID',
                                       employee_id INT UNSIGNED NOT NULL COMMENT '员工ID',
                                       `period_year` SMALLINT UNSIGNED NOT NULL COMMENT '考核年份', -- 拆分为年份+季度字段，支持灵活查询季度/年度绩效
                                       `period_quarter` TINYINT UNSIGNED COMMENT '考核季度(1-4)',
@@ -25,7 +32,7 @@ CREATE TABLE `aioveu_performance` (
                                       `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录数据创建和更新时间
                                       `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足数据审计要求 支持绩效历史追踪
 
-                                      PRIMARY KEY (`record_id`),
+                                      PRIMARY KEY (`id`),
                                       INDEX `idx_employee` (`employee_id`),   -- 支持高效查询 按员工查绩效历史
                                       INDEX `idx_period` (`period_year`, `period_quarter`), -- 按时间段查团队绩效
 

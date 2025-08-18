@@ -15,7 +15,7 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_salary`;
 -- 创建规范化的工资表
 CREATE TABLE `aioveu_salary` (
-                                 `salary_id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '工资记录ID',
+                                 `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '工资记录ID',
                                  `employee_id` INT UNSIGNED NOT NULL COMMENT '员工ID',
                                  `salary_period` DATE NOT NULL COMMENT '工资周期（月份）', -- 使用DATE类型存储工资周期（每月1日） 添加唯一约束确保每月每人只有一条记录
                                  `base_salary` DECIMAL(12, 2) NOT NULL DEFAULT 0.00 COMMENT '基本工资',
@@ -32,7 +32,7 @@ CREATE TABLE `aioveu_salary` (
                                  `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加,自动记录工资信息创建和更新时间
                                  `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持工资变更历史追踪
 
-                                 PRIMARY KEY (`salary_id`),
+                                 PRIMARY KEY (`id`),
 
                                 -- 员工外键约束
                                  CONSTRAINT `fk_salary_employee`
