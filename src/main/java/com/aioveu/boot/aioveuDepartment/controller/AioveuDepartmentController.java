@@ -2,6 +2,7 @@ package com.aioveu.boot.aioveuDepartment.controller;
 
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
 import lombok.RequiredArgsConstructor;
+import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.aioveu.boot.aioveuDepartment.model.form.AioveuDepartmentForm;
@@ -68,6 +69,21 @@ public class AioveuDepartmentController  {
         boolean result = aioveuDepartmentService.updateAioveuDepartment(id, formData);
         return Result.judge(result);
     }
+
+    /**
+     1.控制器获取ID：
+         •使用 @PathVariable获取路径参数
+         •将ID传递给服务层
+     2.服务层设置ID：
+         •将表单数据转换为实体对象
+         •手动设置实体对象的ID
+         •执行更新操作
+
+     1.表单对象不包含ID：ID通过URL路径传递
+     2.服务层设置ID：将路径参数中的ID设置到实体对象中
+     3.执行更新：使用 updateById方法
+     可以确保更新的是正确的资源，同时保持代码的安全性和可维护性
+     **/
 
     @Operation(summary = "删除公司部门组织结构")
     @DeleteMapping("/{ids}")
