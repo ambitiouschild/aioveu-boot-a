@@ -22,6 +22,8 @@ CREATE TABLE `aioveu_attendance` (
                                     checkout_time DATETIME COMMENT '下班打卡时间',
                                     work_hours DECIMAL(4,1) COMMENT '工作时长(小时)', -- 使用DECIMAL更精确 DECIMAL(4,1)精确到0.1小时
                                     status TINYINT COMMENT '考勤状态：0-正常，1-迟到，2-早退，3-缺勤，4-休假',
+                                    `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', --  审计字段添加 自动记录员工信息创建和更新时间
+                                    `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持员工信息变更追踪
 
 #                                     PRIMARY KEY (attendance_id),  -- 显式声明主键  -- 唯一主键定义
 
@@ -57,10 +59,10 @@ CREATE TABLE `aioveu_attendance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='考勤表';
 
 
-INSERT INTO `aioveu_attendance` VALUES(1,1,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0);
-INSERT INTO `aioveu_attendance` VALUES(2,2,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0);
-INSERT INTO `aioveu_attendance` VALUES(3,3,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0);
-INSERT INTO `aioveu_attendance` VALUES(4,4,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0);
+INSERT INTO `aioveu_attendance` VALUES(1,1,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0,'2025-08-15 09:00:00','2025-08-15 09:00:00');
+INSERT INTO `aioveu_attendance` VALUES(2,2,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0,'2025-08-15 09:00:00','2025-08-15 09:00:00');
+INSERT INTO `aioveu_attendance` VALUES(3,3,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0,'2025-08-15 09:00:00','2025-08-15 09:00:00');
+INSERT INTO `aioveu_attendance` VALUES(4,4,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0,'2025-08-15 09:00:00','2025-08-15 09:00:00');
 -- 不指定ID，让系统自动生成
-INSERT INTO `aioveu_attendance` (employee_id, date, checkin_time, checkout_time, work_hours, status)
-VALUES(1,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0);
+INSERT INTO `aioveu_attendance` (employee_id, date, checkin_time, checkout_time, work_hours, status,create_time, update_time)
+VALUES(1,'2025-08-15','2025-08-15 09:00:00','2025-08-15 17:30:00',8,0, '2025-08-15 09:00:00','2025-08-15 09:00:00');
