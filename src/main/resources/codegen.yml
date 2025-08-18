@@ -9,7 +9,7 @@ codegen:
   frontendAppName: vue3-element-admin
   # 默认配置
   defaultConfig:
-    author: aioveutech
+    author: 可我不敌可爱
     moduleName: system
   # 排除数据表
   excludeTables:
