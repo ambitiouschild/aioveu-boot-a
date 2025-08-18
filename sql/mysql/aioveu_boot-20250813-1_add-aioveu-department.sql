@@ -20,8 +20,8 @@ CREATE TABLE `aioveu_department` (
                                      `dept_name` VARCHAR(50) NOT NULL COMMENT '部门名称', -- 使用 dept_name替代模糊的 name，明确表示部门名称
                                      `parent_dept_id` INT UNSIGNED DEFAULT NULL COMMENT '上级部门ID，用于构建部门树', -- 顶级部门使用 NULL表示无上级部门 使用 DEFAULT NULL明确表示可选字段
                                      `manager_id` INT UNSIGNED DEFAULT NULL COMMENT '部门经理，关联employee表',
-                                     `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录部门创建和更新时间
-                                     `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持部门变更历史追踪
+                                     `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录部门创建和更新时间
+                                     `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持部门变更历史追踪
 
                                      PRIMARY KEY (`dept_id`),
 

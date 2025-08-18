@@ -21,8 +21,8 @@ CREATE TABLE `aioveu_position` (
                                    `dept_id` INT UNSIGNED DEFAULT NULL COMMENT '所属部门ID',  -- 添加部门关联字段，明确岗位归属 支持按职级进行薪酬体系管理
                                    `position_level` TINYINT UNSIGNED COMMENT '职级(1-10，数字越大职级越高)', -- 建立标准职级体系（1-10级）
                                    `description` TEXT COMMENT '岗位描述', -- 从 VARCHAR(200) 扩展到 TEXT 类型,支持存储详细的岗位职责和要求,为岗位说明书提供存储空间
-                                   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加 支持岗位变更历史追踪
-                                   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足人事管理系统审计需求
+                                   `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加 支持岗位变更历史追踪
+                                   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足人事管理系统审计需求
 
                                    PRIMARY KEY (`position_id`),
 

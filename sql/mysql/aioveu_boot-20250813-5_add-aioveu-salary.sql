@@ -29,8 +29,8 @@ CREATE TABLE `aioveu_salary` (
                                  `net_salary` DECIMAL(12, 2) NOT NULL COMMENT '实发工资',
                                  `payment_date` DATE COMMENT '实际发放日期',
                                  `payment_status` TINYINT(1) DEFAULT 0 COMMENT '发放状态：0-未发放，1-已发放，2-发放失败', -- 明确工资发放状态,便于财务对账和异常处理
-                                 `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加,自动记录工资信息创建和更新时间
-                                 `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持工资变更历史追踪
+                                 `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加,自动记录工资信息创建和更新时间
+                                 `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持工资变更历史追踪
 
                                  PRIMARY KEY (`salary_id`),
 

@@ -22,8 +22,8 @@ CREATE TABLE `aioveu_performance` (
                                       `kpi_score` TINYINT UNSIGNED COMMENT 'KPI评分(1-100分)', -- 从模糊的1-5分改为更精确的百分制（0-100） TINYINT UNSIGNED 范围0-255完全够用
                                       `productivity` DECIMAL(5,2) UNSIGNED COMMENT '生产率百分比(%)', -- DECIMAL(5,2) 精确存储小数（如98.76%）
                                       `review` TEXT COMMENT '主管评语',
-                                      `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录数据创建和更新时间
-                                      `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足数据审计要求 支持绩效历史追踪
+                                      `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录数据创建和更新时间
+                                      `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足数据审计要求 支持绩效历史追踪
 
                                       PRIMARY KEY (`record_id`),
                                       INDEX `idx_employee` (`employee_id`),   -- 支持高效查询 按员工查绩效历史
@@ -62,8 +62,8 @@ INSERT INTO `aioveu_performance` (
     `kpi_score`,
     `productivity`,
     `review`,
-    `created_at`,
-    `updated_at`
+    `create_time`,
+    `update_time`
 ) VALUES
       -- 张三 2024Q1绩效
       (1, 2024, 1, 92, 98.50,

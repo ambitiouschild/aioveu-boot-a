@@ -28,8 +28,8 @@ CREATE TABLE `aioveu_employee` (
                                    `hire_date` DATE NOT NULL COMMENT '入职日期',
                                    `salary` DECIMAL(10,2) COMMENT '基本薪资',
                                    `status` TINYINT(1) DEFAULT 1 COMMENT '状态：0-离职，1-在职,2-休假,3-实习', -- 调整状态值：2-休假，3-实习（更符合实际业务）
-                                   `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', --  审计字段添加 自动记录员工信息创建和更新时间
-                                   `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持员工信息变更追踪
+                                   `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', --  审计字段添加 自动记录员工信息创建和更新时间
+                                   `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 支持员工信息变更追踪
 
                                    PRIMARY KEY (`employee_id`),
                                    UNIQUE KEY `uk_emp_code` (`emp_code`), -- 确保员工编号唯一
@@ -113,8 +113,8 @@ VALUES
 #         WHEN 3 THEN '实习'
 #         ELSE '未知'
 #         END AS status,
-#     e.created_at,
-#     e.updated_at
+#     e.create_time,
+#     e.update_time
 # FROM aioveu_employee e
 #          LEFT JOIN aioveu_department d ON e.dept_id = d.dept_id
 #          LEFT JOIN aioveu_position p ON e.position_id = p.position_id;
@@ -141,7 +141,7 @@ VALUES
 # UPDATE aioveu_employee
 # SET dept_id = ?,
 #     position_id = ?,
-#     updated_at = CURRENT_TIMESTAMP
+#     update_time = CURRENT_TIMESTAMP
 # WHERE employee_id = ?;
 
 -- 数据完整性检查
