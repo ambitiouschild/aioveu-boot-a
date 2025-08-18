@@ -41,7 +41,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
-    //添加全局日期时间转换器
+    //添加全局日期时间转换器  添加全局字符串到 LocalDateTime 的转换器  确保 Spring MVC 能正确处理日期参数绑定
     @Override
     public void addFormatters(FormatterRegistry registry) {
         registry.addConverter(String.class, LocalDateTime.class, source ->
