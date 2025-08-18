@@ -26,7 +26,7 @@ public class AioveuPosition {
      * 岗位ID
      */
     @TableId(value = "position_id", type = IdType.AUTO)
-    private Integer positionId;
+    private Long positionId;
     /**
      * 岗位名称
      */

@@ -1,6 +1,9 @@
 package com.aioveu.boot.aioveuPosition.service.impl;
 
+import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -26,6 +29,7 @@ import cn.hutool.core.util.StrUtil;
  * @author aioveu
  * @since 2025-08-18 16:26
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper, AioveuPosition> implements AioveuPositionService {
@@ -80,8 +84,43 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
      */
     @Override
     public boolean updateAioveuPosition(Long id,AioveuPositionForm formData) {
+        log.info("开始更新岗位: ID={}", id);
+
+        // 1. 获取原始岗位信息  确保岗位存在 获取原始数据用于复制未修改字段
+        AioveuPosition original = getById(id);
+        if (original == null) {
+            log.error("岗位不存在: ID={}", id);
+            throw new ServiceException("岗位不存在");
+        }
+
+        // 2. 检查岗位名称唯一性（如果需要）
+        if (!original.getPositionName().equals(formData.getPositionName())) {
+            LambdaQueryWrapper<AioveuPosition> wrapper = new LambdaQueryWrapper<>();
+            wrapper.eq(AioveuPosition::getPositionName, formData.getPositionName())
+                    .ne(AioveuPosition::getPositionId, id);
+
+            if (count(wrapper) > 0) {
+                log.error("岗位名称已存在: {}", formData.getPositionName());
+                throw new ServiceException("岗位名称 " + formData.getPositionName() + " 已存在");
+            }
+        }
+
+        // 3. 将表单数据转换为实体对象
         AioveuPosition entity = aioveuPositionConverter.toEntity(formData);
-        return this.updateById(entity);
+
+        // 4. 设置岗位ID（关键步骤）
+        entity.setPositionId(id);  //手动设置表单数据中没有的ID字段，确保更新正确的岗位
+
+        // 5. 复制未修改的字段（如创建时间等）
+        entity.setCreateTime(original.getCreateTime());//保留创建时间和创建人信息，避免覆盖重要字段
+
+        // 6. 设置乐观锁版本号
+//        entity.setVersion(original.getVersion());
+
+        // 7. 执行更新
+        boolean result = updateById(entity);
+        log.info("更新岗位结果: {}", result);
+        return result;
     }
     
     /**
