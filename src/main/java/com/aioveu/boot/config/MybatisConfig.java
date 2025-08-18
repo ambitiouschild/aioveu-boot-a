@@ -1,6 +1,7 @@
 package com.aioveu.boot.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.config.GlobalConfig;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.inner.DataPermissionInterceptor;
@@ -44,5 +45,6 @@ public class MybatisConfig {
         globalConfig.setMetaObjectHandler(new MyMetaObjectHandler());
         return globalConfig;
     }
+
 
 }

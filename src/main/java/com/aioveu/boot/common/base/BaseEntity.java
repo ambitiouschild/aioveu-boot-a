@@ -28,6 +28,7 @@ public class BaseEntity implements Serializable {
 
     /**
      * 主键ID
+     * 添加 value 属性指定数据库列名
      */
     @TableId(type = IdType.AUTO)
     private Long id;
