@@ -8,6 +8,7 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- 以上方案采用模块插件化架构，核心表结构通用性强，通过扩展字段和业务表支持不同行业场景。所有设计遵循数据库三大范式原则，
        -- 同时通过适当冗余（如实时库存表）提升查询性能。建议实施时配合Redis缓存高频数据（如员工基础信息），并使用Elasticsearch实现复杂条件检索。
 
+    --  多模块设计，耦合更低，删除更方便，解耦更快，关联更低
 -- 2. 创建表 && 数据初始化
 -- ----------------------------
 use aioveu_boot;
