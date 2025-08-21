@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuTransaction.mapper.AioveuTransactionMapper">
+
+    <!-- 获取客户交易记录分页列表 -->
+    <select id="getAioveuTransactionPage" resultType="com.aioveu.boot.aioveuTransaction.model.vo.AioveuTransactionVO">
+        SELECT
+                id,
+                transaction_no,
+                customer_id,
+                contact_id,
+                transaction_date,
+                amount,
+                currency,
+                payment_method,
+                payment_status,
+                transaction_type,
+                invoice_no,
+                product_id,
+                quantity,
+                unit_price,
+                discount,
+                tax_rate,
+                tax_amount,
+                total_amount,
+                sales_rep_id,
+                transaction_status,
+                notes,
+                create_time,
+                update_time
+        FROM
+            aioveu_transaction
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.transactionNo != null and queryParams.transactionNo != ''">
+                AND transaction_no LIKE CONCAT('%', #{queryParams.transactionNo}, '%')
+            </if>
+            <if test="queryParams.customerId != null">
+                AND customer_id LIKE CONCAT('%', #{queryParams.customerId}, '%')
+            </if>
+            <if test="queryParams.contactId != null">
+                AND contact_id LIKE CONCAT('%', #{queryParams.contactId}, '%')
+            </if>
+            <if test="queryParams.transactionDate != null">
+                <if test="queryParams.transactionDate[0] != null and queryParams.transactionDate[0] != ''">
+                    <bind name="startDate" value="queryParams.transactionDate[0].length() == 10 ? queryParams.transactionDate[0] + ' 00:00:00' : queryParams.transactionDate[0]"/>
+                    AND transaction_date &gt;= #{startDate}
+                </if>
+                <if test="queryParams.transactionDate[1] != null and queryParams.transactionDate[1] != ''">
+                    <bind name="endDate" value="queryParams.transactionDate[1].length() == 10 ? queryParams.transactionDate[1] + ' 23:59:59' : queryParams.transactionDate[1]"/>
+                    AND transaction_date &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.paymentMethod != null">
+                AND payment_method LIKE CONCAT('%', #{queryParams.paymentMethod}, '%')
+            </if>
+            <if test="queryParams.paymentStatus != null">
+                AND payment_status LIKE CONCAT('%', #{queryParams.paymentStatus}, '%')
+            </if>
+            <if test="queryParams.transactionType != null">
+                AND transaction_type LIKE CONCAT('%', #{queryParams.transactionType}, '%')
+            </if>
+            <if test="queryParams.transactionStatus != null">
+                AND transaction_status LIKE CONCAT('%', #{queryParams.transactionStatus}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
