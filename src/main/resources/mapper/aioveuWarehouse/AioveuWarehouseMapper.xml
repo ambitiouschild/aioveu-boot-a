@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuWarehouse.mapper.AioveuWarehouseMapper">
+
+    <!-- 获取仓库信息分页列表 -->
+    <select id="getAioveuWarehousePage" resultType="com.aioveu.boot.aioveuWarehouse.model.vo.AioveuWarehouseVO">
+        SELECT
+                id,
+                name,
+                code,
+                location,
+                area,
+                capacity,
+                manager_id,
+                contact_phone,
+                description,
+                is_active,
+                create_time,
+                update_time
+        FROM
+            aioveu_warehouse
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.name != null and queryParams.name != ''">
+                AND name LIKE CONCAT('%', #{queryParams.name}, '%')
+            </if>
+            <if test="queryParams.code != null and queryParams.code != ''">
+                AND code LIKE CONCAT('%', #{queryParams.code}, '%')
+            </if>
+            <if test="queryParams.location != null and queryParams.location != ''">
+                AND location LIKE CONCAT('%', #{queryParams.location}, '%')
+            </if>
+            <if test="queryParams.managerId != null">
+                AND manager_id LIKE CONCAT('%', #{queryParams.managerId}, '%')
+            </if>
+            <if test="queryParams.contactPhone != null and queryParams.contactPhone != ''">
+                AND contact_phone LIKE CONCAT('%', #{queryParams.contactPhone}, '%')
+            </if>
+            <if test="queryParams.isActive != null">
+                AND is_active LIKE CONCAT('%', #{queryParams.isActive}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
