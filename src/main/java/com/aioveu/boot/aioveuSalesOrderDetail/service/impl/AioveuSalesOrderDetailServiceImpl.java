@@ -14,6 +14,7 @@ import com.aioveu.boot.aioveuSalesOrderDetail.model.query.AioveuSalesOrderDetail
 import com.aioveu.boot.aioveuSalesOrderDetail.model.vo.AioveuSalesOrderDetailVO;
 import com.aioveu.boot.aioveuSalesOrderDetail.converter.AioveuSalesOrderDetailConverter;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,6 +70,7 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
      */
     @Override
     public boolean saveAioveuSalesOrderDetail(AioveuSalesOrderDetailForm formData) {
+        // 将表单数据转换为实体（计算字段会在getter中自动计算）
         AioveuSalesOrderDetail entity = aioveuSalesOrderDetailConverter.toEntity(formData);
         return this.save(entity);
     }
@@ -91,8 +93,13 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
         }
 
-        // 2. 将表单数据转换为实体对象
+        // 2. 将表单数据转换为实体对象（计算字段会在getter中自动计算）
         AioveuSalesOrderDetail entity = aioveuSalesOrderDetailConverter.toEntity(formData);
+
+        // 自动计算并获取值
+//        BigDecimal subtotal = entity.getSubtotal(); // 自动计算小计
+//        BigDecimal taxAmount = entity.getTaxAmount(); // 自动计算税额
+//        BigDecimal totalPrice = entity.getTotalPrice(); // 自动计算总金额
 
         // 3. 设置ID
         entity.setId(id);

@@ -22,9 +22,9 @@ CREATE TABLE `aioveu_sales_order_detail` (
                                              `unit_price` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '单价',
                                              `discount` DECIMAL(5,2) DEFAULT 0 COMMENT '折扣率',
                                              `tax_rate` DECIMAL(5,2) DEFAULT 0 COMMENT '税率',
-                                             `subtotal` DECIMAL(15,4) AS (quantity * unit_price * (1 - discount)) STORED COMMENT '小计（计算列）',
-                                             `tax_amount` DECIMAL(15,4) AS (subtotal * tax_rate) STORED COMMENT '税额（计算列）',
-                                             `total_price` DECIMAL(15,4) AS (subtotal + tax_amount) STORED COMMENT '总金额（计算列）',
+                                             `subtotal` DECIMAL(15,4)  COMMENT '小计',
+                                             `tax_amount` DECIMAL(15,4)  COMMENT '税额',
+                                             `total_price` DECIMAL(15,4)  COMMENT '总金额',
                                              `batch_number` VARCHAR(50) COMMENT '批次号',
                                              `delivery_date` DATE COMMENT '要求交货日期',
                                              `warehouse_id` INT UNSIGNED COMMENT '发货仓库ID',
@@ -81,3 +81,16 @@ INSERT INTO `aioveu_sales_order_detail` (
 
       -- 订单4的明细
       (4, 5, 10.0000, 199.0000, 0.00, 0.13, 'BATCH-2023-06-003', '2023-06-30', 1, 1);
+
+
+# -- 移除生成列
+# ALTER TABLE aioveu_sales_order_detail
+#     DROP COLUMN subtotal,
+#     DROP COLUMN tax_amount,
+#     DROP COLUMN total_price;
+#
+# -- 添加普通列
+# ALTER TABLE aioveu_sales_order_detail
+#     ADD COLUMN subtotal DECIMAL(15,4) COMMENT '小计（应用层计算）',
+#     ADD COLUMN tax_amount DECIMAL(15,4) COMMENT '税额（应用层计算）',
+#     ADD COLUMN total_price DECIMAL(15,4) COMMENT '总金额（应用层计算）';
