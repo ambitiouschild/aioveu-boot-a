@@ -11,7 +11,7 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- 2. 创建表 && 数据初始化
 -- ----------------------------
 use aioveu_boot;
--- 人员管理模块 (管理员工信息，包括员工的基本信息、部门、岗位、考勤、工资等。) - 部门表
+-- 人员管理模块 (管理员工信息，包括员工的基本信息、部门、岗位、考勤、工资等。) - 部门表  共6张表
 -- ----------------------------
 DROP TABLE IF EXISTS `aioveu_department`;
 
