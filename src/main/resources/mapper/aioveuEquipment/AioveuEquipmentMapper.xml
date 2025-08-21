@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuEquipment.mapper.AioveuEquipmentMapper">
+
+    <!-- 获取设备管理分页列表 -->
+    <select id="getAioveuEquipmentPage" resultType="com.aioveu.boot.aioveuEquipment.model.vo.AioveuEquipmentVO">
+        SELECT
+                id,
+                asset_no,
+                name,
+                category_id,
+                model,
+                serial_no,
+                location_id,
+                department_id,
+                responsible_person,
+                purchase_date,
+                purchase_price,
+                warranty_period,
+                maintenance_cycle,
+                last_maintenance,
+                next_maintenance,
+                status,
+                remark,
+                create_time,
+                update_time
+        FROM
+            aioveu_equipment
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.assetNo != null and queryParams.assetNo != ''">
+                AND asset_no LIKE CONCAT('%', #{queryParams.assetNo}, '%')
+            </if>
+            <if test="queryParams.name != null and queryParams.name != ''">
+                AND name LIKE CONCAT('%', #{queryParams.name}, '%')
+            </if>
+            <if test="queryParams.categoryId != null">
+                AND category_id LIKE CONCAT('%', #{queryParams.categoryId}, '%')
+            </if>
+            <if test="queryParams.serialNo != null and queryParams.serialNo != ''">
+                AND serial_no LIKE CONCAT('%', #{queryParams.serialNo}, '%')
+            </if>
+            <if test="queryParams.responsiblePerson != null">
+                AND responsible_person LIKE CONCAT('%', #{queryParams.responsiblePerson}, '%')
+            </if>
+            <if test="queryParams.status != null">
+                AND status LIKE CONCAT('%', #{queryParams.status}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
