@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuMaterial.mapper.AioveuMaterialMapper">
+
+    <!-- 获取物资分页列表 -->
+    <select id="getAioveuMaterialPage" resultType="com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO">
+        SELECT
+                id,
+                name,
+                category_id,
+                unit,
+                spec,
+                purchase_price,
+                supplier_id,
+                min_stock,
+                max_stock,
+                is_active,
+                barcode,
+                create_time,
+                update_time
+        FROM
+            aioveu_material
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.name != null and queryParams.name != ''">
+                AND name LIKE CONCAT('%', #{queryParams.name}, '%')
+            </if>
+            <if test="queryParams.categoryId != null">
+                AND category_id LIKE CONCAT('%', #{queryParams.categoryId}, '%')
+            </if>
+            <if test="queryParams.isActive != null">
+                AND is_active LIKE CONCAT('%', #{queryParams.isActive}, '%')
+            </if>
+            <if test="queryParams.barcode != null and queryParams.barcode != ''">
+                AND barcode LIKE CONCAT('%', #{queryParams.barcode}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
