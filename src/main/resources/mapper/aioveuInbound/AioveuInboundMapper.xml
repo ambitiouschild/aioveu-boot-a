@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuInbound.mapper.AioveuInboundMapper">
+
+    <!-- 获取入库信息分页列表 -->
+    <select id="getAioveuInboundPage" resultType="com.aioveu.boot.aioveuInbound.model.vo.AioveuInboundVO">
+        SELECT
+                id,
+                inbound_no,
+                material_id,
+                warehouse_id,
+                quantity,
+                unit_price,
+                total_amount,
+                batch_number,
+                production_date,
+                expiry_date,
+                supplier_id,
+                inbound_type,
+                in_time,
+                operator_id,
+                remark,
+                create_time,
+                update_time
+        FROM
+            aioveu_inbound
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.inboundNo != null and queryParams.inboundNo != ''">
+                AND inbound_no LIKE CONCAT('%', #{queryParams.inboundNo}, '%')
+            </if>
+            <if test="queryParams.materialId != null">
+                AND material_id LIKE CONCAT('%', #{queryParams.materialId}, '%')
+            </if>
+            <if test="queryParams.warehouseId != null">
+                AND warehouse_id LIKE CONCAT('%', #{queryParams.warehouseId}, '%')
+            </if>
+            <if test="queryParams.inboundType != null">
+                AND inbound_type LIKE CONCAT('%', #{queryParams.inboundType}, '%')
+            </if>
+            <if test="queryParams.inTime != null">
+                <if test="queryParams.inTime[0] != null and queryParams.inTime[0] != ''">
+                    <bind name="startDate" value="queryParams.inTime[0].length() == 10 ? queryParams.inTime[0] + ' 00:00:00' : queryParams.inTime[0]"/>
+                    AND in_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.inTime[1] != null and queryParams.inTime[1] != ''">
+                    <bind name="endDate" value="queryParams.inTime[1].length() == 10 ? queryParams.inTime[1] + ' 23:59:59' : queryParams.inTime[1]"/>
+                    AND in_time &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.operatorId != null">
+                AND operator_id LIKE CONCAT('%', #{queryParams.operatorId}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
