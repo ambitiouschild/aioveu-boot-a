@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuSalesOrderDetail.mapper.AioveuSalesOrderDetailMapper">
+
+    <!-- 获取订单明细分页列表 -->
+    <select id="getAioveuSalesOrderDetailPage" resultType="com.aioveu.boot.aioveuSalesOrderDetail.model.vo.AioveuSalesOrderDetailVO">
+        SELECT
+                id,
+                order_id,
+                material_id,
+                quantity,
+                unit_price,
+                discount,
+                tax_rate,
+                subtotal,
+                tax_amount,
+                total_price,
+                batch_number,
+                delivery_date,
+                warehouse_id,
+                status,
+                notes,
+                create_time,
+                update_time
+        FROM
+            aioveu_sales_order_detail
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.orderId != null">
+                AND order_id LIKE CONCAT('%', #{queryParams.orderId}, '%')
+            </if>
+            <if test="queryParams.materialId != null">
+                AND material_id LIKE CONCAT('%', #{queryParams.materialId}, '%')
+            </if>
+            <if test="queryParams.warehouseId != null">
+                AND warehouse_id LIKE CONCAT('%', #{queryParams.warehouseId}, '%')
+            </if>
+            <if test="queryParams.status != null">
+                AND status LIKE CONCAT('%', #{queryParams.status}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
