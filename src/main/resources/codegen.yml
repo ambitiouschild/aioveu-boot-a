@@ -10,7 +10,7 @@ codegen:
   # 默认配置
   defaultConfig:
     author: 可我不敌可爱
-    moduleName: system
+    moduleName: aioveu
   # 排除数据表
   excludeTables:
     - gen_config
