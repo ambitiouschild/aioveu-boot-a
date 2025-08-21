@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuInventory.mapper.AioveuInventoryMapper">
+
+    <!-- 获取库存信息分页列表 -->
+    <select id="getAioveuInventoryPage" resultType="com.aioveu.boot.aioveuInventory.model.vo.AioveuInventoryVO">
+        SELECT
+                id,
+                warehouse_id,
+                material_id,
+                quantity,
+                batch_number,
+                production_date,
+                expiry_date,
+                last_inbound,
+                last_outbound,
+                create_time,
+                update_time
+        FROM
+            aioveu_inventory
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.warehouseId != null">
+                AND warehouse_id LIKE CONCAT('%', #{queryParams.warehouseId}, '%')
+            </if>
+            <if test="queryParams.materialId != null">
+                AND material_id LIKE CONCAT('%', #{queryParams.materialId}, '%')
+            </if>
+            <if test="queryParams.productionDate != null">
+                <if test="queryParams.productionDate[0] != null and queryParams.productionDate[0] != ''">
+                    <bind name="startDate" value="queryParams.productionDate[0].length() == 10 ? queryParams.productionDate[0] + ' 00:00:00' : queryParams.productionDate[0]"/>
+                    AND production_date &gt;= #{startDate}
+                </if>
+                <if test="queryParams.productionDate[1] != null and queryParams.productionDate[1] != ''">
+                    <bind name="endDate" value="queryParams.productionDate[1].length() == 10 ? queryParams.productionDate[1] + ' 23:59:59' : queryParams.productionDate[1]"/>
+                    AND production_date &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.expiryDate != null">
+                <if test="queryParams.expiryDate[0] != null and queryParams.expiryDate[0] != ''">
+                    <bind name="startDate" value="queryParams.expiryDate[0].length() == 10 ? queryParams.expiryDate[0] + ' 00:00:00' : queryParams.expiryDate[0]"/>
+                    AND expiry_date &gt;= #{startDate}
+                </if>
+                <if test="queryParams.expiryDate[1] != null and queryParams.expiryDate[1] != ''">
+                    <bind name="endDate" value="queryParams.expiryDate[1].length() == 10 ? queryParams.expiryDate[1] + ' 23:59:59' : queryParams.expiryDate[1]"/>
+                    AND expiry_date &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.lastInbound != null">
+                <if test="queryParams.lastInbound[0] != null and queryParams.lastInbound[0] != ''">
+                    <bind name="startDate" value="queryParams.lastInbound[0].length() == 10 ? queryParams.lastInbound[0] + ' 00:00:00' : queryParams.lastInbound[0]"/>
+                    AND last_inbound &gt;= #{startDate}
+                </if>
+                <if test="queryParams.lastInbound[1] != null and queryParams.lastInbound[1] != ''">
+                    <bind name="endDate" value="queryParams.lastInbound[1].length() == 10 ? queryParams.lastInbound[1] + ' 23:59:59' : queryParams.lastInbound[1]"/>
+                    AND last_inbound &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.lastOutbound != null">
+                <if test="queryParams.lastOutbound[0] != null and queryParams.lastOutbound[0] != ''">
+                    <bind name="startDate" value="queryParams.lastOutbound[0].length() == 10 ? queryParams.lastOutbound[0] + ' 00:00:00' : queryParams.lastOutbound[0]"/>
+                    AND last_outbound &gt;= #{startDate}
+                </if>
+                <if test="queryParams.lastOutbound[1] != null and queryParams.lastOutbound[1] != ''">
+                    <bind name="endDate" value="queryParams.lastOutbound[1].length() == 10 ? queryParams.lastOutbound[1] + ' 23:59:59' : queryParams.lastOutbound[1]"/>
+                    AND last_outbound &lt;= #{endDate}
+                </if>
+            </if>
+        </where>
+    </select>
+
+</mapper>
