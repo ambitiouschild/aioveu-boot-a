@@ -47,9 +47,9 @@ public class AioveuPerformanceForm implements Serializable {
     @Size(max=65535, message="主管评语长度不能超过65535个字符")
     private String review;
 
-    @Schema(description = "绩效等级")
-    @Size(max=10, message="绩效等级长度不能超过10个字符")
-    private String performanceGrade;
+//    @Schema(description = "绩效等级")
+//    @Size(max=10, message="绩效等级长度不能超过10个字符")
+//    private String performanceGrade;
 
 
 }

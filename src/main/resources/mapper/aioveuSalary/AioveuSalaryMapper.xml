@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuSalary.mapper.AioveuSalaryMapper">
+
+    <!-- 获取员工工资明细分页列表 -->
+    <select id="getAioveuSalaryPage" resultType="com.aioveu.boot.aioveuSalary.model.vo.AioveuSalaryVO">
+        SELECT
+                id,
+                employee_id,
+                salary_period,
+                base_salary,
+                performance_bonus,
+                overtime_pay,
+                allowances,
+                social_security,
+                housing_fund,
+                tax,
+                other_deductions,
+                net_salary,
+                payment_date,
+                payment_status,
+                create_time,
+                update_time
+        FROM
+            aioveu_salary
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.employeeId != null">
+                AND employee_id LIKE CONCAT('%', #{queryParams.employeeId}, '%')
+            </if>
+            <if test="queryParams.salaryPeriod != null">
+                <if test="queryParams.salaryPeriod[0] != null and queryParams.salaryPeriod[0] != ''">
+                    <bind name="startDate" value="queryParams.salaryPeriod[0].length() == 10 ? queryParams.salaryPeriod[0] + ' 00:00:00' : queryParams.salaryPeriod[0]"/>
+                    AND salary_period &gt;= #{startDate}
+                </if>
+                <if test="queryParams.salaryPeriod[1] != null and queryParams.salaryPeriod[1] != ''">
+                    <bind name="endDate" value="queryParams.salaryPeriod[1].length() == 10 ? queryParams.salaryPeriod[1] + ' 23:59:59' : queryParams.salaryPeriod[1]"/>
+                    AND salary_period &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.baseSalary != null">
+                AND base_salary LIKE CONCAT('%', #{queryParams.baseSalary}, '%')
+            </if>
+            <if test="queryParams.performanceBonus != null">
+                AND performance_bonus LIKE CONCAT('%', #{queryParams.performanceBonus}, '%')
+            </if>
+            <if test="queryParams.overtimePay != null">
+                AND overtime_pay LIKE CONCAT('%', #{queryParams.overtimePay}, '%')
+            </if>
+            <if test="queryParams.allowances != null">
+                AND allowances LIKE CONCAT('%', #{queryParams.allowances}, '%')
+            </if>
+            <if test="queryParams.socialSecurity != null">
+                AND social_security LIKE CONCAT('%', #{queryParams.socialSecurity}, '%')
+            </if>
+            <if test="queryParams.housingFund != null">
+                AND housing_fund LIKE CONCAT('%', #{queryParams.housingFund}, '%')
+            </if>
+            <if test="queryParams.tax != null">
+                AND tax LIKE CONCAT('%', #{queryParams.tax}, '%')
+            </if>
+            <if test="queryParams.otherDeductions != null">
+                AND other_deductions LIKE CONCAT('%', #{queryParams.otherDeductions}, '%')
+            </if>
+            <if test="queryParams.netSalary != null">
+                AND net_salary LIKE CONCAT('%', #{queryParams.netSalary}, '%')
+            </if>
+            <if test="queryParams.paymentDate != null">
+                <if test="queryParams.paymentDate[0] != null and queryParams.paymentDate[0] != ''">
+                    <bind name="startDate" value="queryParams.paymentDate[0].length() == 10 ? queryParams.paymentDate[0] + ' 00:00:00' : queryParams.paymentDate[0]"/>
+                    AND payment_date &gt;= #{startDate}
+                </if>
+                <if test="queryParams.paymentDate[1] != null and queryParams.paymentDate[1] != ''">
+                    <bind name="endDate" value="queryParams.paymentDate[1].length() == 10 ? queryParams.paymentDate[1] + ' 23:59:59' : queryParams.paymentDate[1]"/>
+                    AND payment_date &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.paymentStatus != null">
+                AND payment_status LIKE CONCAT('%', #{queryParams.paymentStatus}, '%')
+            </if>
+            <if test="queryParams.createTime != null">
+                <if test="queryParams.createTime[0] != null and queryParams.createTime[0] != ''">
+                    <bind name="startDate" value="queryParams.createTime[0].length() == 10 ? queryParams.createTime[0] + ' 00:00:00' : queryParams.createTime[0]"/>
+                    AND create_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.createTime[1] != null and queryParams.createTime[1] != ''">
+                    <bind name="endDate" value="queryParams.createTime[1].length() == 10 ? queryParams.createTime[1] + ' 23:59:59' : queryParams.createTime[1]"/>
+                    AND create_time &lt;= #{endDate}
+                </if>
+            </if>
+            <if test="queryParams.updateTime != null">
+                <if test="queryParams.updateTime[0] != null and queryParams.updateTime[0] != ''">
+                    <bind name="startDate" value="queryParams.updateTime[0].length() == 10 ? queryParams.updateTime[0] + ' 00:00:00' : queryParams.updateTime[0]"/>
+                    AND update_time &gt;= #{startDate}
+                </if>
+                <if test="queryParams.updateTime[1] != null and queryParams.updateTime[1] != ''">
+                    <bind name="endDate" value="queryParams.updateTime[1].length() == 10 ? queryParams.updateTime[1] + ' 23:59:59' : queryParams.updateTime[1]"/>
+                    AND update_time &lt;= #{endDate}
+                </if>
+            </if>
+        </where>
+    </select>
+
+</mapper>
