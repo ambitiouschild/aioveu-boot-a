@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.aioveu.boot.aioveuContact.mapper.AioveuContactMapper">
+
+    <!-- 获取客户联系人分页列表 -->
+    <select id="getAioveuContactPage" resultType="com.aioveu.boot.aioveuContact.model.vo.AioveuContactVO">
+        SELECT
+                id,
+                customer_id,
+                name,
+                position,
+                department,
+                mobile,
+                phone,
+                email,
+                wechat,
+                is_primary,
+                gender,
+                birthday,
+                hobbies,
+                notes,
+                create_time,
+                update_time
+        FROM
+            aioveu_contact
+        <where>
+            <if test="queryParams.id != null">
+                AND id LIKE CONCAT('%', #{queryParams.id}, '%')
+            </if>
+            <if test="queryParams.customerId != null">
+                AND customer_id LIKE CONCAT('%', #{queryParams.customerId}, '%')
+            </if>
+            <if test="queryParams.name != null and queryParams.name != ''">
+                AND name LIKE CONCAT('%', #{queryParams.name}, '%')
+            </if>
+            <if test="queryParams.mobile != null and queryParams.mobile != ''">
+                AND mobile LIKE CONCAT('%', #{queryParams.mobile}, '%')
+            </if>
+            <if test="queryParams.email != null and queryParams.email != ''">
+                AND email LIKE CONCAT('%', #{queryParams.email}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>
