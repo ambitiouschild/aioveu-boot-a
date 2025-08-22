@@ -34,7 +34,7 @@ public class AioveuPosition {
     /**
      * 所属部门ID
      */
-    private Integer deptId;
+    private Long deptId;
     /**
      * 职级(1-10)
      */

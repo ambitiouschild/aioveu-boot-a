@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.form.AioveuDepartmentForm;
 import com.aioveu.boot.aioveuDepartment.model.query.AioveuDepartmentQuery;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公司部门组织结构服务类
@@ -54,5 +58,18 @@ public interface AioveuDepartmentService extends IService<AioveuDepartment> {
      * @return 是否删除成功
      */
     boolean deleteAioveuDepartments(String ids);
+
+
+    /**
+     * 批量获取部门信息（新增方法）
+     */
+    Map<Long, String> getDepartmentMapByIds(List<Long> deptIds);
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     *
+     * @return 部门选项列表
+     */
+    List<DeptOptionVO> getAllDepartmentOptions();
 
 }

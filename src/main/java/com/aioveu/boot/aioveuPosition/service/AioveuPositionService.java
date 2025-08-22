@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuPosition.model.entity.AioveuPosition;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aioveu.boot.aioveuPosition.model.query.AioveuPositionQuery;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公司岗位信息服务类
@@ -15,12 +19,28 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AioveuPositionService extends IService<AioveuPosition> {
 
+
+
+    /**
+     * 批量获取部门信息（新增方法）
+     */
+    Map<Long, String> getPositionMapByIds(List<Long> positionIds);
+
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     *
+     * @return 部门选项列表
+     */
+
+    List<PositionVO> getAllPositionOptions();
     /**
      *公司岗位信息分页列表
      *
      * @return {@link IPage<AioveuPositionVO>} 公司岗位信息分页列表
      */
     IPage<AioveuPositionVO> getAioveuPositionPage(AioveuPositionQuery queryParams);
+
 
     /**
      * 获取公司岗位信息表单数据

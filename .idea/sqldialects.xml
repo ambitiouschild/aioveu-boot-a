@@ -2,11 +2,24 @@
 <project version="4">
   <component name="SqlDialectMappings">
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-1-1_add-aioveu-外键约束.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-10-2_add-aioveu-equipment.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-10-2_add-aioveu-procurement.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-10_add-aioveu-outbound.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-11_add-aioveu-customer.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-12_add-aioveu-contact.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-13_add-aioveu-transaction.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-14_add-aioveu-sales_order.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-15_add-aioveu-sales_order_detail.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-1_add-aioveu-department.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-2_add-aioveu-position.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-3_add-aioveu-employee.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-4_add-aioveu-attendance.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-5-2_add-aioveu-performance.sql" dialect="MySQL" />
     <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-5_add-aioveu-salary.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-6-2_add-aioveu-category.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-6_add-aioveu-material.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-7_add-aioveu-warehouse.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-8_add-aioveu-inventory.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/sql/mysql/aioveu_boot-20250813-9_add-aioveu-inbound.sql" dialect="MySQL" />
   </component>
 </project>

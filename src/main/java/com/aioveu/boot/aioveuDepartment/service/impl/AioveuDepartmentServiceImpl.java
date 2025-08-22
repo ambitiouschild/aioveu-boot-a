@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuDepartment.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import com.aioveu.boot.aioveuDepartment.converter.AioveuDepartmentConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -144,6 +146,45 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+
+    /**
+     * 批量获取部门信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getDepartmentMapByIds(List<Long> deptIds) {
+        if (deptIds == null || deptIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询部门信息
+        List<AioveuDepartment> departments = this.listByIds(deptIds);
+
+        // 转换为Map: key=部门ID, value=部门名称
+        return departments.stream()
+                .collect(Collectors.toMap(
+                        AioveuDepartment::getDeptId,
+                        AioveuDepartment::getDeptName
+                ));
+    }
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     *
+     * @return 部门选项列表
+     */
+    @Override
+    public List<DeptOptionVO> getAllDepartmentOptions() {
+        // 查询所有部门
+        List<AioveuDepartment> departments = this.list();
+
+        // 转换为选项对象
+        List<DeptOptionVO>  DeptOptionVO  = departments.stream()
+                .map(dept -> new DeptOptionVO(dept.getDeptId(), dept.getDeptName()))
+                .collect(Collectors.toList());
+
+        return DeptOptionVO;
     }
 
 }
