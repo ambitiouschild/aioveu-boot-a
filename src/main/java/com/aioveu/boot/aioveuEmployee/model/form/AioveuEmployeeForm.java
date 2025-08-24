@@ -28,11 +28,11 @@ public class AioveuEmployeeForm implements Serializable {
     /**
      * 部门名称
      */
-    private String deptName;   // 新增：部门名称，用于前端表单显示
+    private String deptName;   // 新增：部门名，用于前端表单显示
     /**
      * 岗位名称
      */
-    private String positionName; // 新增：部门名称，用于前端表单显示
+    private String positionName; // 新增：部门名，用于前端表单显示
 
     @Schema(description = "员工编号")
     @NotBlank(message = "员工编号不能为空")

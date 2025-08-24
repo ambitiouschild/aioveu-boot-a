@@ -13,6 +13,8 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- ----------------------------
 use aioveu_boot;
 -- 人员管理模块 (管理员工信息，包括员工的基本信息、部门、岗位、考勤、工资等。) - 部门表  共6张表
+    -- 重新排序自增值需要更新所有后续记录的ID，这会带来巨大的性能开销，尤其是在大表中
+    -- 数据库的自增主键（如MySQL中的AUTO_INCREMENT）在设计上是为了保证唯一性，而不是连续性。当您删除记录后，自增计数器不会自动重新排序或填补空缺
 -- ----------------------------
 DROP TABLE IF EXISTS `aioveu_department`;
 

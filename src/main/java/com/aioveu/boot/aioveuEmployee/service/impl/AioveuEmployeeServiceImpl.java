@@ -130,21 +130,21 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
     /**
      * 更新员工信息
      *
-     * @param id   员工信息ID
+     * @param employeeId   员工信息ID
      * @param formData 员工信息表单对象
      * @return 是否修改成功
      * 您在修改员工信息时没有更改员工编号，但后端仍然报错员工编号重复。
      * 这通常是因为后端在更新时没有正确判断员工编号是否被修改，即使没有修改也执行了唯一性检查
      */
     @Override
-    public boolean updateAioveuEmployee(Long id,AioveuEmployeeForm formData) {
+    public boolean updateAioveuEmployee(Long employeeId,AioveuEmployeeForm formData) {
         //添加员工编号唯一性检查逻辑
-        log.info("开始更新员工: ID={}", id);
+        log.info("开始更新员工: ID={}", employeeId);
 
         // 1. 获取原始员工信息
-        AioveuEmployee original = getById(id);
+        AioveuEmployee original = getById(employeeId);
         if (original == null) {
-            log.error("员工不存在: ID={}", id);
+            log.error("员工不存在: ID={}", employeeId);
             throw new ServiceException("员工不存在");
         }
         // 2. 检查员工编号是否被修改
@@ -163,7 +163,7 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
                     //eq方法表示等值查询，即查询emp_code字段等于newEmpCode值的记录。
                     //AioveuEmployee::getEmpCode是Lambda表达式，指定要查询的字段（即emp_code列）。
                     //newEmpCode是要匹配的值（即新员工编号）。
-                    .ne(AioveuEmployee::getEmployeeId, id); // 排除当前员工
+                    .ne(AioveuEmployee::getEmployeeId, employeeId); // 排除当前员工
             //ne方法表示不等值查询，即查询employee_id字段不等于id的记录。
             //AioveuEmployee::getEmployeeId指定要查询的字段（即employee_id列）。
             //id是当前员工的ID（即要排除的ID）
@@ -182,7 +182,7 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
 
         // 4. 将表单数据转换为实体对象
         AioveuEmployee entity = aioveuEmployeeConverter.toEntity(formData);
-        entity.setEmployeeId(id); // 设置员工ID
+        entity.setEmployeeId(employeeId); // 设置员工ID
         log.info("转换后的实体对象: {}", entity);
 
         // 5. 复制未修改的字段（如创建时间等）
