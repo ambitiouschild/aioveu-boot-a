@@ -67,7 +67,7 @@ public class AioveuDepartment {
     /**
      * 上级部门ID
      */
-    private Integer parentDeptId;
+    private Long parentDeptId;
     /**
      * 部门经理
      */

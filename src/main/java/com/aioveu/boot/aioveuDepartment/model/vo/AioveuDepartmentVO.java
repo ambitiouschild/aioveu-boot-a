@@ -22,15 +22,25 @@ public class AioveuDepartmentVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "部门ID")
-    private Integer deptId;
+    private Long deptId;
     @Schema(description = "部门名称")
     private String deptName;
     @Schema(description = "上级部门ID")
-    private Integer parentDeptId;
+    private Long parentDeptId;
     @Schema(description = "部门经理")
     private Integer managerId;
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
     @Schema(description = "更新时间")
     private LocalDateTime updateTime;
+
+    /**
+     * 上级部门名称
+     */
+    private String parentDeptName;
+
+    /**
+     * 部门经理姓名
+     */
+    private String managerName;
 }

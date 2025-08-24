@@ -1,6 +1,8 @@
 package com.aioveu.boot.aioveuDepartment.service.impl;
 
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
+import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,6 +21,7 @@ import com.aioveu.boot.aioveuDepartment.converter.AioveuDepartmentConverter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -39,7 +42,7 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 
     /**
     * 获取公司部门组织结构分页列表
-    *
+    * 先进行 tovo,在vo层操作
     * @param queryParams 查询参数
     * @return {@link IPage<AioveuDepartmentVO>} 公司部门组织结构分页列表
     */
@@ -49,6 +52,10 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置部门名称
+        setParentDeptNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -61,7 +68,17 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     @Override
     public AioveuDepartmentForm getAioveuDepartmentFormData(Long id) {
         AioveuDepartment entity = this.getById(id);
-        return aioveuDepartmentConverter.toForm(entity);
+        AioveuDepartmentForm form = aioveuDepartmentConverter.toForm(entity);
+
+        // 设置部门名称
+        if (entity.getParentDeptId() != null) {
+            AioveuDepartment department = getById(entity.getParentDeptId());
+            if (department != null) {
+                form.setParentDeptName(department.getDeptName());
+            }
+        }
+
+        return form;
     }
     
     /**
@@ -185,6 +202,41 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
                 .collect(Collectors.toList());
 
         return DeptOptionVO;
+    }
+
+    /**
+     *  批量设置名称到VO对象，将PositionVO岗位表视图对象的部门id,转换为部门名称，只被分页列表调用
+     */
+    private void setParentDeptNames(List<AioveuDepartmentVO> departmentVOs) {
+        if (departmentVOs == null || departmentVOs.isEmpty()) {
+            return;
+        }
+
+        // 获取所有部门ID
+        List<Long> parentDeptIds = departmentVOs.stream()
+                .map(AioveuDepartmentVO::getParentDeptId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (parentDeptIds.isEmpty()) {
+            return;
+        }
+
+        // 批量查询部门信息
+        Map<Long, String> deptMap = getDepartmentMapByIds(parentDeptIds);
+
+        // 设置部门名称
+        departmentVOs.forEach(vo -> {
+            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
+            //检查 vo.getDeptId()非空（防止空指针异常）
+            //同时检查 deptMap中包含该岗位ID的键（确保映射中存在对应关系）
+            if (vo.getParentDeptId() != null && deptMap.containsKey(vo.getParentDeptId())) {
+                //通过 deptMap.getOrDefault()方法获取岗位名称：若存在则返回映射值，不存在则返回默认值「未知部门」
+                //调用 vo.setDeptName()将名称设置到员工对象中
+                vo.setParentDeptName(deptMap.getOrDefault(vo.getParentDeptId(), "未知部门"));
+            }
+        });
     }
 
 }

@@ -27,10 +27,14 @@ public class AioveuDepartmentForm implements Serializable {
     private String deptName;
 
     @Schema(description = "上级部门ID")
-    private Integer parentDeptId;
+    private Long parentDeptId;
 
     @Schema(description = "部门经理")
     private Integer managerId;
+
+    private String parentDeptName;
+
+    private String managerName;
 
 
 }
