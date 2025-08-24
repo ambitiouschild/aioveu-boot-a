@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuPosition.controller;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
 import com.aioveu.boot.aioveuPosition.service.AioveuPositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公司岗位信息前端控制层
@@ -77,5 +82,30 @@ public class AioveuPositionController  {
     ) {
         boolean result = aioveuPositionService.deleteAioveuPositions(ids);
         return Result.judge(result);
+    }
+
+    /**
+     * 根据岗位ID列表获取岗位名称映射
+     * @param positionIds 岗位ID列表
+     * @return 岗位ID到岗位名称的映射
+     */
+    @Operation(summary = "根据岗位ID列表获取岗位名称映射")
+    @PostMapping("/map")
+    public Result<Map<Long, String>> getPositionMapByIds(@RequestBody List<Long> positionIds) {
+        Map<Long, String> positionMap = aioveuPositionService.getPositionMapByIds(positionIds);
+        return Result.success(positionMap);
+    }
+
+    /**
+     * 获取所有岗位列表（用于下拉选择框）
+     * @return 岗位选项列表
+     */
+    @Operation(summary = "获取所有岗位列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<PositionVO>> getAllPositionOptions() {
+
+        List<PositionVO> positions  = aioveuPositionService.getAllPositionOptions();
+
+        return Result.success(positions);
     }
 }

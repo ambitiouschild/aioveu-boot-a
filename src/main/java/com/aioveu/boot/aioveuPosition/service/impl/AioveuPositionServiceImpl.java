@@ -1,5 +1,9 @@
 package com.aioveu.boot.aioveuPosition.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +22,8 @@ import com.aioveu.boot.aioveuPosition.converter.AioveuPositionConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -35,6 +41,8 @@ import cn.hutool.core.util.StrUtil;
 public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper, AioveuPosition> implements AioveuPositionService {
 
     private final AioveuPositionConverter aioveuPositionConverter;
+    //添加部门服务依赖,注入 `AioveuDepartmentService`用于查询部门信息
+    private final AioveuDepartmentService aioveuDepartmentService;
 
     /**
     * 获取公司岗位信息分页列表
@@ -44,13 +52,20 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
     */
     @Override
     public IPage<AioveuPositionVO> getAioveuPositionPage(AioveuPositionQuery queryParams) {
+        // 调用自定义Mapper方法进行分页查询
         Page<AioveuPositionVO> pageVO = this.baseMapper.getAioveuPositionPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+
+        // 设置部门名称
+        setDeptNames(pageVO.getRecords());
+
         return pageVO;
     }
-    
+
+
     /**
      * 获取公司岗位信息表单数据
      *
@@ -60,7 +75,18 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
     @Override
     public AioveuPositionForm getAioveuPositionFormData(Long id) {
         AioveuPosition entity = this.getById(id);
-        return aioveuPositionConverter.toForm(entity);
+        AioveuPositionForm form = aioveuPositionConverter.toForm(entity);
+
+        // 设置部门名称
+        if (entity.getDeptId() != null) {
+            AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
+            if (department != null) {
+                form.setPositionName(department.getDeptName());
+            }
+        }
+
+
+        return form;
     }
     
     /**
@@ -138,5 +164,78 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
                 .toList();
         return this.removeByIds(idList);
     }
+
+    //---------------------------------------------------
+
+    /**
+     * 批量设置名称到VO对象,，将PositionVO岗位表视图对象的部门id,转换为部门名称
+     */
+    private void setDeptNames(List<AioveuPositionVO> positionVOs) {
+        if (positionVOs == null || positionVOs.isEmpty()) {
+            return;
+        }
+
+        // 获取所有部门ID
+        List<Long> deptIds = positionVOs.stream()
+                .map(AioveuPositionVO::getDeptId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (deptIds.isEmpty()) {
+            return;
+        }
+
+        // 批量查询部门信息
+        Map<Long, String> deptMap = aioveuDepartmentService.getDepartmentMapByIds(deptIds);
+
+        // 设置部门名称
+        positionVOs.forEach(vo -> {
+            if (vo.getDeptId() != null && deptMap.containsKey(vo.getDeptId())) {
+                vo.setDeptName(deptMap.getOrDefault(vo.getDeptId(), "未知部门"));
+            }
+        });
+    }
+
+    //---------------------------------------------------
+
+    /**
+     * 批量获取岗位信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getPositionMapByIds(List<Long> positionIds) {
+        if (positionIds == null || positionIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询岗位信息
+        List<AioveuPosition> positions = this.listByIds(positionIds);
+
+        // 转换为Map: key=岗位ID, value=岗位名称
+        return positions.stream()
+                .collect(Collectors.toMap(
+                        AioveuPosition::getPositionId,
+                        AioveuPosition::getPositionName
+                ));
+    }
+
+    /**
+     * 获取所有岗位列表（用于下拉选择框）
+     *
+     * @return 岗位选项列表
+     */
+    @Override
+    public List<PositionVO> getAllPositionOptions() {
+        // 查询所有岗位
+        List<AioveuPosition> positions = this.list();
+
+        // 转换为选项对象
+        List<PositionVO>  PositionVO  = positions.stream()
+                .map(position -> new PositionVO(position.getPositionId(), position.getPositionName()))
+                .collect(Collectors.toList());
+
+        return PositionVO;
+    }
+
 
 }

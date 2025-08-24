@@ -22,7 +22,7 @@ public interface AioveuPositionService extends IService<AioveuPosition> {
 
 
     /**
-     * 批量获取部门信息（新增方法）
+     * 批量获取岗位信息（新增方法）
      */
     Map<Long, String> getPositionMapByIds(List<Long> positionIds);
 
@@ -30,7 +30,7 @@ public interface AioveuPositionService extends IService<AioveuPosition> {
     /**
      * 获取所有部门列表（用于下拉选择框）
      *
-     * @return 部门选项列表
+     * @return 岗位选项列表
      */
 
     List<PositionVO> getAllPositionOptions();

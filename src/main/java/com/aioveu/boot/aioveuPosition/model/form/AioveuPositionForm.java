@@ -27,7 +27,12 @@ public class AioveuPositionForm implements Serializable {
     private String positionName;
 
     @Schema(description = "所属部门ID")
-    private Integer deptId;
+    private Long deptId;    // 部门ID，用于存储
+
+    /**
+     * 所属部门名称
+     */
+    private String deptName;   // 新增：部门名称，用于前端显示
 
     @Schema(description = "职级(1-10)")
     private Integer positionLevel;
