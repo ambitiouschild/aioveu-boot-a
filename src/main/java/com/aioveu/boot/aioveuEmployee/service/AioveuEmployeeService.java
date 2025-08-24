@@ -76,4 +76,10 @@ public interface AioveuEmployeeService extends IService<AioveuEmployee> {
      */
     List<EmployeeVO> getAllEmployeeOptions();
 
+
+    /**
+     * 获取员工总数
+     * @return 员工总数
+     */
+    long getEmployeeCount();
 }

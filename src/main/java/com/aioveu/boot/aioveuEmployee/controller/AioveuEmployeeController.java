@@ -110,4 +110,17 @@ public class AioveuEmployeeController  {
 
         return Result.success(employees);
     }
+
+    /**
+     * 获取员工总数
+     * @return 员工总数
+     */
+    @Operation(summary = "获取员工总数")
+    @GetMapping("/count")
+    @PreAuthorize("@ss.hasPerm('aioveuEmployee:aioveu-employee:query')")
+    public Result<Long> getEmployeeCount() {
+        long count = aioveuEmployeeService.getEmployeeCount();
+        return Result.success(count);
+    }
+
 }

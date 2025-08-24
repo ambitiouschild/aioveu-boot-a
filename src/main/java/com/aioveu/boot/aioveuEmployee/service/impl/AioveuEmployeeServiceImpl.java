@@ -51,6 +51,8 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
     //添加岗位服务依赖,注入 `AioveuPositionService`用于查询岗位信息
     private final AioveuPositionService aioveuPositionService;
 
+    private final AioveuEmployeeMapper employeeMapper;
+
 
     /**
     * 获取员工信息分页列表
@@ -319,6 +321,16 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
         return EmployeeVO;
     }
 
+
+
+    /**
+     * 获取员工总数
+     * @return 员工总数
+     */
+    @Override
+    public long getEmployeeCount() {
+        return employeeMapper.selectCount(null);
+    }
 
 
 }
