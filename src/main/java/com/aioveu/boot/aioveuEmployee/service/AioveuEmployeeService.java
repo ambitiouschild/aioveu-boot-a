@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.model.form.AioveuEmployeeForm;
 import com.aioveu.boot.aioveuEmployee.model.query.AioveuEmployeeQuery;
 import com.aioveu.boot.aioveuEmployee.model.vo.AioveuEmployeeVO;
+import com.aioveu.boot.aioveuEmployee.model.vo.EmployeeVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 员工信息服务类
@@ -54,5 +58,22 @@ public interface AioveuEmployeeService extends IService<AioveuEmployee> {
      * @return 是否删除成功
      */
     boolean deleteAioveuEmployees(String ids);
+
+    /**
+     * 批量获取员工信息
+     *
+     * @param employeeIds 员工ID，多个以英文逗号(,)分割
+     * @return 员工信息 Map
+     */
+    Map<Long, String> getEmployeeMapByIds(List<Long> employeeIds);
+
+
+    /**
+     * 获取所有员工列表（用于下拉选择框）
+     *
+     * @param
+     * @return 员工选项列表
+     */
+    List<EmployeeVO> getAllEmployeeOptions();
 
 }

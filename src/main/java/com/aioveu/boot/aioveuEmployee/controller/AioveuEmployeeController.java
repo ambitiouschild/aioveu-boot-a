@@ -1,6 +1,9 @@
 package com.aioveu.boot.aioveuEmployee.controller;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.model.vo.EmployeeVO;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +20,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 员工信息前端控制层
@@ -77,5 +83,31 @@ public class AioveuEmployeeController  {
     ) {
         boolean result = aioveuEmployeeService.deleteAioveuEmployees(ids);
         return Result.judge(result);
+    }
+
+
+    /**
+     * 根据员工ID列表获取员工名称映射
+     * @param employeeIds 岗位ID列表
+     * @return 员工ID到员工名称的映射
+     */
+    @Operation(summary = "根据员工ID列表获取员工名称映射")
+    @PostMapping("/map")
+    public Result<Map<Long, String>> getEmployeeMapByIds(@RequestBody List<Long> employeeIds) {
+        Map<Long, String> employeeMap = aioveuEmployeeService.getEmployeeMapByIds(employeeIds);
+        return Result.success(employeeMap);
+    }
+
+    /**
+     * 获取所有员工列表（用于下拉选择框）
+     * @return 员工选项列表
+     */
+    @Operation(summary = "获取所有员工列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<EmployeeVO>> getAllEmployeeOptions() {
+
+        List<EmployeeVO> employees  = aioveuEmployeeService.getAllEmployeeOptions();
+
+        return Result.success(employees);
     }
 }

@@ -1,5 +1,13 @@
 package com.aioveu.boot.aioveuEmployee.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuEmployee.model.vo.EmployeeVO;
+import com.aioveu.boot.aioveuPosition.model.entity.AioveuPosition;
+import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
+import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
+import com.aioveu.boot.aioveuPosition.service.AioveuPositionService;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +25,8 @@ import com.aioveu.boot.aioveuEmployee.converter.AioveuEmployeeConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -35,6 +45,13 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
 
     private final AioveuEmployeeConverter aioveuEmployeeConverter;
 
+    //添加部门服务依赖,注入 `AioveuDepartmentService`用于查询部门信息
+    private final AioveuDepartmentService aioveuDepartmentService;
+
+    //添加岗位服务依赖,注入 `AioveuPositionService`用于查询岗位信息
+    private final AioveuPositionService aioveuPositionService;
+
+
     /**
     * 获取员工信息分页列表
     *
@@ -47,6 +64,12 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+        // 设置部门名称
+        setDeptNames(pageVO.getRecords());
+
+        // 设置岗位名称
+        setPositionNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -59,7 +82,26 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
     @Override
     public AioveuEmployeeForm getAioveuEmployeeFormData(Long id) {
         AioveuEmployee entity = this.getById(id);
-        return aioveuEmployeeConverter.toForm(entity);
+        AioveuEmployeeForm form = aioveuEmployeeConverter.toForm(entity);
+
+
+        // 设置部门名称
+        if (entity.getDeptId() != null) {
+            AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
+            if (department != null) {
+                form.setPositionName(department.getDeptName());
+            }
+        }
+
+        // 设置岗位名称
+        if (entity.getPositionId() != null) {
+            AioveuPosition position = aioveuPositionService.getById(entity.getPositionId());
+            if (position != null) {
+                form.setPositionName(position.getPositionName());
+            }
+        }
+
+        return form;
     }
     
     /**
@@ -165,5 +207,118 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
                 .toList();
         return this.removeByIds(idList);
     }
+
+
+    /**
+     * 批量设置名称到VO对象，将EmployeeVO员工表视图对象的部门id,转换为部门名称
+     */
+    private void setDeptNames(List<AioveuEmployeeVO> employeeVOs) {
+        if (employeeVOs == null || employeeVOs.isEmpty()) {
+            return;
+        }
+
+        // 获取所有部门ID
+        List<Long> deptIds = employeeVOs.stream()
+                .map(AioveuEmployeeVO::getDeptId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (deptIds.isEmpty()) {
+            return;
+        }
+
+        // 批量查询部门信息
+        Map<Long, String> deptMap = aioveuDepartmentService.getDepartmentMapByIds(deptIds);
+
+        // 设置部门名称
+        employeeVOs.forEach(vo -> {
+            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
+            //检查 vo.getDeptId()非空（防止空指针异常）
+            //同时检查 deptMap中包含该岗位ID的键（确保映射中存在对应关系）
+            if (vo.getDeptId() != null && deptMap.containsKey(vo.getDeptId())) {
+                //通过 deptMap.getOrDefault()方法获取岗位名称：若存在则返回映射值，不存在则返回默认值「未知部门」
+                //调用 vo.setDeptName()将名称设置到员工对象中
+                vo.setDeptName(deptMap.getOrDefault(vo.getDeptId(), "未知部门"));
+            }
+        });
+    }
+
+
+    /**
+     * 批量设置名称到VO对象，将EmployeeVO员工表视图对象的岗位id,转换为岗位名称
+     */
+    private void setPositionNames(List<AioveuEmployeeVO> employeeVOs) {
+        if (employeeVOs == null || employeeVOs.isEmpty()) {
+            return;
+        }
+
+        // 获取所有岗位ID
+        List<Long> PositionIds = employeeVOs.stream()
+                .map(AioveuEmployeeVO::getPositionId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (PositionIds.isEmpty()) {
+            return;
+        }
+
+        // 批量查询岗位信息
+        Map<Long, String> positionMap = aioveuPositionService.getPositionMapByIds(PositionIds);
+
+        // 设置部门名称
+        employeeVOs.forEach(vo -> {
+            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
+            //检查 vo.getPositionId()非空（防止空指针异常）
+            //同时检查 positionMap中包含该岗位ID的键（确保映射中存在对应关系）
+            if (vo.getPositionId() != null && positionMap.containsKey(vo.getPositionId())) {
+                //通过 positionMap.getOrDefault()方法获取岗位名称：若存在则返回映射值，不存在则返回默认值「未知岗位」
+                //调用 vo.setPositionName()将名称设置到员工对象中
+                vo.setPositionName(positionMap.getOrDefault(vo.getPositionId(), "未知岗位"));
+            }
+        });
+    }
+
+
+    /**
+     * 批量获取员工信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getEmployeeMapByIds(List<Long> employeeIds) {
+        if (employeeIds == null || employeeIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询部门信息
+        List<AioveuEmployee> employees = this.listByIds(employeeIds);
+
+        // 转换为Map: key=员工ID, value=员工姓名
+        return employees.stream()
+                .collect(Collectors.toMap(
+                        AioveuEmployee::getEmployeeId,
+                        AioveuEmployee::getName
+                ));
+    }
+
+    /**
+     * 获取所有员工列表（用于下拉选择框）
+     *
+     * @return 员工选项列表
+     */
+    @Override
+    public List<EmployeeVO> getAllEmployeeOptions() {
+        // 查询所有部门
+        List<AioveuEmployee> employees = this.list();
+
+        // 转换为选项对象
+        List<EmployeeVO>  EmployeeVO  = employees.stream()
+                .map(employee -> new EmployeeVO(employee.getEmployeeId(), employee.getName()))
+                .collect(Collectors.toList());
+
+        return EmployeeVO;
+    }
+
+
 
 }

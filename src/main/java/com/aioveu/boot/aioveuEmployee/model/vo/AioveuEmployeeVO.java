@@ -23,6 +23,15 @@ public class AioveuEmployeeVO implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 部门名称
+     */
+    private String deptName;   // 新增：部门名称，用于前端列表显示
+    /**
+     * 岗位名称
+     */
+    private String positionName; // 新增：岗位名称，用于前端列表显示
+
     @Schema(description = "员工ID")
     private Integer employeeId;
     @Schema(description = "员工编号")
@@ -40,9 +49,9 @@ public class AioveuEmployeeVO implements Serializable {
     @Schema(description = "邮箱")
     private String email;
     @Schema(description = "所属部门")
-    private Integer deptId;
+    private Long deptId;
     @Schema(description = "岗位ID")
-    private Integer positionId;
+    private Long positionId;
     @Schema(description = "入职日期")
     private LocalDate hireDate;
     @Schema(description = "基本薪资")
