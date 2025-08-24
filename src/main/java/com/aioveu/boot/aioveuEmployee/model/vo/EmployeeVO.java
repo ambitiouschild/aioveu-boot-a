@@ -13,15 +13,15 @@ public class EmployeeVO {
     /**
      * 员工姓名
      */
-    private String name;
+    private String employeeName;
     /**
      * 带参数的构造函数
      *
      * @param employeeId 员工ID
-     * @param name 员工姓名
+     * @param employeeName 员工姓名
      */
-    public EmployeeVO(Long employeeId, String name) {
+    public EmployeeVO(Long employeeId, String employeeName) {
         this.employeeId = employeeId;
-        this.name = name;
+        this.employeeName = employeeName;
     }
 }

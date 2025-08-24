@@ -27,7 +27,7 @@ public class AioveuAttendanceVO implements Serializable {
     @Schema(description = "考勤ID")
     private Integer attendanceId;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
     @Schema(description = "日期")
     private LocalDate date;
     @Schema(description = "上班打卡时间")
@@ -42,4 +42,10 @@ public class AioveuAttendanceVO implements Serializable {
     private LocalDateTime createTime;
     @Schema(description = "更新时间")
     private LocalDateTime updateTime;
+
+
+    /**
+     * 员工姓名
+     */
+    private String employeeName;
 }

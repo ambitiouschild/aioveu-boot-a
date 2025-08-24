@@ -1,5 +1,11 @@
 package com.aioveu.boot.aioveuAttendance.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
+import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +23,8 @@ import com.aioveu.boot.aioveuAttendance.converter.AioveuAttendanceConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -35,6 +43,9 @@ import cn.hutool.core.util.StrUtil;
 public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMapper, AioveuAttendance> implements AioveuAttendanceService {
 
     private final AioveuAttendanceConverter aioveuAttendanceConverter;
+    //添加部门服务依赖,注入 `AioveuEmployeeService`用于查询员工信息
+    private final AioveuEmployeeService aioveuEmployeeService;
+
 
     /**
     * 获取考勤信息分页列表
@@ -48,6 +59,10 @@ public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMap
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置员工名称
+        setEmployeeNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -60,7 +75,19 @@ public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMap
     @Override
     public AioveuAttendanceForm getAioveuAttendanceFormData(Long id) {
         AioveuAttendance entity = this.getById(id);
-        return aioveuAttendanceConverter.toForm(entity);
+
+        AioveuAttendanceForm form = aioveuAttendanceConverter.toForm(entity);
+
+        // 设置员工姓名
+        if (entity.getAttendanceId() != null) {
+            AioveuEmployee employee = aioveuEmployeeService.getById(entity.getAttendanceId());
+            if (employee != null) {
+                form.setEmployeeName(employee.getName());
+            }
+        }
+
+
+        return form;
     }
     
     /**
@@ -120,6 +147,44 @@ public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMap
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+
+    //---------------------------------------------------
+
+    /**
+     *  批量设置名称到VO对象，将AttendanceVO岗位表视图对象的员工id,转换为员工姓名  ,只被分页列表调用
+     */
+    private void setEmployeeNames(List<AioveuAttendanceVO> attendanceVOs) {
+        if (attendanceVOs == null || attendanceVOs.isEmpty()) {
+            return;
+        }
+
+        // 获取所有员工ID
+        List<Long> employeeIds = attendanceVOs.stream()
+                .map(AioveuAttendanceVO::getEmployeeId)
+                .filter(Objects::nonNull)
+                .distinct()
+                .collect(Collectors.toList());
+
+        if (employeeIds.isEmpty()) {
+            return;
+        }
+
+        // 批量查询员工信息
+        Map<Long, String> employeeMap = aioveuEmployeeService.getEmployeeMapByIds(employeeIds);
+
+        // 设置员工姓名
+        attendanceVOs.forEach(vo -> {
+            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
+            //检查 vo.getDeptId()非空（防止空指针异常）
+            //同时检查 deptMap中包含该岗位ID的键（确保映射中存在对应关系）
+            if (vo.getEmployeeId() != null && employeeMap.containsKey(vo.getEmployeeId())) {
+                //通过 deptMap.getOrDefault()方法获取岗位名称：若存在则返回映射值，不存在则返回默认值「未知部门」
+                //调用 vo.setDeptName()将名称设置到员工对象中
+                vo.setEmployeeName(employeeMap.getOrDefault(vo.getEmployeeId(), "未知员工"));
+            }
+        });
     }
 
 }

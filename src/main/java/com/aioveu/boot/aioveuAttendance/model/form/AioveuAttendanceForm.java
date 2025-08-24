@@ -50,5 +50,10 @@ public class AioveuAttendanceForm implements Serializable {
     @NotNull(message = "考勤状态：0-正常，1-迟到，2-早退，3-缺勤，4-休假不能为空")
     private Integer status;
 
+    /**
+     * 员工姓名
+     */
+    private String EmployeeName;
+
 
 }
