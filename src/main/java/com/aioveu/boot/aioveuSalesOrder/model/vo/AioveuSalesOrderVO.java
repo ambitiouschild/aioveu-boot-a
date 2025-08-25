@@ -63,9 +63,23 @@ public class AioveuSalesOrderVO implements Serializable {
     @Schema(description = "物流单号")
     private String trackingNo;
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
+
+
     @Schema(description = "操作员ID")
-    private Integer operatorId;
+    private Long operatorId;
+
+    /**
+     * 操作员姓名
+     */
+    private String operatorName;
+
+
     @Schema(description = "备注")
     private String notes;
     @Schema(description = "创建时间")

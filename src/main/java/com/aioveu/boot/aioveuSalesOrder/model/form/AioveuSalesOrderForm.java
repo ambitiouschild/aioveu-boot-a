@@ -92,11 +92,23 @@ public class AioveuSalesOrderForm implements Serializable {
     private String trackingNo;
 
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
+
 
     @Schema(description = "操作员ID")
     @NotNull(message = "操作员ID不能为空")
-    private Integer operatorId;
+    private Long operatorId;
+
+    /**
+     * 操作员姓名
+     */
+    private String operatorName;
+
 
     @Schema(description = "备注")
     @Size(max=65535, message="备注长度不能超过65535个字符")

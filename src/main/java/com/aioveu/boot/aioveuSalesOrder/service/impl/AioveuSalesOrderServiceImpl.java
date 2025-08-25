@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuSalesOrder.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -34,6 +38,10 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
 
     private final AioveuSalesOrderConverter aioveuSalesOrderConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
+
     /**
     * 获取销售订单分页列表
     *
@@ -46,6 +54,11 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setSalesRepNames(pageVO.getRecords());
+
+        setOperatorNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -118,6 +131,31 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+     */
+    private void setSalesRepNames(List<AioveuSalesOrderVO> salesOrderVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                salesOrderVOS,
+                AioveuSalesOrderVO::getSalesRepId, // 获取ID
+                AioveuSalesOrderVO::setSalesRepName, // 设置姓名
+                aioveuEmployeeService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+     */
+    private void setOperatorNames(List<AioveuSalesOrderVO> salesOrderVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                salesOrderVOS,
+                AioveuSalesOrderVO::getOperatorId, // 获取ID
+                AioveuSalesOrderVO::setOperatorName, // 设置姓名
+                aioveuEmployeeService
+        );
     }
 
 }
