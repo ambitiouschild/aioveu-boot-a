@@ -53,7 +53,12 @@ public class AioveuEquipmentForm implements Serializable {
     private Integer departmentId;
 
     @Schema(description = "责任人")
-    private Integer responsiblePerson;
+    private Long responsiblePerson;
+
+    /**
+     * 员工姓名
+     */
+    private String responsiblePersonName;
 
     @Schema(description = "采购日期")
     private LocalDate purchaseDate;

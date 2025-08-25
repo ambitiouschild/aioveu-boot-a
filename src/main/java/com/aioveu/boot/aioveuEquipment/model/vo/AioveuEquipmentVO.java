@@ -40,7 +40,13 @@ public class AioveuEquipmentVO implements Serializable {
     @Schema(description = "所属部门ID")
     private Integer departmentId;
     @Schema(description = "责任人")
-    private Integer responsiblePerson;
+    private Long responsiblePerson;
+
+    /**
+     * 员工姓名
+     */
+    private String responsiblePersonName;
+
     @Schema(description = "采购日期")
     private LocalDate purchaseDate;
     @Schema(description = "采购价格")

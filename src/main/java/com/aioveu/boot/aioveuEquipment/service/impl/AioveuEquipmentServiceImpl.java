@@ -1,7 +1,10 @@
 package com.aioveu.boot.aioveuEquipment.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -21,6 +24,7 @@ import java.util.stream.Collectors;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
+
 /**
  * 设备管理服务实现类
  *
@@ -36,6 +40,9 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
 
     private final AioveuEquipmentConverter aioveuEquipmentConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取设备管理分页列表
     *
@@ -48,6 +55,10 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置员工名称
+        setEmployeeNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -121,4 +132,15 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
         return this.removeByIds(idList);
     }
 
+    /**
+     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     */
+    private void setEmployeeNames(List<AioveuEquipmentVO> equipmentVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                equipmentVOS,
+                AioveuEquipmentVO::getResponsiblePerson, // 获取员工ID
+                AioveuEquipmentVO::setResponsiblePersonName, // 设置员工姓名
+                aioveuEmployeeService
+        );
+    }
 }
