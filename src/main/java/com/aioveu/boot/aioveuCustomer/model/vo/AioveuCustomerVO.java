@@ -68,7 +68,14 @@ public class AioveuCustomerVO implements Serializable {
     @Schema(description = "客户来源")
     private Integer source;
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
+
+
     @Schema(description = "创建时间")
     private LocalDateTime createTime;
     @Schema(description = "更新时间")

@@ -106,7 +106,12 @@ public class AioveuCustomerForm implements Serializable {
     private Integer source;
 
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
 
 
 }
