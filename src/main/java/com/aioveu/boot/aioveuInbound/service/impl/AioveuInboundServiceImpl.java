@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuInbound.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,6 +40,9 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
 
     private final AioveuInboundConverter aioveuInboundConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取入库信息分页列表
     *
@@ -48,6 +55,10 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置员工名称
+        setEmployeeNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -122,4 +133,15 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
         return this.removeByIds(idList);
     }
 
+    /**
+     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     */
+    private void setEmployeeNames(List<AioveuInboundVO> inboundVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                inboundVOS,
+                AioveuInboundVO::getOperatorId, // 获取员工ID
+                AioveuInboundVO::setOperatorName, // 设置员工姓名
+                aioveuEmployeeService
+        );
+    }
 }

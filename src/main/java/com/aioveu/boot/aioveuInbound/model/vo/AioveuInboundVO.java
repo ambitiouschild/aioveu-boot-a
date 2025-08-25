@@ -51,7 +51,14 @@ public class AioveuInboundVO implements Serializable {
     @Schema(description = "入库时间")
     private LocalDateTime inTime;
     @Schema(description = "操作员ID")
-    private Integer operatorId;
+    private Long operatorId;
+
+    /**
+     * 员工姓名
+     */
+    private String operatorName;
+
+
     @Schema(description = "备注")
     private String remark;
     @Schema(description = "创建时间")

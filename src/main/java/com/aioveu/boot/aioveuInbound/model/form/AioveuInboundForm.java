@@ -74,7 +74,12 @@ public class AioveuInboundForm implements Serializable {
 
     @Schema(description = "操作员ID")
     @NotNull(message = "操作员ID不能为空")
-    private Integer operatorId;
+    private Long operatorId;
+
+    /**
+     * 员工姓名
+     */
+    private String operatorName;
 
     @Schema(description = "备注")
     @Size(max=500, message="备注长度不能超过500个字符")
