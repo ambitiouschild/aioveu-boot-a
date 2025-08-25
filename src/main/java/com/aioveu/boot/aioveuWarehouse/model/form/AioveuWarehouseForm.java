@@ -38,4 +38,23 @@ public class AioveuWarehouseForm implements Serializable {
     private String location;
 
 
+    @Schema(description = "仓库面积")
+    private BigDecimal area;
+    @Schema(description = "存储容量")
+    private BigDecimal capacity;
+    @Schema(description = "负责人ID")
+    private Long managerId;
+
+    /**
+     * 员工姓名
+     */
+    private String managerName;
+
+    @Schema(description = "联系电话")
+    private String contactPhone;
+    @Schema(description = "仓库描述")
+    private String description;
+    @Schema(description = "启用状态")
+    private Integer isActive;
+
 }

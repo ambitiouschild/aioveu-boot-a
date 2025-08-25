@@ -35,7 +35,13 @@ public class AioveuWarehouseVO implements Serializable {
     @Schema(description = "存储容量")
     private BigDecimal capacity;
     @Schema(description = "负责人ID")
-    private Integer managerId;
+    private Long managerId;
+
+    /**
+     * 员工姓名
+     */
+    private String managerName;
+
     @Schema(description = "联系电话")
     private String contactPhone;
     @Schema(description = "仓库描述")

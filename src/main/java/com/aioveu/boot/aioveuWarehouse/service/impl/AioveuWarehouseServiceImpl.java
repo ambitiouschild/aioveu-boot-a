@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuWarehouse.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,6 +40,9 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
 
     private final AioveuWarehouseConverter aioveuWarehouseConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取仓库信息分页列表
     *
@@ -48,6 +55,10 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置员工名称
+        setEmployeeNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -119,6 +130,18 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+    /**
+     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     */
+    private void setEmployeeNames(List<AioveuWarehouseVO> warehouseVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                warehouseVOS,
+                AioveuWarehouseVO::getManagerId, // 获取员工ID
+                AioveuWarehouseVO::setManagerName, // 设置员工姓名
+                aioveuEmployeeService
+        );
     }
 
 }
