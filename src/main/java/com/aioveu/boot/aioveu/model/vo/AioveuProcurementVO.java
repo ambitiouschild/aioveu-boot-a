@@ -53,9 +53,21 @@ public class AioveuProcurementVO implements Serializable {
     @Schema(description = "状态")
     private Integer status;
     @Schema(description = "申请人ID")
-    private Integer applicantId;
+    private Long applicantId;
+
+    /**
+     * 申请人姓名
+     */
+    private String applicantName;
+
     @Schema(description = "审核人ID")
-    private Integer reviewerId;
+    private Long reviewerId;
+
+    /**
+     * 审核人姓名
+     */
+    private String reviewerName;
+
     @Schema(description = "审核时间")
     private LocalDateTime reviewTime;
     @Schema(description = "备注")

@@ -79,11 +79,21 @@ public class AioveuProcurementForm implements Serializable {
 
     @Schema(description = "申请人ID")
     @NotNull(message = "申请人ID不能为空")
-    private Integer applicantId;
+    private Long applicantId;
+
+    /**
+     * 申请人姓名
+     */
+    private String applicantName;
 
     @Schema(description = "审核人ID")
     @NotNull(message = "审核人ID不能为空")
-    private Integer reviewerId;
+    private Long reviewerId;
+
+    /**
+     * 审核人姓名
+     */
+    private String reviewerName;
 
     @Schema(description = "审核时间")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

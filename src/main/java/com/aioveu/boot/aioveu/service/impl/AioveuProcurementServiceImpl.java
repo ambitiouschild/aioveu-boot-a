@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveu.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,6 +40,9 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
 
     private final AioveuProcurementConverter aioveuProcurementConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取采购流程分页列表
     *
@@ -48,6 +55,13 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置申请人
+        setApplicantNames(pageVO.getRecords());
+
+        // 设置审核人
+        setReviewerNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -121,4 +135,28 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
         return this.removeByIds(idList);
     }
 
+
+    /**
+     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     */
+    private void setApplicantNames(List<AioveuProcurementVO> procurementVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                procurementVOS,
+                AioveuProcurementVO::getApplicantId, // 获取员工ID
+                AioveuProcurementVO::setApplicantName, // 设置员工姓名
+                aioveuEmployeeService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     */
+    private void setReviewerNames(List<AioveuProcurementVO> procurementVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                procurementVOS,
+                AioveuProcurementVO::getReviewerId, // 获取员工ID
+                AioveuProcurementVO::setReviewerName, // 设置员工姓名
+                aioveuEmployeeService
+        );
+    }
 }
