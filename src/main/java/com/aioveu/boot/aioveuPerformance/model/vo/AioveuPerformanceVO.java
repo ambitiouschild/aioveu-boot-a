@@ -25,8 +25,13 @@ public class AioveuPerformanceVO implements Serializable {
     @Schema(description = "绩效记录ID")
     private Long id;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
     @Schema(description = "考核年份")
+    /**
+     * 员工姓名
+     */
+    private String employeeName;
+
     private Integer periodYear;
     @Schema(description = "考核季度(1-4)")
     private Integer periodQuarter;

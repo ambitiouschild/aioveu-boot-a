@@ -26,6 +26,11 @@ public class AioveuPerformanceForm implements Serializable {
     @NotNull(message = "员工ID不能为空")
     private Integer employeeId;
 
+    /**
+     * 员工姓名
+     */
+    private String employeeName;
+
     @Schema(description = "考核年份")
     @NotNull(message = "考核年份不能为空")
     private Integer periodYear;
