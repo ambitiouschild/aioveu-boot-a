@@ -1,7 +1,13 @@
 package com.aioveu.boot.aioveuSalary.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -34,6 +40,8 @@ import cn.hutool.core.util.StrUtil;
 public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, AioveuSalary> implements AioveuSalaryService {
 
     private final AioveuSalaryConverter aioveuSalaryConverter;
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
 
     /**
     * 获取员工工资明细分页列表
@@ -47,6 +55,10 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        // 设置员工名称
+        setEmployeeNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -59,7 +71,16 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
     @Override
     public AioveuSalaryForm getAioveuSalaryFormData(Long id) {
         AioveuSalary entity = this.getById(id);
-        return aioveuSalaryConverter.toForm(entity);
+        AioveuSalaryForm form = aioveuSalaryConverter.toForm(entity);
+
+        // 设置名称
+        if (entity.getEmployeeId() != null) { //通过实例变量调用非静态方法
+            AioveuEmployee employee = aioveuEmployeeService.getById(entity.getEmployeeId());
+            if (employee != null) {
+                form.setEmployeeName(employee.getName());
+            }
+        }
+        return form;
     }
     
     /**
@@ -160,4 +181,15 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
         return this.removeByIds(idList);
     }
 
+    /**
+     * 批量设置员工姓名到薪资VO对象
+     */
+    private void setEmployeeNames(List<AioveuSalaryVO> salaryVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                salaryVOS,
+                AioveuSalaryVO::getEmployeeId, // 获取员工ID
+                AioveuSalaryVO::setEmployeeName, // 设置员工姓名
+                aioveuEmployeeService
+        );
+    }
 }

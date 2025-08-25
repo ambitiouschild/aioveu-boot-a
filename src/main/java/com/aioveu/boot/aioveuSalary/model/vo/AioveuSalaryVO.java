@@ -26,7 +26,12 @@ public class AioveuSalaryVO implements Serializable {
     @Schema(description = "工资记录ID")
     private Long id;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
+    /**
+     * 员工姓名
+     */
+    private String employeeName;
+
     @Schema(description = "工资周期（月份）")
     private LocalDate salaryPeriod;
     @Schema(description = "基本工资")

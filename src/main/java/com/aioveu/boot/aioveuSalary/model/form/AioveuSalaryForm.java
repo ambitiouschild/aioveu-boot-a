@@ -28,6 +28,11 @@ public class AioveuSalaryForm implements Serializable {
     @NotNull(message = "员工ID不能为空")
     private Integer employeeId;
 
+    /**
+     * 员工姓名
+     */
+    private String employeeName;
+
     @Schema(description = "工资周期（月份）")
     @NotNull(message = "工资周期（月份）不能为空")
     private LocalDate salaryPeriod;
