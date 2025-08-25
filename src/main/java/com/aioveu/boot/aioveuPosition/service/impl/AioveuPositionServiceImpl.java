@@ -81,7 +81,7 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
         if (entity.getDeptId() != null) {
             AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
             if (department != null) {
-                form.setPositionName(department.getDeptName());
+                form.setDeptName(department.getDeptName());
             }
         }
 

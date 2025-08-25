@@ -5,6 +5,7 @@ import com.aioveu.boot.aioveuDepartment.model.form.AioveuDepartmentForm;
 import com.aioveu.boot.aioveuDepartment.model.query.AioveuDepartmentQuery;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuDepartment.model.vo.ParentDeptOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -71,5 +72,7 @@ public interface AioveuDepartmentService extends IService<AioveuDepartment> {
      * @return 部门选项列表
      */
     List<DeptOptionVO> getAllDepartmentOptions();
+
+
 
 }

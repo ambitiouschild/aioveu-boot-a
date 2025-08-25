@@ -71,7 +71,7 @@ public class AioveuDepartment {
     /**
      * 部门经理
      */
-    private Integer managerId;
+    private Long managerId;
 
     // 父类中已有 createTime 和 updateTime
     /**

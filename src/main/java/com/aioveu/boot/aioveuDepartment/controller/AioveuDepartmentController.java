@@ -1,7 +1,9 @@
 package com.aioveu.boot.aioveuDepartment.controller;
 
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuDepartment.model.vo.ParentDeptOptionVO;
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import lombok.RequiredArgsConstructor;
 import org.glassfish.jaxb.core.v2.TODO;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +24,8 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * 公司部门组织结构前端控制层
@@ -37,36 +41,16 @@ public class AioveuDepartmentController  {
 
     private final AioveuDepartmentService aioveuDepartmentService;
 
-    /**
-     * 根据部门ID列表获取部门名称映射
-     * @param deptIds 部门ID列表
-     * @return 部门ID到部门名称的映射
-     */
-    @Operation(summary = "根据部门ID列表获取部门名称映射")
-    @PostMapping("/map")
-    public Result<Map<Long, String>> getDepartmentMapByIds(@RequestBody List<Long> deptIds) {
-        Map<Long, String> departmentMap = aioveuDepartmentService.getDepartmentMapByIds(deptIds);
-        return Result.success(departmentMap);
-    }
+    //添加部门服务依赖,注入 `AioveuDepartmentService`用于查询员工信息
+    private final AioveuEmployeeService aioveuEmployeeService;
 
-    /**
-     * 获取所有部门列表（用于下拉选择框）
-     * @return 部门选项列表
-     */
-    @Operation(summary = "获取所有部门列表（用于下拉选择框）")
-    @GetMapping("/options")
-    public Result<List<DeptOptionVO>> getAllDepartmentOptions() {
-
-        List<DeptOptionVO> departments  = aioveuDepartmentService.getAllDepartmentOptions();
-
-        return Result.success(departments);
-    }
 
     @Operation(summary = "公司部门组织结构分页列表")
     @GetMapping("/page")
     @PreAuthorize("@ss.hasPerm('aioveuDepartment:aioveu-department:query')")
     public PageResult<AioveuDepartmentVO> getAioveuDepartmentPage(AioveuDepartmentQuery queryParams ) {
         IPage<AioveuDepartmentVO> result = aioveuDepartmentService.getAioveuDepartmentPage(queryParams);
+
         return PageResult.success(result);
     }
 
@@ -124,6 +108,30 @@ public class AioveuDepartmentController  {
         return Result.judge(result);
     }
 
+    /**
+     * 根据部门ID列表获取部门名称映射
+     * @param deptIds 部门ID列表
+     * @return 部门ID到部门名称的映射
+     */
+    @Operation(summary = "根据部门ID列表获取部门名称映射")
+    @PostMapping("/map")
+    public Result<Map<Long, String>> getDepartmentMapByIds(@RequestBody List<Long> deptIds) {
+        Map<Long, String> departmentMap = aioveuDepartmentService.getDepartmentMapByIds(deptIds);
+        return Result.success(departmentMap);
+    }
+
+    /**
+     * 获取所有部门列表（用于下拉选择框）
+     * @return 部门选项列表
+     */
+    @Operation(summary = "获取所有部门列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<DeptOptionVO>> getAllDepartmentOptions() {
+
+        List<DeptOptionVO> departments  = aioveuDepartmentService.getAllDepartmentOptions();
+
+        return Result.success(departments);
+    }
 
 
 }
