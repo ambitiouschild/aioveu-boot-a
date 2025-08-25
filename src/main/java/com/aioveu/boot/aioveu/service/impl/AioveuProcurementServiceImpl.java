@@ -137,7 +137,7 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
 
 
     /**
-     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
      */
     private void setApplicantNames(List<AioveuProcurementVO> procurementVOS) {
         EmployeeNameSetter.setEmployeeNames(
@@ -149,7 +149,7 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
     }
 
     /**
-     * 批量设置名称到VO对象，将AioveuPerformanceVO绩效表视图对象的员工id,转换为员工姓名
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
      */
     private void setReviewerNames(List<AioveuProcurementVO> procurementVOS) {
         EmployeeNameSetter.setEmployeeNames(

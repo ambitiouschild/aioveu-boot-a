@@ -38,11 +38,28 @@ public class AioveuOutboundVO implements Serializable {
     @Schema(description = "出库时间")
     private LocalDateTime outTime;
     @Schema(description = "操作员ID")
-    private Integer operatorId;
+    private Long operatorId;
+
+    /**
+     * 操作员姓名
+     */
+    private String operatorName;
+
+
     @Schema(description = "领用人ID")
-    private Integer recipientId;
+    private Long recipientId;
+
+    /**
+     * 领用人姓名
+     */
+    private String recipientName;
+
+
     @Schema(description = "领用部门ID")
     private Integer departmentId;
+
+
+
     @Schema(description = "用途说明")
     private String purpose;
     @Schema(description = "关联项目ID")

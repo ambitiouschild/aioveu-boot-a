@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuOutbound.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -36,6 +40,9 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
 
     private final AioveuOutboundConverter aioveuOutboundConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取出库记录分页列表
     *
@@ -48,6 +55,12 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setOperatorNames(pageVO.getRecords());
+
+        setRecipientNames(pageVO.getRecords());
+
+
         return pageVO;
     }
     
@@ -122,4 +135,27 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
         return this.removeByIds(idList);
     }
 
+    /**
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+     */
+    private void setOperatorNames(List<AioveuOutboundVO> outboundVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                outboundVOS,
+                AioveuOutboundVO::getOperatorId, // 获取ID
+                AioveuOutboundVO::setOperatorName, // 设置姓名
+                aioveuEmployeeService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+     */
+    private void setRecipientNames(List<AioveuOutboundVO> outboundVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                outboundVOS,
+                AioveuOutboundVO::getRecipientId, // 获取ID
+                AioveuOutboundVO::setRecipientName, // 设置姓名
+                aioveuEmployeeService
+        );
+    }
 }
