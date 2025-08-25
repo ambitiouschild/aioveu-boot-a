@@ -87,7 +87,12 @@ public class AioveuTransactionForm implements Serializable {
     private BigDecimal totalAmount;
 
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
 
     @Schema(description = "交易状态")
     @NotNull(message = "交易状态不能为空")

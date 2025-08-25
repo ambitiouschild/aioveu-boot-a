@@ -60,7 +60,13 @@ public class AioveuTransactionVO implements Serializable {
     @Schema(description = "总金额")
     private BigDecimal totalAmount;
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    /**
+     * 销售负责人姓名
+     */
+    private String salesRepName;
+
     @Schema(description = "交易状态")
     private Integer transactionStatus;
     @Schema(description = "备注")

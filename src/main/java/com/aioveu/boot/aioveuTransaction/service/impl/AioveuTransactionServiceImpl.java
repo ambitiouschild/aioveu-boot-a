@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuTransaction.service.impl;
 
+import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -37,6 +41,9 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
 
     private final AioveuTransactionConverter aioveuTransactionConverter;
 
+    @Autowired
+    private AioveuEmployeeService aioveuEmployeeService;
+
     /**
     * 获取客户交易记录分页列表
     *
@@ -49,6 +56,10 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setSalesRepNames(pageVO.getRecords());
+
+
         return pageVO;
     }
     
@@ -123,4 +134,17 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
         return this.removeByIds(idList);
     }
 
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+     */
+    private void setSalesRepNames(List<AioveuTransactionVO> transactionVOS) {
+        EmployeeNameSetter.setEmployeeNames(
+                transactionVOS,
+                AioveuTransactionVO::getSalesRepId, // 获取ID
+                AioveuTransactionVO::setSalesRepName, // 设置姓名
+                aioveuEmployeeService
+        );
+    }
 }
