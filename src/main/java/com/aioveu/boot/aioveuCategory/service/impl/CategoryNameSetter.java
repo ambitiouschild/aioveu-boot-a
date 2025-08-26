@@ -55,7 +55,7 @@ public class CategoryNameSetter {
             if (categoryId != null && categoryMap.containsKey(categoryId)) {
                 nameSetter.set(vo, categoryMap.get(categoryId));
             } else if (categoryId != null) {
-                nameSetter.set(vo, "未知员工");
+                nameSetter.set(vo, "");
             }
         });
 
@@ -120,6 +120,9 @@ public class CategoryNameSetter {
 
 */
 
+/**
+ * 批量设置名称到VO对象，将视图对象的id,转换为姓名
+ */
 
 
 

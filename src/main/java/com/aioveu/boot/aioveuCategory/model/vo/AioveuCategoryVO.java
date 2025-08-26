@@ -26,7 +26,11 @@ public class AioveuCategoryVO implements Serializable {
     @Schema(description = "分类名称")
     private String name;
     @Schema(description = "父分类ID")
-    private Integer parentId;
+    private Long parentId;
+
+    private String parentCategoryName;
+
+
     @Schema(description = "分类层级")
     private Integer level;
     @Schema(description = "分类描述")

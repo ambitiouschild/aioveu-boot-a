@@ -4,9 +4,11 @@ import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -53,6 +55,9 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setParentCategoryNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -160,6 +165,20 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
                 .collect(Collectors.toList());
 
         return categoryOptionVO;
+    }
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的父分类id,转换为父分类姓名
+     */
+    private void setParentCategoryNames(List<AioveuCategoryVO> categoryVOS) {
+        CategoryNameSetter.setCategoryNames(
+                categoryVOS ,
+                AioveuCategoryVO::getParentId, // 获取库存分类ID
+                AioveuCategoryVO::setParentCategoryName, // 设置库存分类姓名
+                this
+        );
     }
 
 
