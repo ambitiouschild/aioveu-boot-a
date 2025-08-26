@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuWarehouse.controller;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 仓库信息前端控制层
@@ -77,5 +81,18 @@ public class AioveuWarehouseController  {
     ) {
         boolean result = aioveuWarehouseService.deleteAioveuWarehouses(ids);
         return Result.judge(result);
+    }
+
+    /**
+     * 获取所有仓库列表（用于下拉选择框）
+     * @return 仓库选项列表
+     */
+    @Operation(summary = "获取所有仓库列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<WarehouseOptionVO>> getAllWarehouseOptions() {
+
+        List<WarehouseOptionVO> warehouses  = aioveuWarehouseService.getAllWarehouseOptions();
+
+        return Result.success(warehouses);
     }
 }

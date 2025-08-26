@@ -1,8 +1,11 @@
 package com.aioveu.boot.aioveuWarehouse.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +23,7 @@ import com.aioveu.boot.aioveuWarehouse.converter.AioveuWarehouseConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -142,6 +146,44 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
                 AioveuWarehouseVO::setManagerName, // 设置员工姓名
                 aioveuEmployeeService
         );
+    }
+
+    /**
+     * 批量获取仓库信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getWarehouseMapByIds(List<Long> warehouseIds) {
+        if (warehouseIds == null || warehouseIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询仓库信息
+        List<AioveuWarehouse> warehouses = this.listByIds(warehouseIds);
+
+        // 转换为Map: key=仓库ID, value=仓库名称
+        return warehouses.stream()
+                .collect(Collectors.toMap(
+                        AioveuWarehouse::getId,
+                        AioveuWarehouse::getName
+                ));
+    }
+
+    /**
+     * 获取所有仓库列表（用于下拉选择框）
+     *
+     * @return 仓库选项列表
+     */
+    @Override
+    public List<WarehouseOptionVO> getAllWarehouseOptions() {
+        // 查询所有仓库
+        List<AioveuWarehouse> warehouses = this.list();
+
+        // 转换为选项对象
+        List<WarehouseOptionVO>  warehouseVO  = warehouses.stream()
+                .map(warehouse -> new WarehouseOptionVO(warehouse.getId(), warehouse.getName()))
+                .collect(Collectors.toList());
+
+        return warehouseVO;
     }
 
 }

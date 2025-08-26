@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
 import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aioveu.boot.aioveuWarehouse.model.query.AioveuWarehouseQuery;
 import com.aioveu.boot.aioveuWarehouse.model.vo.AioveuWarehouseVO;
+import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 仓库信息服务类
@@ -55,4 +59,17 @@ public interface AioveuWarehouseService extends IService<AioveuWarehouse> {
      */
     boolean deleteAioveuWarehouses(String ids);
 
+    /**
+     * 批量获取仓库信息（新增方法）
+     */
+    Map<Long, String> getWarehouseMapByIds(List<Long> warehouseIds);
+
+
+
+    /**
+     * 获取所有仓库列表（用于下拉选择框）
+     *
+     * @return 仓库选项列表
+     */
+    List<WarehouseOptionVO> getAllWarehouseOptions();
 }
