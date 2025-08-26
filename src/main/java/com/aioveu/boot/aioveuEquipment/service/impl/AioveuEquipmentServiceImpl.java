@@ -1,7 +1,10 @@
 package com.aioveu.boot.aioveuEquipment.service.impl;
 
+import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
+import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
     @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
 
+    @Autowired
+    private AioveuCategoryService aioveuCategoryService;
+
     /**
     * 获取设备管理分页列表
     *
@@ -58,6 +64,8 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
 
         // 设置员工名称
         setEmployeeNames(pageVO.getRecords());
+
+        setCategoryNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -141,6 +149,21 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
                 AioveuEquipmentVO::getResponsiblePerson, // 获取员工ID
                 AioveuEquipmentVO::setResponsiblePersonName, // 设置员工姓名
                 aioveuEmployeeService
+        );
+    }
+
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的id,转换为姓名
+     */
+    private void setCategoryNames(List<AioveuEquipmentVO> equipmentVOS) {
+        CategoryNameSetter.setCategoryNames(
+                equipmentVOS ,
+                AioveuEquipmentVO::getCategoryId, // 获取库存分类ID
+                AioveuEquipmentVO::setCategoryName, // 设置库存分类姓名
+                aioveuCategoryService
         );
     }
 }

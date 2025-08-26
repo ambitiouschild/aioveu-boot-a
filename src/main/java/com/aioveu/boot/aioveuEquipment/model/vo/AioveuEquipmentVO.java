@@ -30,7 +30,13 @@ public class AioveuEquipmentVO implements Serializable {
     @Schema(description = "设备名称")
     private String name;
     @Schema(description = "设备分类ID")
-    private Integer categoryId;
+    private Long categoryId;
+
+    /**
+     * 设备分类名称
+     */
+    private String categoryName;
+
     @Schema(description = "设备型号")
     private String model;
     @Schema(description = "序列号")
