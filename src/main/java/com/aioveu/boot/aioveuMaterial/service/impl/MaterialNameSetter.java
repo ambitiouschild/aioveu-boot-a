@@ -108,5 +108,5 @@ public class MaterialNameSetter {
 
 
 /**
- * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
+ * 批量设置名称到VO对象，将视图对象的物资id,转换为物资姓名
  */

@@ -3,6 +3,8 @@ package com.aioveu.boot.aioveuInbound.service.impl;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
+import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
+import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
@@ -49,6 +51,9 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
     @Autowired
     private AioveuWarehouseService aioveuWarehouseService;
 
+    @Autowired
+    private AioveuMaterialService aioveuMaterialService;
+
     /**
     * 获取入库信息分页列表
     *
@@ -66,6 +71,8 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
         setEmployeeNames(pageVO.getRecords());
 
         setWarehouseNames(pageVO.getRecords());
+
+        setMaterialNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -155,7 +162,9 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
 
 
 
-
+    /**
+     * 批量设置名称到VO对象，将视图对象的仓库id,转换为仓库姓名
+     */
 
     private void setWarehouseNames(List<AioveuInboundVO> inboundVOS) {
         WarehouseNameSetter.setWarehouseNames(
@@ -163,6 +172,21 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
                 AioveuInboundVO::getWarehouseId, // 获取仓库ID
                 AioveuInboundVO::setWarehouseName, // 设置仓库姓名
                 aioveuWarehouseService
+        );
+    }
+
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的物资id,转换为物资姓名
+     */
+    private void setMaterialNames(List<AioveuInboundVO> inboundVOS) {
+        MaterialNameSetter.setMaterialNames(
+                inboundVOS,
+                AioveuInboundVO::getMaterialId, // 获取ID
+                AioveuInboundVO::setMaterialName, // 设置姓名
+                aioveuMaterialService
         );
     }
 }
