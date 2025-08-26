@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuContact.model.entity.AioveuContact;
 import com.aioveu.boot.aioveuContact.model.form.AioveuContactForm;
 import com.aioveu.boot.aioveuContact.model.query.AioveuContactQuery;
 import com.aioveu.boot.aioveuContact.model.vo.AioveuContactVO;
+import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 客户联系人服务类
@@ -54,5 +58,17 @@ public interface AioveuContactService extends IService<AioveuContact> {
      * @return 是否删除成功
      */
     boolean deleteAioveuContacts(String ids);
+
+    /**
+     * 批量获取联系人信息（新增方法）
+     */
+    Map<Long, String> getContactMapByIds(List<Long> contactIds);
+
+    /**
+     * 获取所有联系人列表（用于下拉选择框）
+     *
+     * @return 联系人选项列表
+     */
+    List<ContactOptionVO> getAllContactOptions();
 
 }

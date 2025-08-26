@@ -1,6 +1,8 @@
 package com.aioveu.boot.aioveuContact.controller;
 
+import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
 import com.aioveu.boot.aioveuContact.service.AioveuContactService;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 客户联系人前端控制层
@@ -78,4 +82,18 @@ public class AioveuContactController  {
         boolean result = aioveuContactService.deleteAioveuContacts(ids);
         return Result.judge(result);
     }
+
+    /**
+     * 获取所有联系人列表（用于下拉选择框）
+     * @return 联系人选项列表
+     */
+    @Operation(summary = "获取所有联系人列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<ContactOptionVO>> getAllContactOptions() {
+
+        List<ContactOptionVO> contacts  = aioveuContactService.getAllContactOptions();
+
+        return Result.success(contacts);
+    }
+
 }

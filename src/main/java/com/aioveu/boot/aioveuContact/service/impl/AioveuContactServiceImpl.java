@@ -1,7 +1,10 @@
 package com.aioveu.boot.aioveuContact.service.impl;
 
+import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +23,7 @@ import com.aioveu.boot.aioveuContact.converter.AioveuContactConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -133,8 +137,43 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
         return this.removeByIds(idList);
     }
 
+    /**
+     * 批量获取联系人信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getContactMapByIds(List<Long> contactIds) {
+        if (contactIds == null || contactIds.isEmpty()) {
+            return Map.of();
+        }
 
+        // 批量查询联系人信息
+        List<AioveuContact> contacts = this.listByIds(contactIds);
 
+        // 转换为Map: key=联系人ID, value=联系人名称
+        return contacts.stream()
+                .collect(Collectors.toMap(
+                        AioveuContact::getId,
+                        AioveuContact::getName
+                ));
+    }
+
+    /**
+     * 获取所有联系人列表（用于下拉选择框）
+     *
+     * @return 联系人选项列表
+     */
+    @Override
+    public List<ContactOptionVO> getAllContactOptions() {
+        // 查询所有联系人
+        List<AioveuContact> contacts = this.list();
+
+        // 转换为选项对象
+        List<ContactOptionVO>  contactOptionVO  = contacts.stream()
+                .map(contact -> new ContactOptionVO(contact.getId(), contact.getName()))
+                .collect(Collectors.toList());
+
+        return contactOptionVO;
+    }
 
     /**
      * 批量设置名称到VO对象，将视图对象的客户id,转换为客户姓名
