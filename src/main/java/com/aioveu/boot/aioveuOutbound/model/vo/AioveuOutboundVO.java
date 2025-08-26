@@ -30,7 +30,14 @@ public class AioveuOutboundVO implements Serializable {
     @Schema(description = "物资ID")
     private Integer materialId;
     @Schema(description = "仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    /**
+     * 仓库名称
+     */
+    private String warehouseName;
+
+
     @Schema(description = "出库数量")
     private BigDecimal quantity;
     @Schema(description = "批次号")
