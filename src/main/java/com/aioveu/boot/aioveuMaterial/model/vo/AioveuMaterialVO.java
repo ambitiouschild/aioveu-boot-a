@@ -27,7 +27,13 @@ public class AioveuMaterialVO implements Serializable {
     @Schema(description = "物资名称")
     private String name;
     @Schema(description = "分类ID")
-    private Integer categoryId;
+    private Long categoryId;
+
+    /**
+     * 库存分类名称
+     */
+    private String categoryName;
+
     @Schema(description = "单位")
     private String unit;
     @Schema(description = "规格型号")

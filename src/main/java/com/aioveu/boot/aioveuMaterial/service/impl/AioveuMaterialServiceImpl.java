@@ -1,7 +1,12 @@
 package com.aioveu.boot.aioveuMaterial.service.impl;
 
+import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
+import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
+import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -37,6 +42,9 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
 
     private final AioveuMaterialConverter aioveuMaterialConverter;
 
+    @Autowired
+    private AioveuCategoryService aioveuCategoryService;
+
     /**
     * 获取物资分页列表
     *
@@ -49,6 +57,10 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setCategoryNames(pageVO.getRecords());
+
+
         return pageVO;
     }
     
@@ -120,6 +132,15 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+    private void setCategoryNames(List<AioveuMaterialVO> materialVOS) {
+        CategoryNameSetter.setCategoryNames(
+                materialVOS ,
+                AioveuMaterialVO::getCategoryId, // 获取库存分类ID
+                AioveuMaterialVO::setCategoryName, // 设置库存分类姓名
+                aioveuCategoryService
+        );
     }
 
 }
