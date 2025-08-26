@@ -22,7 +22,7 @@ public class AioveuCategoryVO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "分类ID")
-    private Integer id;
+    private Long id;
     @Schema(description = "分类名称")
     private String name;
     @Schema(description = "父分类ID")

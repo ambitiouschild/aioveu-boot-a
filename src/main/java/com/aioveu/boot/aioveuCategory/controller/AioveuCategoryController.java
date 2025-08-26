@@ -1,6 +1,8 @@
 package com.aioveu.boot.aioveuCategory.controller;
 
+import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 物资分类前端控制层
@@ -77,5 +81,19 @@ public class AioveuCategoryController  {
     ) {
         boolean result = aioveuCategoryService.deleteAioveuCategorys(ids);
         return Result.judge(result);
+    }
+
+    /**
+     * 获取所有库存分类列表（用于下拉选择框）
+     *
+     * @return 库存分类选项列表
+     */
+    @Operation(summary = "获取所有库存分类列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<CategoryOptionVO>> getAllCategoryOptions() {
+
+        List<CategoryOptionVO> categorys  = aioveuCategoryService.getAllCategoryOptions();
+
+        return Result.success(categorys);
     }
 }

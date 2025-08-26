@@ -1,5 +1,10 @@
 package com.aioveu.boot.aioveuCategory.service.impl;
 
+import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +21,7 @@ import com.aioveu.boot.aioveuCategory.converter.AioveuCategoryConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -117,5 +123,44 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
                 .toList();
         return this.removeByIds(idList);
     }
+
+    /**
+     * 批量获取库存分类信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getCategoryMapByIds(List<Long> categoryIds) {
+        if (categoryIds == null || categoryIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询库存分类信息
+        List<AioveuCategory> categorys = this.listByIds(categoryIds);
+
+        // 转换为Map: key=库存分类ID, value=库存分类名称
+        return categorys.stream()
+                .collect(Collectors.toMap(
+                        AioveuCategory::getId,
+                        AioveuCategory::getName
+                ));
+    }
+
+    /**
+     * 获取所有库存分类列表（用于下拉选择框）
+     *
+     * @return 库存分类选项列表
+     */
+    @Override
+    public List<CategoryOptionVO> getAllCategoryOptions() {
+        // 查询所有部门
+        List<AioveuCategory> categorys = this.list();
+
+        // 转换为选项对象
+        List<CategoryOptionVO>  categoryOptionVO  = categorys.stream()
+                .map(category -> new CategoryOptionVO(category.getId(), category.getName()))
+                .collect(Collectors.toList());
+
+        return categoryOptionVO;
+    }
+
 
 }

@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.model.form.AioveuCategoryForm;
 import com.aioveu.boot.aioveuCategory.model.query.AioveuCategoryQuery;
 import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
+import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 物资分类服务类
@@ -54,5 +58,19 @@ public interface AioveuCategoryService extends IService<AioveuCategory> {
      * @return 是否删除成功
      */
     boolean deleteAioveuCategorys(String ids);
+
+
+    /**
+     * 批量获取库存分类信息（新增方法）
+     */
+    Map<Long, String> getCategoryMapByIds(List<Long> categoryIds);
+
+
+    /**
+     * 获取所有库存分类列表（用于下拉选择框）
+     *
+     * @return 库存分类选项列表
+     */
+    List<CategoryOptionVO> getAllCategoryOptions();
 
 }
