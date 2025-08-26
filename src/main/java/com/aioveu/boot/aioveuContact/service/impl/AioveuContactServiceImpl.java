@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuContact.service.impl;
 
+import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
+import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -38,6 +42,9 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
 
     private final AioveuContactConverter aioveuContactConverter;
 
+    @Autowired
+    private AioveuCustomerService aioveuCustomerService;
+
     /**
     * 获取客户联系人分页列表
     *
@@ -50,6 +57,9 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setCustomerNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -121,6 +131,21 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的客户id,转换为客户姓名
+     */
+    private void setCustomerNames(List<AioveuContactVO> contactVOS) {
+        CustomerNameSetter.setCustomerNames(
+                contactVOS,
+                AioveuContactVO::getCustomerId, // 获取ID
+                AioveuContactVO::setCustomerName, // 设置姓名
+                aioveuCustomerService
+        );
     }
 
 }

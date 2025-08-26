@@ -25,7 +25,12 @@ public class AioveuContactVO implements Serializable {
     @Schema(description = "联系人ID（主键）")
     private Integer id;
     @Schema(description = "客户ID")
-    private Integer customerId;
+    private Long customerId;
+    /**
+     * 客户名称
+     */
+    private String customerName;
+
     @Schema(description = "联系人姓名")
     private String name;
     @Schema(description = "职位")
