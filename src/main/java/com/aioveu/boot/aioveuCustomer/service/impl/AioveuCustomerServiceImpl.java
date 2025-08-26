@@ -1,5 +1,8 @@
 package com.aioveu.boot.aioveuCustomer.service.impl;
 
+import com.aioveu.boot.aioveuCustomer.model.vo.CustomerOptionVO;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
@@ -20,6 +23,7 @@ import com.aioveu.boot.aioveuCustomer.converter.AioveuCustomerConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -143,6 +147,44 @@ public class AioveuCustomerServiceImpl extends ServiceImpl<AioveuCustomerMapper,
                 AioveuCustomerVO::setSalesRepName, // 设置姓名
                 aioveuEmployeeService
         );
+    }
+
+    /**
+     * 批量获取客户信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getCustomerMapByIds(List<Long> customerIds) {
+        if (customerIds == null || customerIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询客户信息
+        List<AioveuCustomer> customers = this.listByIds(customerIds);
+
+        // 转换为Map: key=客户ID, value=客户名称
+        return customers.stream()
+                .collect(Collectors.toMap(
+                        AioveuCustomer::getId,
+                        AioveuCustomer::getName
+                ));
+    }
+
+    /**
+     * 获取所有客户列表（用于下拉选择框）
+     *
+     * @return 客户选项列表
+     */
+    @Override
+    public List<CustomerOptionVO> getAllCustomerOptions() {
+        // 查询所有客户
+        List<AioveuCustomer> customers = this.list();
+
+        // 转换为选项对象
+        List<CustomerOptionVO>  customerOptionVO  = customers.stream()
+                .map(customer -> new CustomerOptionVO(customer.getId(), customer.getName()))
+                .collect(Collectors.toList());
+
+        return customerOptionVO;
     }
 
 }

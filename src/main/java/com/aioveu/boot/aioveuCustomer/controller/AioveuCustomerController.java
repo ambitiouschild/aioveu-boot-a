@@ -1,6 +1,8 @@
 package com.aioveu.boot.aioveuCustomer.controller;
 
+import com.aioveu.boot.aioveuCustomer.model.vo.CustomerOptionVO;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 客户信息前端控制层
@@ -78,4 +82,18 @@ public class AioveuCustomerController  {
         boolean result = aioveuCustomerService.deleteAioveuCustomers(ids);
         return Result.judge(result);
     }
+
+    /**
+     * 获取所有客户列表（用于下拉选择框）
+     * @return 客户选项列表
+     */
+    @Operation(summary = "获取所有客户列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<CustomerOptionVO>> getAllCustomerOptions() {
+
+        List<CustomerOptionVO> customers  = aioveuCustomerService.getAllCustomerOptions();
+
+        return Result.success(customers);
+    }
+
 }

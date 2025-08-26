@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.model.form.AioveuCustomerForm;
 import com.aioveu.boot.aioveuCustomer.model.query.AioveuCustomerQuery;
 import com.aioveu.boot.aioveuCustomer.model.vo.AioveuCustomerVO;
+import com.aioveu.boot.aioveuCustomer.model.vo.CustomerOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 客户信息服务类
@@ -54,5 +58,17 @@ public interface AioveuCustomerService extends IService<AioveuCustomer> {
      * @return 是否删除成功
      */
     boolean deleteAioveuCustomers(String ids);
+
+    /**
+     * 批量获取客户信息（新增方法）
+     */
+    Map<Long, String> getCustomerMapByIds(List<Long> customerIds);
+
+    /**
+     * 获取所有客户列表（用于下拉选择框）
+     *
+     * @return 客户选项列表
+     */
+    List<CustomerOptionVO> getAllCustomerOptions();
 
 }
