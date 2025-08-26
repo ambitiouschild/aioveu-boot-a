@@ -75,6 +75,6 @@ ${AnsiColor.BRIGHT_BLUE}
 ${AnsiColor.BRIGHT_GREEN}
 可我不敌可爱 Boot Version: ${project.version}
 Spring Boot Version: ${spring-boot.version}${spring-boot.formatted-version}
-AIOVEU官网： https://www.aioveu.com/
+AIOVEU官网： https://aioveu.com/
 版权所属： 可我不敌可爱
 ${AnsiColor.BRIGHT_BLUE}
