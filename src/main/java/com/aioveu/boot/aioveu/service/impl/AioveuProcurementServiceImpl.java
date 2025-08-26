@@ -2,6 +2,8 @@ package com.aioveu.boot.aioveu.service.impl;
 
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
+import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +45,9 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
     @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
 
+    @Autowired
+    private AioveuMaterialService aioveuMaterialService;
+
     /**
     * 获取采购流程分页列表
     *
@@ -61,6 +66,8 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
 
         // 设置审核人
         setReviewerNames(pageVO.getRecords());
+
+        setMaterialNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -159,4 +166,19 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
                 aioveuEmployeeService
         );
     }
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的物资id,转换为物资姓名
+     */
+    private void setMaterialNames(List<AioveuProcurementVO> procurementVOS) {
+        MaterialNameSetter.setMaterialNames(
+                procurementVOS,
+                AioveuProcurementVO::getMaterialId, // 获取ID
+                AioveuProcurementVO::setMaterialName, // 设置姓名
+                aioveuMaterialService
+        );
+    }
+
 }

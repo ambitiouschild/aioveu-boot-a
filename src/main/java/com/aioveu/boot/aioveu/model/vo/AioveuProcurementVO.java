@@ -31,7 +31,13 @@ public class AioveuProcurementVO implements Serializable {
     @Schema(description = "供应商ID")
     private Integer supplierId;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    /**
+     * 物资名称
+     */
+    private String materialName;
+
     @Schema(description = "采购数量")
     private Integer quantity;
     @Schema(description = "采购单价")
