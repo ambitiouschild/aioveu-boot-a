@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuSalesOrder.controller;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuSalesOrder.model.vo.SalesOrderOptionVO;
 import com.aioveu.boot.aioveuSalesOrder.service.AioveuSalesOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 销售订单前端控制层
@@ -77,5 +81,18 @@ public class AioveuSalesOrderController  {
     ) {
         boolean result = aioveuSalesOrderService.deleteAioveuSalesOrders(ids);
         return Result.judge(result);
+    }
+
+    /**
+     * 获取所有订单列表（用于下拉选择框）
+     * @return 订单选项列表
+     */
+    @Operation(summary = "获取所有订单列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<SalesOrderOptionVO>> getAllSalesOrderOptions() {
+
+        List<SalesOrderOptionVO> salesOrders  = aioveuSalesOrderService.getAllSalesOrderOptions();
+
+        return Result.success(salesOrders);
     }
 }

@@ -4,9 +4,12 @@ import com.aioveu.boot.aioveuContact.service.AioveuContactService;
 import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuSalesOrder.model.vo.SalesOrderOptionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +27,7 @@ import com.aioveu.boot.aioveuSalesOrder.converter.AioveuSalesOrderConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -145,6 +149,44 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+    /**
+     * 批量获取订单信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getSalesOrderMapByIds(List<Long> salesOrderIds) {
+        if (salesOrderIds == null || salesOrderIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询订单信息
+        List<AioveuSalesOrder> salesOrders = this.listByIds(salesOrderIds);
+
+        // 转换为Map: key=订单ID, value=订单名称
+        return salesOrders.stream()
+                .collect(Collectors.toMap(
+                        AioveuSalesOrder::getId,
+                        AioveuSalesOrder::getOrderNo
+                ));
+    }
+
+    /**
+     * 获取所有订单列表（用于下拉选择框）
+     *
+     * @return 订单选项列表
+     */
+    @Override
+    public List<SalesOrderOptionVO> getAllSalesOrderOptions() {
+        // 查询所有订单
+        List<AioveuSalesOrder> salesOrders = this.list();
+
+        // 转换为选项对象
+        List<SalesOrderOptionVO>  salesOrderVO  = salesOrders.stream()
+                .map(salesOrder -> new SalesOrderOptionVO(salesOrder.getId(), salesOrder.getOrderNo()))
+                .collect(Collectors.toList());
+
+        return salesOrderVO;
     }
 
 

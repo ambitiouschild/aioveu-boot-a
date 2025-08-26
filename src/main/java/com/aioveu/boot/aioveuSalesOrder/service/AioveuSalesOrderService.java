@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuSalesOrder.model.entity.AioveuSalesOrder;
 import com.aioveu.boot.aioveuSalesOrder.model.form.AioveuSalesOrderForm;
 import com.aioveu.boot.aioveuSalesOrder.model.query.AioveuSalesOrderQuery;
 import com.aioveu.boot.aioveuSalesOrder.model.vo.AioveuSalesOrderVO;
+import com.aioveu.boot.aioveuSalesOrder.model.vo.SalesOrderOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 销售订单服务类
@@ -54,5 +58,18 @@ public interface AioveuSalesOrderService extends IService<AioveuSalesOrder> {
      * @return 是否删除成功
      */
     boolean deleteAioveuSalesOrders(String ids);
+
+    /**
+     * 批量获取订单信息（新增方法）
+     */
+    Map<Long, String> getSalesOrderMapByIds(List<Long> salesOrderIds);
+
+
+    /**
+     * 获取所有订单列表（用于下拉选择框）
+     *
+     * @return 订单选项列表
+     */
+    List<SalesOrderOptionVO> getAllSalesOrderOptions();
 
 }
