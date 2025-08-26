@@ -31,7 +31,13 @@ public class AioveuInboundVO implements Serializable {
     @Schema(description = "物资ID")
     private Integer materialId;
     @Schema(description = "仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    /**
+     * 仓库名称
+     */
+    private String warehouseName;
+
     @Schema(description = "入库数量（支持小数计量）")
     private BigDecimal quantity;
     @Schema(description = "入库单价")

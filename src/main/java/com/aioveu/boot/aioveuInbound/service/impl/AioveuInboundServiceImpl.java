@@ -2,7 +2,10 @@ package com.aioveu.boot.aioveuInbound.service.impl;
 
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
+import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +46,9 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
     @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
 
+    @Autowired
+    private AioveuWarehouseService aioveuWarehouseService;
+
     /**
     * 获取入库信息分页列表
     *
@@ -58,6 +64,8 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
 
         // 设置员工名称
         setEmployeeNames(pageVO.getRecords());
+
+        setWarehouseNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -142,6 +150,19 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
                 AioveuInboundVO::getOperatorId, // 获取员工ID
                 AioveuInboundVO::setOperatorName, // 设置员工姓名
                 aioveuEmployeeService
+        );
+    }
+
+
+
+
+
+    private void setWarehouseNames(List<AioveuInboundVO> inboundVOS) {
+        WarehouseNameSetter.setWarehouseNames(
+                inboundVOS ,
+                AioveuInboundVO::getWarehouseId, // 获取仓库ID
+                AioveuInboundVO::setWarehouseName, // 设置仓库姓名
+                aioveuWarehouseService
         );
     }
 }
