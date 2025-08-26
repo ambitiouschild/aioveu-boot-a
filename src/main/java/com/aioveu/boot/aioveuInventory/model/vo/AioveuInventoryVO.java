@@ -35,7 +35,13 @@ public class AioveuInventoryVO implements Serializable {
     private String warehouseName;
 
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    /**
+     * 物资名称
+     */
+    private String MaterialName;
+
     @Schema(description = "当前库存数量")
     private BigDecimal quantity;
     @Schema(description = "批次号")
