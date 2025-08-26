@@ -102,7 +102,7 @@ public class SalesOrderNameSetter {
         SalesOrderNameSetter.setSalesOrderNames(
                 performanceVOS,
                 AioveuPerformanceVO::getSalesOrderId, // 获取ID
-                AioveuPerformanceVO::setSalesOrderName, // 设置姓名
+                AioveuPerformanceVO::setSalesOrderNo, // 设置姓名
                 aioveuSalesOrderService
         );
     }

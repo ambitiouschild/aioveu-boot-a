@@ -4,6 +4,8 @@ import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuSalesOrder.service.AioveuSalesOrderService;
+import com.aioveu.boot.aioveuSalesOrder.service.impl.SalesOrderNameSetter;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
@@ -48,6 +50,9 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     @Autowired
     private AioveuMaterialService aioveuMaterialService;
 
+    @Autowired
+    private AioveuSalesOrderService aioveuSalesOrderService;
+
     /**
     * 获取订单明细分页列表
     *
@@ -65,6 +70,8 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
 
         setMaterialNames(pageVO.getRecords());
+
+        setSalesOrderNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -174,6 +181,18 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
                 AioveuSalesOrderDetailVO::getMaterialId, // 获取ID
                 AioveuSalesOrderDetailVO::setMaterialName, // 设置姓名
                 aioveuMaterialService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的订单id,转换为订单姓名
+     */
+    private void setSalesOrderNames(List<AioveuSalesOrderDetailVO> salesOrderDetailVOS) {
+        SalesOrderNameSetter.setSalesOrderNames(
+                salesOrderDetailVOS,
+                AioveuSalesOrderDetailVO::getOrderId, // 获取ID
+                AioveuSalesOrderDetailVO::setSalesOrderNo, // 设置姓名
+                aioveuSalesOrderService
         );
     }
 }
