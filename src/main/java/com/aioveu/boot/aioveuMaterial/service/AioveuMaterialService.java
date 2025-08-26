@@ -4,8 +4,12 @@ import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.model.form.AioveuMaterialForm;
 import com.aioveu.boot.aioveuMaterial.model.query.AioveuMaterialQuery;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
+import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 物资服务类
@@ -54,5 +58,18 @@ public interface AioveuMaterialService extends IService<AioveuMaterial> {
      * @return 是否删除成功
      */
     boolean deleteAioveuMaterials(String ids);
+
+    /**
+     * 批量获取物资信息（新增方法）
+     */
+    Map<Long, String> getMaterialMapByIds(List<Long> materialIds);
+
+
+    /**
+     * 获取所有物资列表（用于下拉选择框）
+     *
+     * @return 物资选项列表
+     */
+    List<MaterialOptionVO> getAllMaterialOptions();
 
 }

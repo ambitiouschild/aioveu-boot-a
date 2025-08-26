@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuMaterial.controller;
 
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
+
+import java.util.List;
 
 /**
  * 物资前端控制层
@@ -77,5 +81,18 @@ public class AioveuMaterialController  {
     ) {
         boolean result = aioveuMaterialService.deleteAioveuMaterials(ids);
         return Result.judge(result);
+    }
+
+    /**
+     * 获取所有物资列表（用于下拉选择框）
+     * @return 物资选项列表
+     */
+    @Operation(summary = "获取所有物资列表（用于下拉选择框）")
+    @GetMapping("/options")
+    public Result<List<MaterialOptionVO>> getAllMaterialOptions() {
+
+        List<MaterialOptionVO> materials  = aioveuMaterialService.getAllMaterialOptions();
+
+        return Result.success(materials);
     }
 }

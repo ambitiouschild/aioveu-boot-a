@@ -3,7 +3,10 @@ package com.aioveu.boot.aioveuMaterial.service.impl;
 import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import com.aioveu.boot.aioveuMaterial.converter.AioveuMaterialConverter;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
@@ -141,6 +145,44 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
                 AioveuMaterialVO::setCategoryName, // 设置库存分类姓名
                 aioveuCategoryService
         );
+    }
+
+    /**
+     * 批量获取物资信息（新增方法）
+     */
+    @Override
+    public Map<Long, String> getMaterialMapByIds(List<Long> materialIds) {
+        if (materialIds == null || materialIds.isEmpty()) {
+            return Map.of();
+        }
+
+        // 批量查询物资信息
+        List<AioveuMaterial> materials = this.listByIds(materialIds);
+
+        // 转换为Map: key=物资ID, value=物资名称
+        return materials.stream()
+                .collect(Collectors.toMap(
+                        AioveuMaterial::getId,
+                        AioveuMaterial::getName
+                ));
+    }
+
+    /**
+     * 获取所有物资列表（用于下拉选择框）
+     *
+     * @return 物资选项列表
+     */
+    @Override
+    public List<MaterialOptionVO> getAllMaterialOptions() {
+        // 查询所有物资
+        List<AioveuMaterial> materials = this.list();
+
+        // 转换为选项对象
+        List<MaterialOptionVO>  materialOptionVO  = materials.stream()
+                .map(material -> new MaterialOptionVO(material.getId(), material.getName()))
+                .collect(Collectors.toList());
+
+        return materialOptionVO;
     }
 
 }
