@@ -38,7 +38,14 @@ public class AioveuSalesOrderVO implements Serializable {
 
 
     @Schema(description = "联系人ID")
-    private Integer contactId;
+    private Long contactId;
+
+    /**
+     * 联系人名称
+     */
+    private String contactName;
+
+
     @Schema(description = "下单时间")
     private LocalDateTime orderDate;
     @Schema(description = "预计交货日期")

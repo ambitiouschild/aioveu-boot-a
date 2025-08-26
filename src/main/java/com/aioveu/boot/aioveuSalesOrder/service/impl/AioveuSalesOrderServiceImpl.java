@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuSalesOrder.service.impl;
 
+import com.aioveu.boot.aioveuContact.service.AioveuContactService;
+import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
@@ -46,6 +48,9 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
     @Autowired
     private AioveuCustomerService aioveuCustomerService;
 
+    @Autowired
+    private AioveuContactService aioveuContactService;
+
 
     /**
     * 获取销售订单分页列表
@@ -65,6 +70,8 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
         setOperatorNames(pageVO.getRecords());
 
         setCustomerNames(pageVO.getRecords());
+
+        setContactNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -174,6 +181,18 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
                 AioveuSalesOrderVO::getCustomerId, // 获取ID
                 AioveuSalesOrderVO::setCustomerName, // 设置姓名
                 aioveuCustomerService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的联系人id,转换为联系人姓名
+     */
+    private void setContactNames(List<AioveuSalesOrderVO> salesOrderVOS) {
+        ContactNameSetter.setContactNames(
+                salesOrderVOS,
+                AioveuSalesOrderVO::getContactId, // 获取ID
+                AioveuSalesOrderVO::setContactName, // 设置姓名
+                aioveuContactService
         );
     }
 
