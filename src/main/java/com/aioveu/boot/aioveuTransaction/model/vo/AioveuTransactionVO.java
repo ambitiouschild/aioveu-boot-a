@@ -35,7 +35,12 @@ public class AioveuTransactionVO implements Serializable {
     private String customerName;
 
     @Schema(description = "联系人ID")
-    private Integer contactId;
+    private Long contactId;
+    /**
+     * 联系人名称
+     */
+    private String contactName;
+
     @Schema(description = "交易日期")
     private LocalDateTime transactionDate;
     @Schema(description = "交易金额")

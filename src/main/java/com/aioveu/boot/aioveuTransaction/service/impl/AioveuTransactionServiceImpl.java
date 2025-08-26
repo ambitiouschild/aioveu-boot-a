@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuTransaction.service.impl;
 
+import com.aioveu.boot.aioveuContact.service.AioveuContactService;
+import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
@@ -49,6 +51,9 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
     @Autowired
     private AioveuCustomerService aioveuCustomerService;
 
+    @Autowired
+    private AioveuContactService aioveuContactService;
+
     /**
     * 获取客户交易记录分页列表
     *
@@ -65,6 +70,8 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
         setSalesRepNames(pageVO.getRecords());
 
         setCustomerNames(pageVO.getRecords());
+
+        setContactNames(pageVO.getRecords());
 
 
         return pageVO;
@@ -141,8 +148,6 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
         return this.removeByIds(idList);
     }
 
-
-
     /**
      * 批量设置名称到VO对象，将视图对象的员工id,转换为员工姓名
      */
@@ -155,10 +160,6 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
         );
     }
 
-
-
-
-
     /**
      * 批量设置名称到VO对象，将视图对象的客户id,转换为客户姓名
      */
@@ -168,6 +169,18 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
                 AioveuTransactionVO::getCustomerId, // 获取ID
                 AioveuTransactionVO::setCustomerName, // 设置姓名
                 aioveuCustomerService
+        );
+    }
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的联系人id,转换为联系人姓名
+     */
+    private void setContactNames(List<AioveuTransactionVO> transactionVOS) {
+        ContactNameSetter.setContactNames(
+                transactionVOS,
+                AioveuTransactionVO::getContactId, // 获取ID
+                AioveuTransactionVO::setContactName, // 设置姓名
+                aioveuContactService
         );
     }
 
