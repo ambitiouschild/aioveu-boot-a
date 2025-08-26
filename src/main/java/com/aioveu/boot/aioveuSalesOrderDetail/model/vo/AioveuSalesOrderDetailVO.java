@@ -48,7 +48,13 @@ public class AioveuSalesOrderDetailVO implements Serializable {
     @Schema(description = "要求交货日期")
     private LocalDate deliveryDate;
     @Schema(description = "发货仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    /**
+     * 发货仓库名称
+     */
+    private String warehouseName;
+
     @Schema(description = "明细状态")
     private Integer status;
     @Schema(description = "备注")

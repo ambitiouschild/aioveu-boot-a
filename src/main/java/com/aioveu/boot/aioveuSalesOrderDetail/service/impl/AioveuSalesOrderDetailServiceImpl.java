@@ -1,7 +1,11 @@
 package com.aioveu.boot.aioveuSalesOrderDetail.service.impl;
 
+import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
+import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
+import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -35,6 +39,9 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
     private final AioveuSalesOrderDetailConverter aioveuSalesOrderDetailConverter;
 
+    @Autowired
+    private AioveuWarehouseService aioveuWarehouseService;
+
     /**
     * 获取订单明细分页列表
     *
@@ -47,6 +54,9 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
         );
+
+        setWarehouseNames(pageVO.getRecords());
+
         return pageVO;
     }
     
@@ -126,6 +136,21 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
                 .map(Long::parseLong)
                 .toList();
         return this.removeByIds(idList);
+    }
+
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的仓库id,转换为仓库姓名
+     */
+    private void setWarehouseNames(List<AioveuSalesOrderDetailVO> salesOrderDetailVOS) {
+        WarehouseNameSetter.setWarehouseNames(
+                salesOrderDetailVOS ,
+                AioveuSalesOrderDetailVO::getWarehouseId, // 获取仓库ID
+                AioveuSalesOrderDetailVO::setWarehouseName, // 设置仓库姓名
+                aioveuWarehouseService
+        );
     }
 
 }
