@@ -1,9 +1,7 @@
 package com.aioveu.boot.aioveuEmployee.controller;
 
-import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.vo.EmployeeVO;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
-import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

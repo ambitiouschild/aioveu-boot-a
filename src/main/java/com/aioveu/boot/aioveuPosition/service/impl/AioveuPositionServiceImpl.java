@@ -1,9 +1,8 @@
 package com.aioveu.boot.aioveuPosition.service.impl;
 
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
-import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
-import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionOptionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -225,13 +224,13 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
      * @return 岗位选项列表
      */
     @Override
-    public List<PositionVO> getAllPositionOptions() {
+    public List<PositionOptionVO> getAllPositionOptions() {
         // 查询所有岗位
         List<AioveuPosition> positions = this.list();
 
         // 转换为选项对象
-        List<PositionVO>  PositionVO  = positions.stream()
-                .map(position -> new PositionVO(position.getPositionId(), position.getPositionName()))
+        List<PositionOptionVO>  PositionVO  = positions.stream()
+                .map(position -> new PositionOptionVO(position.getPositionId(), position.getPositionName()))
                 .collect(Collectors.toList());
 
         return PositionVO;

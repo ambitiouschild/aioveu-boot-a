@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Schema( description = "职位选项")
-public class PositionVO {
+public class PositionOptionVO {
 
     private Long positionId;
     /**
@@ -21,7 +21,7 @@ public class PositionVO {
      * @param positionId 部门ID
      * @param positionName 部门名称
      */
-    public PositionVO(Long positionId, String positionName) {
+    public PositionOptionVO(Long positionId, String positionName) {
         this.positionId = positionId;
         this.positionName = positionName;
     }

@@ -1,7 +1,6 @@
 package com.aioveu.boot.aioveuPosition.controller;
 
-import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
-import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionOptionVO;
 import com.aioveu.boot.aioveuPosition.service.AioveuPositionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -102,9 +101,9 @@ public class AioveuPositionController  {
      */
     @Operation(summary = "获取所有岗位列表（用于下拉选择框）")
     @GetMapping("/options")
-    public Result<List<PositionVO>> getAllPositionOptions() {
+    public Result<List<PositionOptionVO>> getAllPositionOptions() {
 
-        List<PositionVO> positions  = aioveuPositionService.getAllPositionOptions();
+        List<PositionOptionVO> positions  = aioveuPositionService.getAllPositionOptions();
 
         return Result.success(positions);
     }

@@ -4,7 +4,7 @@ import com.aioveu.boot.aioveuPosition.model.entity.AioveuPosition;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aioveu.boot.aioveuPosition.model.query.AioveuPositionQuery;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
-import com.aioveu.boot.aioveuPosition.model.vo.PositionVO;
+import com.aioveu.boot.aioveuPosition.model.vo.PositionOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -33,7 +33,7 @@ public interface AioveuPositionService extends IService<AioveuPosition> {
      * @return 岗位选项列表
      */
 
-    List<PositionVO> getAllPositionOptions();
+    List<PositionOptionVO> getAllPositionOptions();
     /**
      *公司岗位信息分页列表
      *
