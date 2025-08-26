@@ -28,7 +28,12 @@ public class AioveuSalesOrderDetailVO implements Serializable {
     @Schema(description = "订单ID")
     private Integer orderId;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+    /**
+     * 物资名称
+     */
+    private String materialName;
+
     @Schema(description = "数量")
     private BigDecimal quantity;
     @Schema(description = "单价")

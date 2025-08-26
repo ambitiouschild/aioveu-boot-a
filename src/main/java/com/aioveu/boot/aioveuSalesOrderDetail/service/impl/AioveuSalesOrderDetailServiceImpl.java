@@ -1,6 +1,9 @@
 package com.aioveu.boot.aioveuSalesOrderDetail.service.impl;
 
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
+import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
+import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
@@ -42,6 +45,9 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     @Autowired
     private AioveuWarehouseService aioveuWarehouseService;
 
+    @Autowired
+    private AioveuMaterialService aioveuMaterialService;
+
     /**
     * 获取订单明细分页列表
     *
@@ -56,6 +62,9 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
         );
 
         setWarehouseNames(pageVO.getRecords());
+
+
+        setMaterialNames(pageVO.getRecords());
 
         return pageVO;
     }
@@ -153,4 +162,18 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
         );
     }
 
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的物资id,转换为物资姓名
+     */
+    private void setMaterialNames(List<AioveuSalesOrderDetailVO> salesOrderDetailVOS) {
+        MaterialNameSetter.setMaterialNames(
+                salesOrderDetailVOS,
+                AioveuSalesOrderDetailVO::getMaterialId, // 获取ID
+                AioveuSalesOrderDetailVO::setMaterialName, // 设置姓名
+                aioveuMaterialService
+        );
+    }
 }
