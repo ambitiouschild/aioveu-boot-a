@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuTransaction.service.impl;
 
+import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
+import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
@@ -44,6 +46,9 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
     @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
 
+    @Autowired
+    private AioveuCustomerService aioveuCustomerService;
+
     /**
     * 获取客户交易记录分页列表
     *
@@ -58,6 +63,8 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
         );
 
         setSalesRepNames(pageVO.getRecords());
+
+        setCustomerNames(pageVO.getRecords());
 
 
         return pageVO;
@@ -147,4 +154,21 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
                 aioveuEmployeeService
         );
     }
+
+
+
+
+
+    /**
+     * 批量设置名称到VO对象，将视图对象的客户id,转换为客户姓名
+     */
+    private void setCustomerNames(List<AioveuTransactionVO> transactionVOS) {
+        CustomerNameSetter.setCustomerNames(
+                transactionVOS,
+                AioveuTransactionVO::getCustomerId, // 获取ID
+                AioveuTransactionVO::setCustomerName, // 设置姓名
+                aioveuCustomerService
+        );
+    }
+
 }
