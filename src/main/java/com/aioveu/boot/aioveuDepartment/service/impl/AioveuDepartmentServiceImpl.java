@@ -81,14 +81,72 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
      */
     @Override
     public AioveuDepartmentForm getAioveuDepartmentFormData(Long id) {
+        // 1. 根据ID获取部门实体信息
         AioveuDepartment entity = this.getById(id);
+        if (entity == null) {
+            throw new ServiceException("部门不存在");
+        }
+
+        // 2. 将实体转换为表单对象
         AioveuDepartmentForm form = aioveuDepartmentConverter.toForm(entity);
 
+        // 3. 处理父部门信息（如果存在）
+        if (entity.getParentDeptId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询父部门信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuDepartment> parentWrapper = new LambdaQueryWrapper<>();
 
-        //在部门服务中不设置经理姓名，而是在展示层（如Controller）通过其他方式获取。这样部门服务就不需要依赖员工相关的组件。
-        //
-        //例如，在Controller中获取部门信息后，再调用员工服务获取经理姓名。这样部门服务就只负责部门相关的逻辑，不会依赖员工服务
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getParentDeptId() 是获取要查询的具体部门ID值
+            parentWrapper.eq(AioveuDepartment::getDeptId, entity.getParentDeptId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuDepartment::getDeptName); // 只选择需要的字段
 
+            AioveuDepartment parentDepartment = this.getOne(parentWrapper);
+
+            if (parentDepartment != null) {
+                form.setParentDeptName(parentDepartment.getDeptName());
+            }
+        }
+
+        // 4. 处理经理信息（如果存在）
+        if (entity.getManagerId() != null) {
+            // 在部门服务中不设置经理姓名，而是在展示层（如Controller）通过其他方式获取。
+            // 这样部门服务就不需要依赖员工相关的组件。
+            //
+            // 例如，在Controller中获取部门信息后，再调用员工服务获取经理姓名。
+            // 这样部门服务就只负责部门相关的逻辑，不会依赖员工服务
+            //
+            // 如果需要在此处设置经理姓名，可以取消注释下面的代码，并注入员工服务
+
+//        Employee manager = employeeService.getById(entity.getManagerId());
+//        if (manager != null) {
+//            form.setManagerName(manager.getName());
+//        }
+
+            // 5. 关于使用 MyBatis-Plus 的 LambdaQueryWrapper 的说明：
+            // 当前使用 MyBatis-Plus 的 LambdaQueryWrapper 方式，这种方式简洁易懂，但不符合纯 MyBatis 的方式。
+            //
+            // 如果您希望改为纯 MyBatis 的方式，可以按照以下步骤：
+            // 步骤一：在 AioveuDepartmentMapper 中定义一个方法，例如：
+            //     AioveuDepartment selectByDeptName(String deptName);
+            // 步骤二：在 XML 文件中编写 SQL，或者使用注解方式。
+            // 步骤三：在服务层调用这个方法。
+            //
+            // 示例（纯 MyBatis 方式）：
+            /*
+            if (entity.getParentDeptId() != null) {
+                AioveuDepartment parentDepartment = aioveuDepartmentMapper.selectByDeptId(entity.getParentDeptId());
+                if (parentDepartment != null) {
+                    form.setParentDeptName(parentDepartment.getDeptName());
+                }
+            }
+            */
+
+        }
 
         return form;
     }
