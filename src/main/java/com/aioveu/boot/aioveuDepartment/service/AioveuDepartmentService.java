@@ -73,6 +73,13 @@ public interface AioveuDepartmentService extends IService<AioveuDepartment> {
      */
     List<DeptOptionVO> getAllDepartmentOptions();
 
+    /**
+     * 根据复合键列表获取复合键到ID的映射
+     * @param compositeKeys 复合键列表（格式：名称+分隔符+其他字段）
+     * @return 复合键到ID的映射Map
+     */
+    Map<String, Long> getDepartmentIdMapByCompositeKeys(List<String> compositeKeys);
+
 
 
 }

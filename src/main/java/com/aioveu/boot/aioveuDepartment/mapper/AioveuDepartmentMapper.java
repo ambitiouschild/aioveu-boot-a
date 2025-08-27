@@ -6,6 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuDepartment.model.query.AioveuDepartmentQuery;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 公司部门组织结构Mapper接口

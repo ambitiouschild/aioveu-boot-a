@@ -6,6 +6,8 @@ import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import groovy.lang.Lazy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,14 +24,12 @@ import com.aioveu.boot.aioveuDepartment.model.query.AioveuDepartmentQuery;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
 import com.aioveu.boot.aioveuDepartment.converter.AioveuDepartmentConverter;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 公司部门组织结构服务实现类
@@ -82,30 +82,13 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     @Override
     public AioveuDepartmentForm getAioveuDepartmentFormData(Long id) {
         AioveuDepartment entity = this.getById(id);
-
-        if (entity == null) {
-            throw new ServiceException("部门不存在");
-        }
-
         AioveuDepartmentForm form = aioveuDepartmentConverter.toForm(entity);
 
-        // 设置上级部门名称
-        if (entity.getParentDeptId() != null) {
-            AioveuDepartment parentDept = getById(entity.getParentDeptId());
-            if (parentDept != null) {
-                form.setParentDeptName(parentDept.getDeptName());
-            } else {
-                // 上级部门不存在
-                form.setParentDeptName("未知部门");
-            }
-        } else {
-            // 没有上级部门
-            form.setParentDeptName("无上级部门");
-        }
 
         //在部门服务中不设置经理姓名，而是在展示层（如Controller）通过其他方式获取。这样部门服务就不需要依赖员工相关的组件。
         //
         //例如，在Controller中获取部门信息后，再调用员工服务获取经理姓名。这样部门服务就只负责部门相关的逻辑，不会依赖员工服务
+
 
         return form;
     }
@@ -117,7 +100,44 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
      * @return 是否新增成功
      */
     @Override
+    @Transactional
     public boolean saveAioveuDepartment(AioveuDepartmentForm formData) {
+
+
+        // 检查是否已存在相同部门名称的记录
+        LambdaQueryWrapper<AioveuDepartment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuDepartment::getDeptName, formData.getDeptName());
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new RuntimeException("部门名称已存在");
+        }
+
+        // 处理父部门：根据父部门名称查询父部门ID
+        if (formData.getParentDeptName() != null && !formData.getParentDeptName().trim().isEmpty()) {
+            // 根据父部门名称查询父部门
+            // 构建查询条件：根据父部门名称精确匹配查询父部门记录
+            LambdaQueryWrapper<AioveuDepartment> parentQueryWrapper = new LambdaQueryWrapper<>();
+            parentQueryWrapper.eq(AioveuDepartment::getDeptName, formData.getParentDeptName());
+
+            // 执行查询，获取父部门信息
+            AioveuDepartment parentDepartment = this.getOne(parentQueryWrapper);
+            if (parentDepartment != null) {
+                formData.setParentDeptId(parentDepartment.getDeptId());
+            } else {
+                // 如果没有找到父部门，可以抛出异常或设置为null
+                formData.setParentDeptId(null);
+                // 或者抛出异常：throw new RuntimeException("父部门名称不存在");
+            }
+        }
+
+        //这样，您就不需要调用DepartmentIdFinderWithCompositeKey.setDepartmentIdsByCompositeKeysform方法了。
+        //如果您确实需要保留复合键查询的功能，那么请确保复合键的生成和解析方式一致。但是，在保存部门的场景下，您实际上不需
+        // 要通过复合键查询部门ID，因为您是要保存新部门，而不是查询已存在的部门。
+        //如果可能，考虑修改表单设计，让用户直接选择父部门（通过ID而不是名称）：
+        //您就不需要通过复合键来查找父部门ID了。
+        //在您的保存部门场景中，由于是处理单个表单的保存操作，使用单个查询是合适的选择。如果您需要处理批量导入或多个部门同时保存，那么使用 Map 进行批量查询会更高效。
+
+        // 调用方法 - 现在可以直接传入单个对象
         AioveuDepartment entity = aioveuDepartmentConverter.toEntity(formData);
         return this.save(entity);
     }
@@ -167,6 +187,35 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
             •确保更新的是指定的资源
             •避免ID被意外修改
         * */
+
+        // 2. 处理父部门关系：根据父部门名称查询父部门ID - 使用单个查询
+        if (formData.getParentDeptName() != null && !formData.getParentDeptName().trim().isEmpty()) {
+            // 构建查询条件：根据父部门名称精确匹配
+            LambdaQueryWrapper<AioveuDepartment> parentQueryWrapper = new LambdaQueryWrapper<>();
+            parentQueryWrapper.eq(AioveuDepartment::getDeptName, formData.getParentDeptName());
+
+            // 执行单个查询获取父部门信息
+            AioveuDepartment parentDepartment = this.getOne(parentQueryWrapper);
+
+            if (parentDepartment != null) {
+                // 设置父部门ID到表单数据中
+                formData.setParentDeptId(parentDepartment.getDeptId());
+                log.info("找到父部门: ID={}, 名称={}", parentDepartment.getDeptId(), formData.getParentDeptName());
+            } else {
+                // 处理父部门不存在的情况
+                formData.setParentDeptId(null);
+                log.warn("未找到父部门: 名称={}", formData.getParentDeptName());
+                // 根据业务需求，可以选择抛出异常或保留null值
+                // throw new ServiceException("父部门名称不存在: " + formData.getParentDeptName());
+            }
+        } else {
+            // 如果父部门名称为空，确保父部门ID也为空
+            formData.setParentDeptId(null);
+        }
+
+
+        // 3. 将表单数据转换为实体对象
+        // 注意：表单对象通常不包含ID，因此需要手动设置ID
         AioveuDepartment entity = aioveuDepartmentConverter.toEntity(formData);
         entity.setDeptId(id); // 设置部门ID
         log.info("转换后的实体对象: {}", entity);
@@ -326,8 +375,63 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 //        });
 //    }
 
+    // 使用 @Autowired 注入
+    @Autowired
+    private AioveuDepartmentMapper aioveuDepartmentMapper;
 
 
+    // 在服务层直接实现，不需要在 Mapper 中添加方法
+    //利用了您已经在使用的 MyBatis-Plus 框架，避免了复杂的 XML 配置和 `@MapKey`注解的问题
+    @Override
+    public Map<String, Long> getDepartmentIdMapByCompositeKeys(List<String> compositeKeys) {
+        // 检查输入参数是否为空或空列表
+        if (compositeKeys == null || compositeKeys.isEmpty()) {
+            return Collections.emptyMap();
+        }
 
+        // 初始化结果Map，用于存储复合键到部门ID的映射
+        Map<String, Long> resultMap = new HashMap<>();
+
+        // 遍历所有复合键
+        for (String compositeKey : compositeKeys) {
+            // 使用竖线分隔符拆分复合键
+            String[] parts = compositeKey.split("\\|");
+
+            // 确保复合键至少包含两部分（部门名称和父部门ID）
+            if (parts.length >= 2) {
+                // 第一部分是部门名称
+                String deptName = parts[0];
+                // 初始化父部门ID为null
+                Integer parentDeptId = null;
+                // 如果复合键包含第二部分（父部门ID）
+                if (parts.length > 1) {
+                    try {
+                        // 尝试将第二部分转换为整数作为父部门ID
+                        parentDeptId = Integer.parseInt(parts[1]);
+                    } catch (NumberFormatException e) {
+                        // 如果转换失败，跳过当前复合键的处理
+                        continue;
+                    }
+                }
+
+                // 使用 MyBatis-Plus 的 Lambda 查询
+                // 查询条件：部门名称等于指定值，如果父部门ID不为空则添加父部门ID条件
+                AioveuDepartment department = aioveuDepartmentMapper.selectOne(
+                        new QueryWrapper<AioveuDepartment>()
+                                .eq("dept_name", deptName) // 部门名称相等条件
+                                .eq(parentDeptId != null, "parent_dept_id", parentDeptId) // 条件性添加父部门ID条件
+                );
+
+                // 如果查询到对应的部门记录
+                if (department != null) {
+                    // 将复合键和部门ID添加到结果Map中
+                    resultMap.put(compositeKey, department.getDeptId().longValue());
+                }
+            }
+        }
+
+        // 返回包含所有有效映射的结果Map
+        return resultMap;
+    }
 
 }
