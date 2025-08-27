@@ -27,21 +27,27 @@ public class AioveuDepartmentVO implements Serializable {
     private String deptName;
     @Schema(description = "上级部门ID")
     private Long parentDeptId;
-    //打破循环调用
-//    @Schema(description = "部门经理")
-//    private Long managerId;
-    @Schema(description = "创建时间")
-    private LocalDateTime createTime;
-    @Schema(description = "更新时间")
-    private LocalDateTime updateTime;
 
     /**
      * 上级部门名称
      */
     private String parentDeptName;
 
+    //打破循环调用
+//    @Schema(description = "部门经理")
+//    private Long managerId;
+
     /**
      * 部门经理姓名
      */
     private String managerName;
+
+    @Schema(description = "创建时间")
+    private LocalDateTime createTime;
+    @Schema(description = "更新时间")
+    private LocalDateTime updateTime;
+
+
+
+
 }

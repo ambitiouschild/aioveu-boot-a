@@ -4,6 +4,7 @@ import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.vo.ParentDeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import groovy.lang.Lazy;
 import lombok.RequiredArgsConstructor;
@@ -67,6 +68,7 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 
 //        // 设置经理姓名
 //        setManagerNames(pageVO.getRecords());
+
 
         return pageVO;
     }
@@ -235,40 +237,55 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     /**
      *  批量设置名称到VO对象，将PositionVO岗位表视图对象的部门id,转换为部门名称，只被分页列表调用
      */
-    private void setParentDeptNames(List<AioveuDepartmentVO> departmentVOs) {
-        if (departmentVOs == null || departmentVOs.isEmpty()) {
-            return;
-        }
+//    private void setParentDeptNames(List<AioveuDepartmentVO> departmentVOs) {
+//        if (departmentVOs == null || departmentVOs.isEmpty()) {
+//            return;
+//        }
+//
+//        // 获取所有上级部门ID（去重）
+//        List<Long> parentDeptIds   = departmentVOs.stream()
+//                .map(AioveuDepartmentVO::getParentDeptId)
+//                .filter(Objects::nonNull)
+//                .distinct()
+//                .collect(Collectors.toList());
+//
+//        if (parentDeptIds.isEmpty()) {
+//            // 所有部门都没有上级部门，设置默认值
+//            return;
+//        }
+//
+//        // 批量查询部门信息
+//        Map<Long, String> deptMap = getDepartmentMapByIds(parentDeptIds);
+//
+//        // 设置部门名称
+//        departmentVOs.forEach(vo -> {
+//            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
+//            //检查 vo.getDeptId()非空（防止空指针异常）
+//            //同时检查 deptMap中包含该岗位ID的键（确保映射中存在对应关系）
+//            if (vo.getParentDeptId() != null && deptMap.containsKey(vo.getParentDeptId())) {
+//                //通过 deptMap.getOrDefault()方法获取岗位名称：若存在则返回映射值
+//                //调用 vo.setDeptName()将名称设置到员工对象中
+//                vo.setParentDeptName(deptMap.get(vo.getParentDeptId()));
+//            }else if (vo.getParentDeptId() == null) {
+//                // 没有上级部门
+//                vo.setParentDeptName("");
+//            }
+//        });
+//    }
 
-        // 获取所有上级部门ID（去重）
-        List<Long> parentDeptIds   = departmentVOs.stream()
-                .map(AioveuDepartmentVO::getParentDeptId)
-                .filter(Objects::nonNull)
-                .distinct()
-                .collect(Collectors.toList());
 
-        if (parentDeptIds.isEmpty()) {
-            // 所有部门都没有上级部门，设置默认值
-            return;
-        }
 
-        // 批量查询部门信息
-        Map<Long, String> deptMap = getDepartmentMapByIds(parentDeptIds);
 
-        // 设置部门名称
-        departmentVOs.forEach(vo -> {
-            //遍历列表：使用 forEach方法遍历 employeeVOs中的每个员工对象（vo）。
-            //检查 vo.getDeptId()非空（防止空指针异常）
-            //同时检查 deptMap中包含该岗位ID的键（确保映射中存在对应关系）
-            if (vo.getParentDeptId() != null && deptMap.containsKey(vo.getParentDeptId())) {
-                //通过 deptMap.getOrDefault()方法获取岗位名称：若存在则返回映射值
-                //调用 vo.setDeptName()将名称设置到员工对象中
-                vo.setParentDeptName(deptMap.get(vo.getParentDeptId()));
-            }else if (vo.getParentDeptId() == null) {
-                // 没有上级部门
-                vo.setParentDeptName("");
-            }
-        });
+    /**
+     * 批量设置名称到VO对象，将视图对象的部门id,转换为部门姓名
+     */
+    private void setParentDeptNames(List<AioveuDepartmentVO> departmentVOS) {
+        DepartmentNameSetter.setDepartmentNames(
+                departmentVOS,
+                AioveuDepartmentVO::getParentDeptId, // 获取ID
+                AioveuDepartmentVO::setParentDeptName, // 设置姓名
+                this
+        );
     }
 
     /**
@@ -308,5 +325,9 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 //            }
 //        });
 //    }
+
+
+
+
 
 }
