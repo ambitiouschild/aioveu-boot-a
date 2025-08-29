@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuMaterial.service.impl;
 
+import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
@@ -8,6 +9,7 @@ import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -76,8 +78,36 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
      */
     @Override
     public AioveuMaterialForm getAioveuMaterialFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuMaterial entity = this.getById(id);
-        return aioveuMaterialConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuMaterialForm form = aioveuMaterialConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getCategoryId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuCategory> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuCategory::getId, entity.getCategoryId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuCategory::getName); // 只选择需要的字段
+
+            AioveuCategory category = aioveuCategoryService.getOne(Wrapper);
+
+            if (category != null) {
+                form.setCategoryName(category.getName());
+            }
+        }
+
+        return form;
     }
     
     /**

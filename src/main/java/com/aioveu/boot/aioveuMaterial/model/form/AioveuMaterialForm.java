@@ -31,6 +31,8 @@ public class AioveuMaterialForm implements Serializable {
     @NotNull(message = "分类ID不能为空")
     private Integer categoryId;
 
+    private String categoryName;
+
     @Schema(description = "采购单价")
     @NotNull(message = "采购单价不能为空")
     private BigDecimal purchasePrice;
