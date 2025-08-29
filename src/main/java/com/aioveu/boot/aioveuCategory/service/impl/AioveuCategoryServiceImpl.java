@@ -3,10 +3,12 @@ package com.aioveu.boot.aioveuCategory.service.impl;
 import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.model.form.AioveuEmployeeForm;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,8 +71,28 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
      */
     @Override
     public AioveuCategoryForm getAioveuCategoryFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuCategory entity = this.getById(id);
-        return aioveuCategoryConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuCategoryForm form = aioveuCategoryConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getParentId() != null) {
+            LambdaQueryWrapper<AioveuCategory> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuCategory::getId, entity.getParentId())
+                    .select(AioveuCategory::getName); // 只选择需要的字段
+
+            AioveuCategory category = this.getOne(Wrapper);
+
+            if (category != null) {
+                form.setParentCategoryName(category.getName());
+            }
+        }
+
+        return form;
     }
     
     /**

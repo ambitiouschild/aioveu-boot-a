@@ -29,6 +29,8 @@ public class AioveuCategoryForm implements Serializable {
     @Schema(description = "父分类ID")
     private Integer parentId;
 
+    private String parentCategoryName;
+
     @Schema(description = "分类层级")
     private Integer level;
 
