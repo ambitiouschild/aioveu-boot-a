@@ -5,12 +5,14 @@ import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -129,6 +131,15 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
      */
     @Override
     public boolean saveAioveuPerformance(AioveuPerformanceForm formData) {
+
+        new EmployeeNameValidator<>(
+                formData,
+                (form) -> form.getEmployeeName(), // Lambda 表达式
+                (form, id) -> form.setEmployeeId(id),
+                aioveuEmployeeService
+
+        );
+
         AioveuPerformance entity = aioveuPerformanceConverter.toEntity(formData);
         // 4. 计算绩效等级（在Java层计算）
         calculatePerformanceGrade(entity);
