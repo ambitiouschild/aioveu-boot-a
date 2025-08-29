@@ -5,11 +5,13 @@ import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.form.AioveuEmployeeForm;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
+import org.apache.poi.ss.formula.functions.T;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -103,6 +105,23 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
      */
     @Override
     public boolean saveAioveuCategory(AioveuCategoryForm formData) {
+
+        //直接验证分类是否唯一
+        // 字段1：检查是否唯一（对于不依赖外键的字段，不可重复）
+        LambdaQueryWrapper<AioveuCategory> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(AioveuCategory::getName, formData.getName());
+        if (count(wrapper) > 0) {
+            throw new RuntimeException("分类: " + formData.getName() + " 已存在");
+        }
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
+        new CategoryNameValidator<>(
+                formData,
+                (form) -> form.getParentCategoryName(), // Lambda 表达式
+                (form, id) -> form.setParentId(id),
+                this
+        );
+
         AioveuCategory entity = aioveuCategoryConverter.toEntity(formData);
         return this.save(entity);
     }
