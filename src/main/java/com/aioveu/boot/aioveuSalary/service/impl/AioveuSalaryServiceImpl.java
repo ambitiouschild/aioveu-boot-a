@@ -5,6 +5,7 @@ import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
+import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,16 +71,34 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
      */
     @Override
     public AioveuSalaryForm getAioveuSalaryFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuSalary entity = this.getById(id);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
         AioveuSalaryForm form = aioveuSalaryConverter.toForm(entity);
 
-        // 设置名称
-        if (entity.getEmployeeId() != null) { //通过实例变量调用非静态方法
-            AioveuEmployee employee = aioveuEmployeeService.getById(entity.getEmployeeId());
+        // 3. 处理映射信息（如果存在）
+        if (entity.getEmployeeId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getEmployeeId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
             if (employee != null) {
                 form.setEmployeeName(employee.getName());
             }
         }
+
+//        // 设置名称
+//        if (entity.getEmployeeId() != null) { //通过实例变量调用非静态方法
+//            AioveuEmployee employee = aioveuEmployeeService.getById(entity.getEmployeeId());
+//            if (employee != null) {
+//                form.setEmployeeName(employee.getName());
+//            }
+//        }
         return form;
     }
     
