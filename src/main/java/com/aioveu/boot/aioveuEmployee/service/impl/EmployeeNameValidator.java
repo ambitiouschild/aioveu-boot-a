@@ -10,12 +10,21 @@ package com.aioveu.boot.aioveuEmployee.service.impl;
  * @LastEditTime: 2025/8/30 2:47
  */
 
-import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
-import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
+//构造函数命名错误：构造函数名必须与类名完全一致（包括大小写） public employeeName
+
+// 之前（构造函数）
+//public EmployeeNameValidator(...) {...}
+
+// 之后（静态方法）
+//public static <T> void validateAndSetEmployeeId(...) {...}
+
+import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameValidator;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import com.baomidou.mybatisplus.extension.service.IService;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
+import java.util.function.ToLongFunction;
 
 
 /**
@@ -23,41 +32,38 @@ import java.util.function.Supplier;
  *
  * <p>在构造函数中直接执行验证逻辑</p>
  */
-public class EmployeeNameValidator<T> {
+public class EmployeeNameValidator {
 
     /**
-     * 构造函数
+     * 验证实体存在并设置ID
      *
+     * @param <T> 表单数据类型
+     * @param <E> 实体类型
      * @param formData 表单数据对象
-     * @param nameGetter 获取员工姓名的函数
-     * @param idSetter 设置员工ID的函数
-     * @param aioveuEmployeeService 员工服务
+     * @param nameGetter 获取名称的函数
+     * @param fieldGetter 实体字段的getter方法
+     * @param idSetter 设置ID的函数
+     * @param entityService 实体服务
+     * @param entityName 实体名称（用于错误消息）
      */
-
-    //构造函数命名错误：构造函数名必须与类名完全一致（包括大小写） public employeeName
-
-    // 之前（构造函数）
-    //public EmployeeNameValidator(...) {...}
-
-    // 之后（静态方法）
-    //public static <T> void validateAndSetEmployeeId(...) {...}
-
-    public  EmployeeNameValidator(
+    public  static <T, E> void  validateEntityExists(
             T formData,
-            Function<T, String> nameGetter, // 使用 Function
-            IdSetter<T> idSetter, // 使用大写的 IdSetter
-            AioveuEmployeeService aioveuEmployeeService
+            Function<T, String> nameGetter,
+            SFunction<E, String> fieldGetter,
+            WarehouseNameValidator.IdSetter<T> idSetter,
+            ToLongFunction<E> idExtractor,
+            IService<E> entityService,
+            String entityName
     ) {
-        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
-        LambdaQueryWrapper<AioveuEmployee> employeeWrapper = new LambdaQueryWrapper<>();
-        // 正确调用：传递 formData 参数
-        employeeWrapper.eq(AioveuEmployee::getName, nameGetter.apply(formData));
+        LambdaQueryWrapper<E> wrapper = new LambdaQueryWrapper<>();
 
-        AioveuEmployee employee = aioveuEmployeeService.getOne(employeeWrapper);
-        if (employee != null) {
-            idSetter.set(formData,employee.getEmployeeId());
+        wrapper.eq(fieldGetter, nameGetter.apply(formData));
+
+        E entity = entityService.getOne(wrapper);
+        if (entity != null) {
+            idSetter.set(formData,idExtractor.applyAsLong(entity));
         } else {
-            throw new RuntimeException("员工: " + nameGetter.apply(formData) + " 不存在");
+            throw new RuntimeException( entityName + nameGetter.apply(formData) + " 不存在");
         }
     }
 
@@ -86,12 +92,15 @@ public class EmployeeNameValidator<T> {
  *
  *
 
-        new EmployeeNameValidator<>(
+        EmployeeNameValidator.notNull(
                 formData,
-                (form) -> form.getEmployeeName(), // Lambda 表达式
-                (form, id) -> form.setEmployeeId(id),
-                aioveuEmployeeService
-
+                AioveuWarehouseForm::getManagerName,  // 获取经理姓名的方法
+                AioveuEmployee::getName,  // 实体字段：员工姓名
+//                (form, id) -> form.setManagerId(id), // 设置经理ID的方法  // 使用显式Lambda（推荐）
+                AioveuWarehouseForm::setManagerId, // 直接使用方法引用
+                AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
+                aioveuEmployeeService,  // 员工服务（不是this）
+                "经理"  // 实体名称（用于错误消息）
         );
 
 */
