@@ -57,21 +57,22 @@ public class AioveuEmployeeForm implements Serializable {
     private String email;
 
     @Schema(description = "所属部门")
-    @NotNull(message = "所属部门不能为空")
-    private Integer deptId;
+
+    private Long deptId;
 
     /**
      * 部门名称
      */
+    @NotNull(message = "所属部门不能为空")
     private String deptName;   // 新增：部门名，用于前端表单显示
 
     @Schema(description = "岗位ID")
-    @NotNull(message = "岗位ID不能为空")
-    private Integer positionId;
+    private Long positionId;
 
     /**
      * 岗位名称
      */
+//    @NotNull(message = "岗位不存在")
     private String positionName; // 新增：部门名，用于前端表单显示
 
     @Schema(description = "入职日期")

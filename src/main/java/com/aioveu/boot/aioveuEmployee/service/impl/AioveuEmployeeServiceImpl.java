@@ -149,13 +149,47 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
      */
     @Override
     public boolean saveAioveuEmployee(AioveuEmployeeForm formData) {
-        // 1. 检查员工编号是否唯一
-        LambdaQueryWrapper<AioveuEmployee> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(AioveuEmployee::getEmpCode, formData.getEmpCode());
-
-        if (count(wrapper) > 0) {
-            throw new ServiceException("员工编号 " + formData.getEmpCode() + " 已存在");
+        // 字段1：检查员工编号是否唯一（对于不依赖外键的字段，不可重复）
+        LambdaQueryWrapper<AioveuEmployee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuEmployee::getEmpCode, formData.getEmpCode());
+        if (count(queryWrapper) > 0) {
+            throw new ServiceException("员工编号: " + formData.getEmpCode() + " 已存在");
         }
+
+        // 字段2：检查是否已存在相同名称的记录（对于不依赖外键的字段，不可重复）
+        queryWrapper.eq(AioveuEmployee::getName, formData.getName());
+        if (count(queryWrapper) > 0) {
+            throw new RuntimeException("姓名: "+ formData.getName() +"已存在");
+        }
+
+        // 字段3：检查员工编号是否唯一（对于不依赖外键的字段，不可重复）
+        queryWrapper.eq(AioveuEmployee::getIdCard, formData.getIdCard());
+        if (count(queryWrapper) > 0) {
+            throw new ServiceException("身份证号: " + formData.getIdCard() + " 已存在");
+        }
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "岗位不存在")
+        LambdaQueryWrapper<AioveuDepartment> depWrapper = new LambdaQueryWrapper<>();
+        depWrapper.eq(AioveuDepartment::getDeptName, formData.getDeptName());
+
+        AioveuDepartment department = aioveuDepartmentService.getOne(depWrapper);
+        if (department != null) {
+            formData.setDeptId(department.getDeptId());
+        } else {
+            throw new RuntimeException("部门: " + formData.getDeptName() + " 不存在");
+        }
+
+        // 字段5：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "岗位不存在")
+        LambdaQueryWrapper<AioveuPosition> positionWrapper = new LambdaQueryWrapper<>();
+        positionWrapper.eq(AioveuPosition::getPositionName, formData.getPositionName());
+
+        AioveuPosition position = aioveuPositionService.getOne(positionWrapper);
+        if (position != null) {
+            formData.setPositionId(position.getPositionId());
+        } else {
+            throw new RuntimeException("岗位： " + formData.getPositionName() + " 不存在");
+        }
+
 
         // 2. 将表单数据转换为实体对象
         AioveuEmployee entity = aioveuEmployeeConverter.toEntity(formData);
