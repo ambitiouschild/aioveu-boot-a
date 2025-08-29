@@ -1,14 +1,21 @@
 package com.aioveu.boot.aioveuOutbound.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuDepartment.service.impl.DepartmentNameSetter;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -54,6 +61,9 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
     @Autowired
     private AioveuMaterialService aioveuMaterialService;
 
+    @Autowired
+    private AioveuDepartmentService aioveuDepartmentService;
+
     /**
     * 获取出库记录分页列表
     *
@@ -75,6 +85,13 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
 
         setMaterialNames(pageVO.getRecords());
 
+        DepartmentNameSetter.setDepartmentNames(
+                pageVO.getRecords() ,
+                AioveuOutboundVO::getDepartmentId, // 获取ID
+                AioveuOutboundVO::setDepartmentName, // 设置姓名
+                aioveuDepartmentService
+        );
+
 
         return pageVO;
     }
@@ -87,8 +104,76 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
      */
     @Override
     public AioveuOutboundForm getAioveuOutboundFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuOutbound entity = this.getById(id);
-        return aioveuOutboundConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuOutboundForm form = aioveuOutboundConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getMaterialId() != null) {
+            LambdaQueryWrapper<AioveuMaterial> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuMaterial::getId, entity.getMaterialId())
+                    .select(AioveuMaterial::getName); // 只选择需要的字段
+
+            AioveuMaterial material = aioveuMaterialService.getOne(Wrapper);
+
+            if (material != null) {
+                form.setMaterialName(material.getName());
+            }
+        }
+
+        if (entity.getWarehouseId() != null) {
+            LambdaQueryWrapper<AioveuWarehouse> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuWarehouse::getId, entity.getWarehouseId())
+                    .select(AioveuWarehouse::getName); // 只选择需要的字段
+
+            AioveuWarehouse warehouse = aioveuWarehouseService.getOne(Wrapper);
+
+            if (warehouse != null) {
+                form.setWarehouseName(warehouse.getName());
+            }
+        }
+
+        if (entity.getOperatorId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getOperatorId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setOperatorName(employee.getName());
+            }
+        }
+
+        if (entity.getRecipientId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getRecipientId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setRecipientName(employee.getName());
+            }
+        }
+
+        if (entity.getDepartmentId() != null) {
+            LambdaQueryWrapper<AioveuDepartment> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuDepartment::getDeptId, entity.getDepartmentId())
+                    .select(AioveuDepartment::getDeptName); // 只选择需要的字段
+
+            AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
+
+            if (department != null) {
+                form.setDepartmentName(department.getDeptName());
+            }
+        }
+
+        return form;
     }
     
     /**

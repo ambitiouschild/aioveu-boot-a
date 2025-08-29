@@ -69,9 +69,9 @@ public class AioveuOutboundVO implements Serializable {
 
 
     @Schema(description = "领用部门ID")
-    private Integer departmentId;
+    private Long departmentId;
 
-
+    private String departmentName;
 
     @Schema(description = "用途说明")
     private String purpose;

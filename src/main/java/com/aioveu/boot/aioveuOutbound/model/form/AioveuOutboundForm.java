@@ -33,9 +33,13 @@ public class AioveuOutboundForm implements Serializable {
     @NotNull(message = "物资ID不能为空")
     private Integer materialId;
 
+    private String materialName;
+
     @Schema(description = "仓库ID")
     @NotNull(message = "仓库ID不能为空")
     private Integer warehouseId;
+
+    private String warehouseName;
 
     @Schema(description = "出库数量")
     @NotNull(message = "出库数量不能为空")
@@ -70,6 +74,8 @@ public class AioveuOutboundForm implements Serializable {
 
     @Schema(description = "领用部门ID")
     private Integer departmentId;
+
+    private String departmentName;
 
 
     @Schema(description = "用途说明")
