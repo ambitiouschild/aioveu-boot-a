@@ -73,12 +73,24 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
      */
     @Override
     public AioveuPositionForm getAioveuPositionFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuPosition entity = this.getById(id);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+
+        // 2. 将实体转换为表单对象
         AioveuPositionForm form = aioveuPositionConverter.toForm(entity);
 
-        // 设置部门名称
+        // 3. 处理映射信息（如果存在）
         if (entity.getDeptId() != null) {
-            AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            LambdaQueryWrapper<AioveuDepartment> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuDepartment::getDeptId, entity.getDeptId())
+                    .select(AioveuDepartment::getDeptName); // 只选择需要的字段
+
+            AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
+
             if (department != null) {
                 form.setDeptName(department.getDeptName());
             }

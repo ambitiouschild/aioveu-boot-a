@@ -106,6 +106,7 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
                     .select(AioveuDepartment::getDeptName); // 只选择需要的字段
 
             AioveuDepartment parentDepartment = this.getOne(parentWrapper);
+            //AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
 
             if (parentDepartment != null) {
                 form.setParentDeptName(parentDepartment.getDeptName());
@@ -158,7 +159,6 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
      * @return 是否新增成功
      */
     @Override
-    @Transactional
     public boolean saveAioveuDepartment(AioveuDepartmentForm formData) {
 
 
@@ -273,7 +273,7 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 
 
         // 3. 将表单数据转换为实体对象
-        // 注意：表单对象通常不包含ID，因此需要手动设置ID
+        // 注意：表单对象通常不包含ID，因此需要手动设置ID,这是与新建的最大区别，保留原始数据的未更新字段
         AioveuDepartment entity = aioveuDepartmentConverter.toEntity(formData);
         entity.setDeptId(id); // 设置部门ID
         log.info("转换后的实体对象: {}", entity);
