@@ -8,6 +8,7 @@ import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -80,16 +81,43 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
      */
     @Override
     public AioveuPerformanceForm getAioveuPerformanceFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuPerformance entity = this.getById(id);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
         AioveuPerformanceForm form = aioveuPerformanceConverter.toForm(entity);
 
-        // 设置员工姓名
-        if (entity.getEmployeeId() != null) { //通过实例变量（调用非静态方法
-            AioveuEmployee performance = aioveuEmployeeService.getById(entity.getEmployeeId());
-            if (performance != null) {
-                form.setEmployeeName(performance.getName());
+        // 3. 处理映射信息（如果存在）
+        if (entity.getEmployeeId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getEmployeeId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setEmployeeName(employee.getName());
             }
         }
+
+
+//        // 设置员工姓名
+//        if (entity.getEmployeeId() != null) { //通过实例变量（调用非静态方法
+//            AioveuEmployee employee = aioveuEmployeeService.getById(entity.getEmployeeId());
+//            if (employee != null) {
+//                form.setEmployeeName(employee.getName());
+//            }
+//        }
         return form;
     }
     
