@@ -3,10 +3,12 @@ package com.aioveu.boot.aioveuCustomer.service.impl;
 import com.aioveu.boot.aioveuCustomer.model.vo.CustomerOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,8 +76,28 @@ public class AioveuCustomerServiceImpl extends ServiceImpl<AioveuCustomerMapper,
      */
     @Override
     public AioveuCustomerForm getAioveuCustomerFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuCustomer entity = this.getById(id);
-        return aioveuCustomerConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuCustomerForm form = aioveuCustomerConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getSalesRepId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getSalesRepId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setSalesRepName(employee.getName());
+            }
+        }
+
+        return form;
     }
     
     /**

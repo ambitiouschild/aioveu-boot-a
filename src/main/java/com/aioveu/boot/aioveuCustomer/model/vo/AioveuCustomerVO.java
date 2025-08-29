@@ -31,8 +31,8 @@ public class AioveuCustomerVO implements Serializable {
     private String name;
     @Schema(description = "客户类型")
     private Integer type;
-    @Schema(description = "行业分类ID")
-    private Integer industryId;
+//    @Schema(description = "行业分类ID")
+//    private Integer industryId;
     @Schema(description = "信用等级")
     private Integer creditRating;
     @Schema(description = "客户状态")
