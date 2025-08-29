@@ -25,14 +25,6 @@ public class AioveuEmployeeForm implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 部门名称
-     */
-    private String deptName;   // 新增：部门名，用于前端表单显示
-    /**
-     * 岗位名称
-     */
-    private String positionName; // 新增：部门名，用于前端表单显示
 
     @Schema(description = "员工编号")
     @NotBlank(message = "员工编号不能为空")
@@ -68,9 +60,19 @@ public class AioveuEmployeeForm implements Serializable {
     @NotNull(message = "所属部门不能为空")
     private Integer deptId;
 
+    /**
+     * 部门名称
+     */
+    private String deptName;   // 新增：部门名，用于前端表单显示
+
     @Schema(description = "岗位ID")
     @NotNull(message = "岗位ID不能为空")
     private Integer positionId;
+
+    /**
+     * 岗位名称
+     */
+    private String positionName; // 新增：部门名，用于前端表单显示
 
     @Schema(description = "入职日期")
     @NotNull(message = "入职日期不能为空")

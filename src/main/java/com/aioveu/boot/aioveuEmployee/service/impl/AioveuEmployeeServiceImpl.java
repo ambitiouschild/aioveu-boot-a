@@ -85,25 +85,58 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
      */
     @Override
     public AioveuEmployeeForm getAioveuEmployeeFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuEmployee entity = this.getById(id);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
         AioveuEmployeeForm form = aioveuEmployeeConverter.toForm(entity);
 
-
-        // 设置部门名称
+        // 3. 处理映射信息（如果存在）
         if (entity.getDeptId() != null) {
-            AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            LambdaQueryWrapper<AioveuDepartment> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuDepartment::getDeptId, entity.getDeptId())
+                    .select(AioveuDepartment::getDeptName); // 只选择需要的字段
+
+            AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
+
             if (department != null) {
-                form.setPositionName(department.getDeptName());
+                form.setDeptName(department.getDeptName());
             }
         }
 
-        // 设置岗位名称
         if (entity.getPositionId() != null) {
-            AioveuPosition position = aioveuPositionService.getById(entity.getPositionId());
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            LambdaQueryWrapper<AioveuPosition> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuPosition::getPositionId, entity.getPositionId())
+                    .select(AioveuPosition::getPositionName); // 只选择需要的字段
+
+            AioveuPosition position = aioveuPositionService.getOne(Wrapper);
+            //AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
+
             if (position != null) {
                 form.setPositionName(position.getPositionName());
             }
         }
+
+
+//        // 设置部门名称
+//        if (entity.getDeptId() != null) {
+//            AioveuDepartment department = aioveuDepartmentService.getById(entity.getDeptId());
+//            if (department != null) {
+//                form.setPositionName(department.getDeptName());
+//            }
+//        }
+//
+//        // 设置岗位名称
+//        if (entity.getPositionId() != null) {
+//            AioveuPosition position = aioveuPositionService.getById(entity.getPositionId());
+//            if (position != null) {
+//                form.setPositionName(position.getPositionName());
+//            }
+//        }
 
         return form;
     }
