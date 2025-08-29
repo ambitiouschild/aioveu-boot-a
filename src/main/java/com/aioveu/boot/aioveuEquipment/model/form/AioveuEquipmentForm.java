@@ -38,6 +38,8 @@ public class AioveuEquipmentForm implements Serializable {
     @NotNull(message = "设备分类ID不能为空")
     private Integer categoryId;
 
+    private String categoryName;
+
     @Schema(description = "设备型号")
     @Size(max=50, message="设备型号长度不能超过50个字符")
     private String model;
@@ -46,11 +48,13 @@ public class AioveuEquipmentForm implements Serializable {
     @Size(max=50, message="序列号长度不能超过50个字符")
     private String serialNo;
 
-    @Schema(description = "位置ID")
-    private Integer locationId;
+//    @Schema(description = "位置ID")
+//    private Integer locationId;
 
     @Schema(description = "所属部门ID")
     private Integer departmentId;
+
+    private String departmentName;
 
     @Schema(description = "责任人")
     private Long responsiblePerson;

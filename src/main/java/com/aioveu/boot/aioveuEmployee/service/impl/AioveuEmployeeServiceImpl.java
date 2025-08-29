@@ -330,6 +330,12 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
         // 批量查询部门信息
         List<AioveuEmployee> employees = this.listByIds(employeeIds);
 
+        // 使用 LambdaQueryWrapper，编译时安全
+//        List<AioveuEmployee> employees = lambdaQuery()
+//                .select(AioveuEmployee::getEmployeeId, AioveuEmployee::getName)
+//                .in(AioveuEmployee::getEmployeeId, employeeIds)
+//                .list();
+
         // 转换为Map: key=员工ID, value=员工姓名
         return employees.stream()
                 .collect(Collectors.toMap(

@@ -1,11 +1,16 @@
 package com.aioveu.boot.aioveuEquipment.service.impl;
 
+import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,6 +54,9 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
     @Autowired
     private AioveuCategoryService aioveuCategoryService;
 
+    @Autowired
+    private AioveuDepartmentService aioveuDepartmentService;
+
     /**
     * 获取设备管理分页列表
     *
@@ -78,8 +86,53 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
      */
     @Override
     public AioveuEquipmentForm getAioveuEquipmentFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuEquipment entity = this.getById(id);
-        return aioveuEquipmentConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuEquipmentForm form = aioveuEquipmentConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getCategoryId() != null) {
+            LambdaQueryWrapper<AioveuCategory> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuCategory::getId, entity.getCategoryId())
+                    .select(AioveuCategory::getName); // 只选择需要的字段
+
+            AioveuCategory category = aioveuCategoryService.getOne(Wrapper);
+
+            if (category != null) {
+                form.setCategoryName(category.getName());
+            }
+        }
+
+        if (entity.getDepartmentId() != null) {
+            LambdaQueryWrapper<AioveuDepartment> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuDepartment::getDeptId, entity.getDepartmentId())
+                    .select(AioveuDepartment::getDeptName); // 只选择需要的字段
+
+            AioveuDepartment department = aioveuDepartmentService.getOne(Wrapper);
+
+            if (department != null) {
+                form.setDepartmentName(department.getDeptName());
+            }
+        }
+
+        if (entity.getResponsiblePerson() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getResponsiblePerson())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setResponsiblePersonName(employee.getName());
+            }
+        }
+
+
+        return form;
     }
     
     /**
