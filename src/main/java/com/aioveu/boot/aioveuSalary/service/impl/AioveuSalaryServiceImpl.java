@@ -4,6 +4,7 @@ import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -110,6 +111,15 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
      */
     @Override
     public boolean saveAioveuSalary(AioveuSalaryForm formData) {
+
+        new EmployeeNameValidator<>(
+                formData,
+                (form) -> form.getEmployeeName(), // Lambda 表达式
+                (form, id) -> form.setEmployeeId(id),
+                aioveuEmployeeService
+
+        );
+
         AioveuSalary entity = aioveuSalaryConverter.toEntity(formData);
         return this.save(entity);
     }

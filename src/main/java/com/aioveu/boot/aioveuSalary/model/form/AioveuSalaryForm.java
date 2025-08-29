@@ -25,8 +25,7 @@ public class AioveuSalaryForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "员工ID")
-    @NotNull(message = "员工ID不能为空")
-    private Integer employeeId;
+    private Long employeeId;
 
     /**
      * 员工姓名
