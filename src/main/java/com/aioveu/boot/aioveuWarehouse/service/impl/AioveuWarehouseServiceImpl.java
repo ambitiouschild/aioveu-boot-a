@@ -1,13 +1,9 @@
 package com.aioveu.boot.aioveuWarehouse.service.impl;
 
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
-import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
-import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
-import com.aioveu.boot.aioveuPerformance.model.form.AioveuPerformanceForm;
-import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -121,7 +117,7 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
     public boolean saveAioveuWarehouse(AioveuWarehouseForm formData) {
 
         // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
-        WarehouseNameValidator.validateEntityUnique(
+        NameValidator.validateEntityUnique(
                 formData,
                 AioveuWarehouseForm::getName,
                 AioveuWarehouse::getName,
@@ -131,7 +127,7 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
         );
 
         // 字段2：检查编号是否唯一（对于不依赖外键的字段，不可重复）
-        WarehouseNameValidator.validateEntityUnique(
+        NameValidator.validateEntityUnique(
                 formData,
                 AioveuWarehouseForm::getCode,
                 AioveuWarehouse::getCode,
@@ -141,7 +137,7 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
         );
 
         // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
-        EmployeeNameValidator.validateEntityExists(
+        NameValidator.validateEntityExists(
                 formData,
                 AioveuWarehouseForm::getManagerName,  // 获取经理姓名的方法
                 AioveuEmployee::getName,  // 实体字段：员工姓名

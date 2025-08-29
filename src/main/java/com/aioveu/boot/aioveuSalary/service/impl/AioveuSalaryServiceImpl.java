@@ -1,12 +1,9 @@
 package com.aioveu.boot.aioveuSalary.service.impl;
 
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
-import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
-import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
-import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,6 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -115,7 +111,7 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
 
 
         // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
-        EmployeeNameValidator.validateEntityExists(
+        NameValidator.validateEntityExists(
                 formData,
                 AioveuSalaryForm::getEmployeeName,  // 获取经理姓名的方法
                 AioveuEmployee::getName,  // 实体字段：员工姓名

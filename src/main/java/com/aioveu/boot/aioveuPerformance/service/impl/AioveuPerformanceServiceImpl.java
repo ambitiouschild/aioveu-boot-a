@@ -1,20 +1,13 @@
 package com.aioveu.boot.aioveuPerformance.service.impl;
 
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
-import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
-import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
-import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
-import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
-import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
-import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.formula.functions.T;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -30,9 +23,6 @@ import com.aioveu.boot.aioveuPerformance.converter.AioveuPerformanceConverter;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -135,7 +125,7 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
     public boolean saveAioveuPerformance(AioveuPerformanceForm formData) {
 
 
-        EmployeeNameValidator.validateEntityExists(
+        NameValidator.validateEntityExists(
                 formData,
                 AioveuPerformanceForm::getEmployeeName, // 方法引用
                 AioveuEmployee::getName, // 方法引用

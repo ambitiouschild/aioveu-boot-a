@@ -1,11 +1,9 @@
 package com.aioveu.boot.aioveuInventory.service.impl;
 
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
-import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
-import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
@@ -27,7 +25,6 @@ import com.aioveu.boot.aioveuInventory.converter.AioveuInventoryConverter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -143,6 +140,31 @@ public class AioveuInventoryServiceImpl extends ServiceImpl<AioveuInventoryMappe
      */
     @Override
     public boolean saveAioveuInventory(AioveuInventoryForm formData) {
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuInventoryForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuInventoryForm::setWarehouseId,
+                AioveuWarehouse::getId, // 方法引用返回 long
+                aioveuWarehouseService,
+                "仓库："
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuInventoryForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuInventoryForm::setMaterialId,
+                AioveuMaterial::getId, // 方法引用返回 long
+                aioveuMaterialService,
+                "物资："
+        );
+
+
+
+
         AioveuInventory entity = aioveuInventoryConverter.toEntity(formData);
         return this.save(entity);
     }

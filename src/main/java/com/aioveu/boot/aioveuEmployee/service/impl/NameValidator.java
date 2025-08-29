@@ -1,13 +1,13 @@
-package com.aioveu.boot.aioveuWarehouse.service.impl;
+package com.aioveu.boot.aioveuEmployee.service.impl;
 
 /*
- * @Description: TODO  仓库姓名验证器
- * @ClassName:  WarehouseNameValidator
+ * @Description: TODO 员工姓名验证器
+ * @ClassName:  EmployeeNameValidator
  * @Author: 可我不敌可爱
  * @Email: ambitiouschild@qq.com
- * @Date:  2025/8/30  4:49
+ * @Date:  2025/8/30  2:47
  * @LastEditors: 可我不敌可爱
- * @LastEditTime: 2025/8/30 4:49
+ * @LastEditTime: 2025/8/30 2:47
  */
 
 //构造函数命名错误：构造函数名必须与类名完全一致（包括大小写） public employeeName
@@ -26,7 +26,12 @@ import java.util.function.Function;
 import java.util.function.ToLongFunction;
 
 
-public class WarehouseNameValidator {
+/**
+ * 员工姓名验证器
+ *
+ * <p>在构造函数中直接执行验证逻辑</p>
+ */
+public class NameValidator {
 
 
     /**
@@ -80,18 +85,18 @@ public class WarehouseNameValidator {
      * @param entityService 实体服务
      * @param entityName 实体名称（用于错误消息）
      */
+
     public  static <T, E> void  validateEntityExists(
             T formData,
-            Function<T, String> nameGetter, // 使用 Function
+            Function<T, String> nameGetter,
             SFunction<E, String> fieldGetter,
             IdSetter<T> idSetter,
-            ToLongFunction<E> idExtractor, // 新增：从实体E中提取ID
-            IService<E> entityService,  // 使用通用服务
+            ToLongFunction<E> idExtractor,
+            IService<E> entityService,
             String entityName
     ) {
-        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
         LambdaQueryWrapper<E> wrapper = new LambdaQueryWrapper<>();
-        // 正确调用：传递 formData 参数
+
         wrapper.eq(fieldGetter, nameGetter.apply(formData));
 
         E entity = entityService.getOne(wrapper);
@@ -115,7 +120,7 @@ public class WarehouseNameValidator {
 }
 
 /*
- * @Description: TODO  仓库姓名验证器
+ * @Description: TODO  员工姓名验证器
  * @ClassName:  EmployeeNameValidator
  * @Param:
  * @Return:
@@ -127,25 +132,15 @@ public class WarehouseNameValidator {
  *
  *
 
-        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
-        WarehouseNameValidator.count(
+        EmployeeNameValidator.notNull(
                 formData,
-                AioveuWarehouseForm::getName,
-                AioveuWarehouse::getName,
-                null,
-                this
-        );
-
-
-        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
-        WarehouseNameValidator.validateEntityExists(
-            formData,
-            AioveuWarehouseForm::getWarehouseName,
-            AioveuWarehouse::getName,
-            AioveuWarehouseForm::setManagerId,
-            AioveuWarehouse::getId, // 方法引用返回 long
-            aioveuWarehouseService,
-            "仓库"
+                AioveuWarehouseForm::getManagerName,  // 获取经理姓名的方法
+                AioveuEmployee::getName,  // 实体字段：员工姓名
+//                (form, id) -> form.setManagerId(id), // 设置经理ID的方法  // 使用显式Lambda（推荐）
+                AioveuWarehouseForm::setManagerId, // 直接使用方法引用
+                AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
+                aioveuEmployeeService,  // 员工服务（不是this）
+                "经理"  // 实体名称（用于错误消息）
         );
 
 */

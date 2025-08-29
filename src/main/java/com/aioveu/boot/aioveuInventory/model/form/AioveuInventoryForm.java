@@ -27,14 +27,13 @@ public class AioveuInventoryForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "仓库ID")
-    @NotNull(message = "仓库ID不能为空")
-    private Integer warehouseId;
+//    @NotNull(message = "仓库ID不能为空")
+    private Long warehouseId;
 
     private String warehouseName;
 
     @Schema(description = "物资ID")
-    @NotNull(message = "物资ID不能为空")
-    private Integer materialId;
+    private Long materialId;
 
     private String materialName;
 

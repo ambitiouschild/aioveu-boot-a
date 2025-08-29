@@ -1,15 +1,9 @@
 package com.aioveu.boot.aioveuMaterial.service.impl;
 
 import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
-import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameValidator;
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
-import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
-import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
-import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
-import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
