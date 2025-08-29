@@ -184,7 +184,8 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
             } else {
                 // 如果没有找到父部门，可以抛出异常或设置为null
                 formData.setParentDeptId(null);
-                // 或者抛出异常：throw new RuntimeException("父部门名称不存在");
+//                 或者抛出异常：throw new RuntimeException("父部门名称不存在");
+                throw new RuntimeException("父部门名称不存在");
             }
         }
 

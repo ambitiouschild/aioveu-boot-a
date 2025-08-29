@@ -37,10 +37,5 @@ public class AioveuDepartmentForm implements Serializable {
 
     private String managerName;
 
-    // 在VO中创建复合键的方法
-    public String getParentDeptCompositeKey() {
-        return this.getDeptName() + "|" + this.getParentDeptId();// 使用订单号和客户名称作为复合键
-    }
-
 
 }
