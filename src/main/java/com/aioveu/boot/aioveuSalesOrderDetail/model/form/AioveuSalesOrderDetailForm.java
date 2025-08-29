@@ -28,9 +28,13 @@ public class AioveuSalesOrderDetailForm implements Serializable {
     @NotNull(message = "订单ID不能为空")
     private Integer orderId;
 
+    private String orderName;
+
     @Schema(description = "物资ID")
     @NotNull(message = "物资ID不能为空")
     private Integer materialId;
+
+    private String materialName;
 
     @Schema(description = "数量")
     @NotNull(message = "数量不能为空")
@@ -64,6 +68,8 @@ public class AioveuSalesOrderDetailForm implements Serializable {
 
     @Schema(description = "发货仓库ID")
     private Integer warehouseId;
+
+    private String warehouseName;
 
     @Schema(description = "明细状态")
     private Integer status;

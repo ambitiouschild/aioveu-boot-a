@@ -1,14 +1,19 @@
 package com.aioveu.boot.aioveuSalesOrderDetail.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuSalesOrder.model.entity.AioveuSalesOrder;
 import com.aioveu.boot.aioveuSalesOrder.service.AioveuSalesOrderService;
 import com.aioveu.boot.aioveuSalesOrder.service.impl.SalesOrderNameSetter;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -84,8 +89,53 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
      */
     @Override
     public AioveuSalesOrderDetailForm getAioveuSalesOrderDetailFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuSalesOrderDetail entity = this.getById(id);
-        return aioveuSalesOrderDetailConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuSalesOrderDetailForm form = aioveuSalesOrderDetailConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getOrderId() != null) {
+            LambdaQueryWrapper<AioveuSalesOrder> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuSalesOrder::getId, entity.getOrderId())
+                    .select(AioveuSalesOrder::getOrderNo); // 只选择需要的字段
+
+            AioveuSalesOrder salesOrder = aioveuSalesOrderService.getOne(Wrapper);
+
+            if (salesOrder != null) {
+                form.setOrderName(salesOrder.getOrderNo());
+            }
+        }
+
+        if (entity.getMaterialId() != null) {
+            LambdaQueryWrapper<AioveuMaterial> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuMaterial::getId, entity.getMaterialId())
+                    .select(AioveuMaterial::getName); // 只选择需要的字段
+
+            AioveuMaterial material = aioveuMaterialService.getOne(Wrapper);
+
+            if (material != null) {
+                form.setMaterialName(material.getName());
+            }
+        }
+
+        if (entity.getWarehouseId() != null) {
+            LambdaQueryWrapper<AioveuWarehouse> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuWarehouse::getId, entity.getWarehouseId())
+                    .select(AioveuWarehouse::getName); // 只选择需要的字段
+
+            AioveuWarehouse warehouse = aioveuWarehouseService.getOne(Wrapper);
+
+            if (warehouse != null) {
+                form.setWarehouseName(warehouse.getName());
+            }
+        }
+
+
+        return form;
     }
     
     /**
