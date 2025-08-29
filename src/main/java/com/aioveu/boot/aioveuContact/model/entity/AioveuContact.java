@@ -21,13 +21,15 @@ public class AioveuContact extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 客户ID
-     */
-    private Integer customerId;
-    /**
      * 联系人姓名
      */
     private String name;
+
+    /**
+     * 客户ID
+     */
+    private Integer customerId;
+
     /**
      * 职位
      */

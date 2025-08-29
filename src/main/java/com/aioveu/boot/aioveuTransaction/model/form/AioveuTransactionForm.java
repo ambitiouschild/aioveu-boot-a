@@ -33,8 +33,12 @@ public class AioveuTransactionForm implements Serializable {
     @NotNull(message = "客户ID不能为空")
     private Integer customerId;
 
+    private String customerName;
+
     @Schema(description = "联系人ID")
     private Integer contactId;
+
+    private String contactName;
 
     @Schema(description = "交易日期")
     @NotNull(message = "交易日期不能为空")

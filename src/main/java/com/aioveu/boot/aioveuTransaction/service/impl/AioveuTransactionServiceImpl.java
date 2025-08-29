@@ -1,13 +1,18 @@
 package com.aioveu.boot.aioveuTransaction.service.impl;
 
+import com.aioveu.boot.aioveuContact.model.entity.AioveuContact;
 import com.aioveu.boot.aioveuContact.service.AioveuContactService;
 import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
+import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,8 +90,53 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
      */
     @Override
     public AioveuTransactionForm getAioveuTransactionFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuTransaction entity = this.getById(id);
-        return aioveuTransactionConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuTransactionForm form = aioveuTransactionConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getCustomerId() != null) {
+            LambdaQueryWrapper<AioveuCustomer> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuCustomer::getId, entity.getCustomerId())
+                    .select(AioveuCustomer::getName); // 只选择需要的字段
+
+            AioveuCustomer customer = aioveuCustomerService.getOne(Wrapper);
+
+            if (customer != null) {
+                form.setCustomerName(customer.getName());
+            }
+        }
+
+        if (entity.getContactId() != null) {
+            LambdaQueryWrapper<AioveuContact> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuContact::getId, entity.getContactId())
+                    .select(AioveuContact::getName); // 只选择需要的字段
+
+            AioveuContact contact = aioveuContactService.getOne(Wrapper);
+
+            if (contact != null) {
+                form.setContactName(contact.getName());
+            }
+        }
+
+        if (entity.getSalesRepId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getSalesRepId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setSalesRepName(employee.getName());
+            }
+        }
+
+
+        return form;
     }
     
     /**
