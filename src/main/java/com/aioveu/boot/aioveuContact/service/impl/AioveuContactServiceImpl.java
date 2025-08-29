@@ -1,12 +1,15 @@
 package com.aioveu.boot.aioveuContact.service.impl;
 
 import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
+import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.common.exception.BusinessException;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,6 +51,8 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
 
     @Autowired
     private AioveuCustomerService aioveuCustomerService;
+    @Autowired
+    private  AioveuContactMapper  aioveuContactMapper;
 
     /**
     * 获取客户联系人分页列表
@@ -75,8 +80,28 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
      */
     @Override
     public AioveuContactForm getAioveuContactFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuContact entity = this.getById(id);
-        return aioveuContactConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuContactForm form = aioveuContactConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getCustomerId() != null) {
+            LambdaQueryWrapper<AioveuCustomer> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuCustomer::getId, entity.getCustomerId())
+                    .select(AioveuCustomer::getName); // 只选择需要的字段
+
+            AioveuCustomer customer = aioveuCustomerService.getOne(Wrapper);
+
+            if (customer != null) {
+                form.setCustomerName(customer.getName());
+            }
+        }
+
+        return form;
     }
     
     /**
@@ -87,9 +112,31 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
      */
     @Override
     public boolean saveAioveuContact(AioveuContactForm formData) {
+
+        // 确保客户ID不为空
+        if (formData.getCustomerId() == null) {
+            throw new BusinessException("客户ID不能为空");
+        }
+
+        // 处理主要联系人逻辑
+        if (formData.getIsPrimary() == 1) {
+            // 检查是否已存在主要联系人
+            LambdaQueryWrapper<AioveuContact> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(AioveuContact::getCustomerId, formData.getCustomerId())
+                    .eq(AioveuContact::getIsPrimary, 1);
+
+            // 检查是否存在其他主要联系人
+            Long count = aioveuContactMapper.selectCount(queryWrapper);
+            if (count > 0) {
+                throw new BusinessException("该客户已存在主要联系人");
+            }
+        }
+
+
         AioveuContact entity = aioveuContactConverter.toEntity(formData);
         return this.save(entity);
     }
+
     
     /**
      * 更新客户联系人
@@ -108,6 +155,28 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
             throw new ServiceException("记录不存在");
 
         }
+        // 确保客户ID不为空
+        if (formData.getCustomerId() == null) {
+            throw new BusinessException("客户ID不能为空");
+        }
+
+        // 处理主要联系人逻辑
+        if (formData.getIsPrimary() == 1) {
+            // 检查是否已存在主要联系人
+            LambdaQueryWrapper<AioveuContact> queryWrapper = new LambdaQueryWrapper<>();
+            queryWrapper.eq(AioveuContact::getCustomerId, formData.getCustomerId())
+                    .eq(AioveuContact::getIsPrimary, 1);
+
+            // 检查是否存在其他主要联系人
+            Long count = aioveuContactMapper.selectCount(queryWrapper);
+            if (count > 0 ) {
+                throw new BusinessException("该客户已存在主要联系人");
+            }
+        }else if(formData.getIsPrimary() == 0 ) {
+
+            throw new BusinessException("该客户需要存在一个主要联系人");
+        }
+
         // 2. 将表单数据转换为实体对象
         AioveuContact entity = aioveuContactConverter.toEntity(formData);
 

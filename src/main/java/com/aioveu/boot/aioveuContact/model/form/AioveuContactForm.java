@@ -27,6 +27,8 @@ public class AioveuContactForm implements Serializable {
     @NotNull(message = "客户ID不能为空")
     private Integer customerId;
 
+    private String customerName;
+
     @Schema(description = "联系人姓名")
     @NotBlank(message = "联系人姓名不能为空")
     @Size(max=50, message="联系人姓名长度不能超过50个字符")
