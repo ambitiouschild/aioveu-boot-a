@@ -1,11 +1,18 @@
 package com.aioveu.boot.aioveu.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
+import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,6 +50,9 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
     private final AioveuProcurementConverter aioveuProcurementConverter;
 
     @Autowired
+    private AioveuWarehouseService aioveuWarehouseService;
+
+    @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
 
     @Autowired
@@ -64,6 +74,14 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
         // 设置申请人
         setApplicantNames(pageVO.getRecords());
 
+        WarehouseNameSetter.setWarehouseNames(
+                pageVO.getRecords(),
+                AioveuProcurementVO::getWarehouseId, // 获取ID
+                AioveuProcurementVO::setWarehouseName, // 设置姓名
+                aioveuWarehouseService
+        );
+
+
         // 设置审核人
         setReviewerNames(pageVO.getRecords());
 
@@ -80,8 +98,66 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
      */
     @Override
     public AioveuProcurementForm getAioveuProcurementFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuProcurement entity = this.getById(id);
-        return aioveuProcurementConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuProcurementForm form = aioveuProcurementConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getMaterialId() != null) {
+            LambdaQueryWrapper<AioveuMaterial> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuMaterial::getId, entity.getMaterialId())
+                    .select(AioveuMaterial::getName); // 只选择需要的字段
+
+            AioveuMaterial material = aioveuMaterialService.getOne(Wrapper);
+
+            if (material != null) {
+                form.setMaterialName(material.getName());
+            }
+        }
+
+        if (entity.getWarehouseId() != null) {
+            LambdaQueryWrapper<AioveuWarehouse> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuWarehouse::getId, entity.getWarehouseId())
+                    .select(AioveuWarehouse::getName); // 只选择需要的字段
+
+            AioveuWarehouse warehouse = aioveuWarehouseService.getOne(Wrapper);
+
+            if (warehouse != null) {
+                form.setWarehouseName(warehouse.getName());
+            }
+        }
+
+        if (entity.getApplicantId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getApplicantId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setApplicantName(employee.getName());
+            }
+        }
+
+        if (entity.getReviewerId() != null) {
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getReviewerId())
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setReviewerName(employee.getName());
+            }
+        }
+
+
+
+        return form;
     }
     
     /**

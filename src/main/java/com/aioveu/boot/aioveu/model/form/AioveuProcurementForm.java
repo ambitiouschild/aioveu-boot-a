@@ -39,6 +39,8 @@ public class AioveuProcurementForm implements Serializable {
     @NotNull(message = "物资ID不能为空")
     private Integer materialId;
 
+    private String materialName;
+
     @Schema(description = "采购数量")
     @NotNull(message = "采购数量不能为空")
     private Integer quantity;
@@ -68,6 +70,8 @@ public class AioveuProcurementForm implements Serializable {
 
     @Schema(description = "入库仓库ID")
     private Integer warehouseId;
+
+    private String warehouseName;
 
     @Schema(description = "入库时间")
     @JsonFormat(timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")

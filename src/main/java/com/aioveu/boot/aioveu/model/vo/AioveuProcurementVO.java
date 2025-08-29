@@ -53,7 +53,10 @@ public class AioveuProcurementVO implements Serializable {
     @Schema(description = "签收时间")
     private LocalDateTime receiptDate;
     @Schema(description = "入库仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    private String warehouseName;
+
     @Schema(description = "入库时间")
     private LocalDateTime inboundDate;
     @Schema(description = "状态")
