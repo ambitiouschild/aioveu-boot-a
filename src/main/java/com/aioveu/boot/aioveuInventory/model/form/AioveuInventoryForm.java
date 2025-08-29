@@ -30,9 +30,13 @@ public class AioveuInventoryForm implements Serializable {
     @NotNull(message = "仓库ID不能为空")
     private Integer warehouseId;
 
+    private String warehouseName;
+
     @Schema(description = "物资ID")
     @NotNull(message = "物资ID不能为空")
     private Integer materialId;
+
+    private String materialName;
 
     @Schema(description = "当前库存数量")
     @NotNull(message = "当前库存数量不能为空")
