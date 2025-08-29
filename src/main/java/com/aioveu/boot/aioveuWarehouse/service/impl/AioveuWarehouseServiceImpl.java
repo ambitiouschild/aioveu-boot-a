@@ -5,6 +5,8 @@ import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
+import com.aioveu.boot.aioveuPerformance.model.form.AioveuPerformanceForm;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.aliyun.oss.ServiceException;
@@ -117,6 +119,40 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
      */
     @Override
     public boolean saveAioveuWarehouse(AioveuWarehouseForm formData) {
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        WarehouseNameValidator.validateEntityUnique(
+                formData,
+                AioveuWarehouseForm::getName,
+                AioveuWarehouse::getName,
+                null,
+                this,
+                "仓库名称"
+        );
+
+        // 字段2：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        WarehouseNameValidator.validateEntityUnique(
+                formData,
+                AioveuWarehouseForm::getCode,
+                AioveuWarehouse::getCode,
+                null,
+                this,
+                "仓库编码"
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        EmployeeNameValidator.validateEntityExists(
+                formData,
+                AioveuWarehouseForm::getManagerName,  // 获取经理姓名的方法
+                AioveuEmployee::getName,  // 实体字段：员工姓名
+//                (form, id) -> form.setManagerId(id), // 设置经理ID的方法  // 使用显式Lambda（推荐）
+                AioveuWarehouseForm::setManagerId, // 直接使用方法引用
+                AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
+                aioveuEmployeeService,  // 员工服务（不是this）
+                "经理"  // 实体名称（用于错误消息）
+        );
+
+
         AioveuWarehouse entity = aioveuWarehouseConverter.toEntity(formData);
         return this.save(entity);
     }

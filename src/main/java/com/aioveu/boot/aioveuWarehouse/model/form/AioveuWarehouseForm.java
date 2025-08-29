@@ -50,6 +50,7 @@ public class AioveuWarehouseForm implements Serializable {
      */
     private String managerName;
 
+
     @Schema(description = "联系电话")
     private String contactPhone;
     @Schema(description = "仓库描述")

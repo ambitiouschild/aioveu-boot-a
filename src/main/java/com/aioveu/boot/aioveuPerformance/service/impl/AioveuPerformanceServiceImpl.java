@@ -8,6 +8,8 @@ import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuPosition.model.form.AioveuPositionForm;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -132,12 +134,15 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
     @Override
     public boolean saveAioveuPerformance(AioveuPerformanceForm formData) {
 
-        new EmployeeNameValidator<>(
-                formData,
-                (form) -> form.getEmployeeName(), // Lambda 表达式
-                (form, id) -> form.setEmployeeId(id),
-                aioveuEmployeeService
 
+        EmployeeNameValidator.validateEntityExists(
+                formData,
+                AioveuPerformanceForm::getEmployeeName, // 方法引用
+                AioveuEmployee::getName, // 方法引用
+                AioveuPerformanceForm::setEmployeeId,
+                AioveuEmployee::getEmployeeId, // 方法引用返回 long
+                aioveuEmployeeService,
+                "员工"
         );
 
         AioveuPerformance entity = aioveuPerformanceConverter.toEntity(formData);
