@@ -35,8 +35,12 @@ public class AioveuSalesOrderForm implements Serializable {
     @NotNull(message = "客户ID不能为空")
     private Integer customerId;
 
+    private String customerName;
+
     @Schema(description = "联系人ID")
     private Integer contactId;
+
+    private String contactName;
 
     @Schema(description = "下单时间")
     @NotNull(message = "下单时间不能为空")
