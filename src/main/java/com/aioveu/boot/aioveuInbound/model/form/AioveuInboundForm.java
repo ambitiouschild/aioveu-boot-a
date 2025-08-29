@@ -35,9 +35,13 @@ public class AioveuInboundForm implements Serializable {
     @NotNull(message = "物资ID不能为空")
     private Integer materialId;
 
+    private String materialName;
+
     @Schema(description = "仓库ID")
     @NotNull(message = "仓库ID不能为空")
     private Integer warehouseId;
+
+    private String warehouseName;
 
     @Schema(description = "入库数量（支持小数计量）")
     @NotNull(message = "入库数量（支持小数计量）不能为空")

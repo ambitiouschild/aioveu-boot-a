@@ -1,14 +1,19 @@
 package com.aioveu.boot.aioveuInbound.service.impl;
 
+import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -85,8 +90,76 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
      */
     @Override
     public AioveuInboundForm getAioveuInboundFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuInbound entity = this.getById(id);
-        return aioveuInboundConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+        // 2. 将实体转换为表单对象
+        AioveuInboundForm form = aioveuInboundConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getMaterialId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuMaterial> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuMaterial::getId, entity.getMaterialId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuMaterial::getName); // 只选择需要的字段
+
+            AioveuMaterial material = aioveuMaterialService.getOne(Wrapper);
+
+            if (material != null) {
+                form.setMaterialName(material.getName());
+            }
+        }
+
+        if (entity.getWarehouseId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuWarehouse> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuWarehouse::getId, entity.getWarehouseId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuWarehouse::getName); // 只选择需要的字段
+
+            AioveuWarehouse warehouse = aioveuWarehouseService.getOne(Wrapper);
+
+            if (warehouse != null) {
+                form.setWarehouseName(warehouse.getName());
+            }
+        }
+
+        if (entity.getOperatorId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getOperatorId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setOperatorName(employee.getName());
+            }
+        }
+
+        return form;
     }
     
     /**
