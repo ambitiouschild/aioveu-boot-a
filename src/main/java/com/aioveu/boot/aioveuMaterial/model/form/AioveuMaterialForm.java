@@ -28,8 +28,7 @@ public class AioveuMaterialForm implements Serializable {
     private String name;
 
     @Schema(description = "分类ID")
-    @NotNull(message = "分类ID不能为空")
-    private Integer categoryId;
+    private Long categoryId;
 
     private String categoryName;
 

@@ -4,9 +4,12 @@ import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
+import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameValidator;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -118,6 +121,23 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
      */
     @Override
     public boolean saveAioveuMaterial(AioveuMaterialForm formData) {
+        // 字段1：检查是否唯一（对于不依赖外键的字段，不可重复）
+        LambdaQueryWrapper<AioveuMaterial> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuMaterial::getName, formData.getName());
+        if (count(queryWrapper) > 0) {
+            throw new RuntimeException("物资: " + formData.getName() + " 已存在");
+        }
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
+        new CategoryNameValidator<>(
+                formData,
+                (form) -> form.getCategoryName(), // Lambda 表达式
+                (form, id) -> form.setCategoryId(id),
+                aioveuCategoryService
+
+        );
+
+
         AioveuMaterial entity = aioveuMaterialConverter.toEntity(formData);
         return this.save(entity);
     }

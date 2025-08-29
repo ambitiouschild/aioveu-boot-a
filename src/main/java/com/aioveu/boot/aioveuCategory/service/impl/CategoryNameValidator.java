@@ -66,11 +66,12 @@ public class CategoryNameValidator<T> {
 
 /*
 
-        new EmployeeNameValidator<>(
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
+        new CategoryNameValidator<>(
                 formData,
-                (form) -> form.getEmployeeName(), // Lambda 表达式
-                (form, id) -> form.setEmployeeId(id),
-                aioveuEmployeeService
+                (form) -> form.getCategoryName(), // Lambda 表达式
+                (form, id) -> form.setCategoryId(id),
+                aioveuCategoryService
 
         );
 
