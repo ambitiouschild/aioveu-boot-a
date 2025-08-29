@@ -108,6 +108,26 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
      */
     @Override
     public boolean saveAioveuPosition(AioveuPositionForm formData) {
+        // 字段1：检查是否已存在相同名称的记录（对于不依赖外键的字段）
+        LambdaQueryWrapper<AioveuPosition> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuPosition::getPositionName, formData.getPositionName());
+        if (count(queryWrapper) > 0) {
+            throw new RuntimeException("名称已存在");
+        }
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段）
+        LambdaQueryWrapper<AioveuDepartment> depWrapper = new LambdaQueryWrapper<>();
+        depWrapper.eq(AioveuDepartment::getDeptName, formData.getDeptName());
+
+
+        AioveuDepartment department = aioveuDepartmentService.getOne(depWrapper);
+        if (department != null) {
+            formData.setDeptId(department.getDeptId());
+        } else {
+            throw new RuntimeException("部门名称不存在");
+        }
+
+
         AioveuPosition entity = aioveuPositionConverter.toEntity(formData);
         return this.save(entity);
     }
