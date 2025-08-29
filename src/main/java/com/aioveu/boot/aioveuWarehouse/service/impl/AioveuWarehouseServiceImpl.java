@@ -2,11 +2,13 @@ package com.aioveu.boot.aioveuWarehouse.service.impl;
 
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.model.vo.WarehouseOptionVO;
 import com.aliyun.oss.ServiceException;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,8 +76,37 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
      */
     @Override
     public AioveuWarehouseForm getAioveuWarehouseFormData(Long id) {
+        // 1. 根据ID获取实体信息
         AioveuWarehouse entity = this.getById(id);
-        return aioveuWarehouseConverter.toForm(entity);
+        if (entity == null) {
+            throw new ServiceException("不存在");
+        }
+
+        // 2. 将实体转换为表单对象
+        AioveuWarehouseForm form = aioveuWarehouseConverter.toForm(entity);
+
+        // 3. 处理映射信息（如果存在）
+        if (entity.getManagerId() != null) {
+            // 使用 MyBatis-Plus 的 LambdaQueryWrapper 查询信息
+            // 创建一个 LambdaQueryWrapper 对象，用于构建查询条件
+            // 泛型 <AioveuDepartment> 指定了查询的实体类型
+            LambdaQueryWrapper<AioveuEmployee> Wrapper = new LambdaQueryWrapper<>();
+            // 添加查询条件：部门ID等于指定值
+            // AioveuDepartment::getDeptId 是方法引用，表示查询 dept_id 字段
+            // entity.getDeptId() 是获取要查询的具体部门ID值
+            Wrapper.eq(AioveuEmployee::getEmployeeId, entity.getManagerId())
+                    // 指定只选择 dept_name 字段，而不是所有字段
+                    // 这是一个性能优化，减少不必要的数据传输
+                    .select(AioveuEmployee::getName); // 只选择需要的字段
+
+            AioveuEmployee employee = aioveuEmployeeService.getOne(Wrapper);
+
+            if (employee != null) {
+                form.setManagerName(employee.getName());
+            }
+        }
+
+        return form;
     }
     
     /**
