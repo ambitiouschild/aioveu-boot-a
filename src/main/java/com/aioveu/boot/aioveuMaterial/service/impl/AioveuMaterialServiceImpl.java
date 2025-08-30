@@ -4,7 +4,10 @@ import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameValidator;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -122,13 +125,16 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
             throw new RuntimeException("物资: " + formData.getName() + " 已存在");
         }
 
-        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
-        new CategoryNameValidator<>(
-                formData,
-                (form) -> form.getCategoryName(), // Lambda 表达式
-                (form, id) -> form.setCategoryId(id),
-                aioveuCategoryService
 
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuMaterialForm::getCategoryName,
+                AioveuCategory::getName,
+                AioveuMaterialForm::setCategoryId,
+                AioveuCategory::getId,
+                aioveuCategoryService,
+                "分类： "
         );
 
 
@@ -153,6 +159,18 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
             throw new ServiceException("记录不存在");
 
         }
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuMaterialForm::getCategoryName,
+                AioveuCategory::getName,
+                AioveuMaterialForm::setCategoryId,
+                AioveuCategory::getId,
+                aioveuCategoryService,
+                "分类： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuMaterial entity = aioveuMaterialConverter.toEntity(formData);
 
