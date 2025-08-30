@@ -68,10 +68,10 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     @Override
     public IPage<AioveuDepartmentVO> getAioveuDepartmentPage(AioveuDepartmentQuery queryParams) {
 
-        // 处理部门名称映射
-        if (StringUtils.isNotBlank(queryParams.getDeptName())) {
-            Long deptId = this.getIdByName(queryParams.getDeptName());
-            queryParams.setDeptId(deptId);
+        // 处理上级部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getParentDeptName())) {
+            Long parentDeptId = this.getIdByName(queryParams.getParentDeptName());
+            queryParams.setParentDeptId(parentDeptId);
         }
 
         Page<AioveuDepartmentVO> pageVO = this.baseMapper.getAioveuDepartmentPage(
