@@ -22,7 +22,10 @@ public class AioveuAttendanceQuery extends BasePageQuery {
     @Schema(description = "考勤ID")
     private Integer attendanceId;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
+
+    private String employeeName;
+
     @Schema(description = "日期")
     private List<String> date;
     @Schema(description = "上班打卡时间")

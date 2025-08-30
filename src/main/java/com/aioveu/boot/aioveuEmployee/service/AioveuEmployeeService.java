@@ -1,5 +1,7 @@
 package com.aioveu.boot.aioveuEmployee.service;
 
+import com.aioveu.boot.aioveuDepartment.mapper.AioveuDepartmentMapper;
+import com.aioveu.boot.aioveuEmployee.mapper.AioveuEmployeeMapper;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.model.form.AioveuEmployeeForm;
 import com.aioveu.boot.aioveuEmployee.model.query.AioveuEmployeeQuery;
@@ -7,6 +9,7 @@ import com.aioveu.boot.aioveuEmployee.model.vo.AioveuEmployeeVO;
 import com.aioveu.boot.aioveuEmployee.model.vo.EmployeeVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -18,6 +21,10 @@ import java.util.Map;
  * @since 2025-08-18 17:29
  */
 public interface AioveuEmployeeService extends IService<AioveuEmployee> {
+
+
+
+    Long getIdByName(String name);
 
     /**
      *员工信息分页列表

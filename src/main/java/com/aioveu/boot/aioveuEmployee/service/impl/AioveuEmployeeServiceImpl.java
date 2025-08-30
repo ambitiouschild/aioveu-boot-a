@@ -57,6 +57,15 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
     private final AioveuEmployeeMapper employeeMapper;
 
 
+
+    @Autowired
+    private AioveuEmployeeMapper aioveuEmployeeMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuEmployeeMapper.findIdByName(name);
+    }
+
     /**
     * 获取员工信息分页列表
     *

@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuAttendance.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
@@ -58,6 +59,13 @@ public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMap
     */
     @Override
     public IPage<AioveuAttendanceVO> getAioveuAttendancePage(AioveuAttendanceQuery queryParams) {
+        // 处理员工名称映射
+        if (StringUtils.isNotBlank(queryParams.getEmployeeName())) {
+                Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getEmployeeName());
+            queryParams.setEmployeeId(employeeId);
+        }
+
+
         Page<AioveuAttendanceVO> pageVO = this.baseMapper.getAioveuAttendancePage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

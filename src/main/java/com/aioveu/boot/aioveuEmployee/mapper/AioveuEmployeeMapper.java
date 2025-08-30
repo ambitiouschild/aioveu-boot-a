@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuEmployee.model.query.AioveuEmployeeQuery;
 import com.aioveu.boot.aioveuEmployee.model.vo.AioveuEmployeeVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 员工信息Mapper接口
@@ -25,4 +27,7 @@ public interface AioveuEmployeeMapper extends BaseMapper<AioveuEmployee> {
      */
     Page<AioveuEmployeeVO> getAioveuEmployeePage(Page<AioveuEmployeeVO> page, AioveuEmployeeQuery queryParams);
 
+
+    @Select("SELECT employee_id FROM aioveu_employee WHERE name = #{name}")
+    Long findIdByName(@Param("name") String name);
 }
