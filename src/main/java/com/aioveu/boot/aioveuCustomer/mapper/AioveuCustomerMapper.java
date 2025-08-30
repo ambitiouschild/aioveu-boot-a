@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuCustomer.model.query.AioveuCustomerQuery;
 import com.aioveu.boot.aioveuCustomer.model.vo.AioveuCustomerVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 客户信息Mapper接口
@@ -24,5 +26,9 @@ public interface AioveuCustomerMapper extends BaseMapper<AioveuCustomer> {
      * @return {@link Page<AioveuCustomerVO>} 客户信息分页列表
      */
     Page<AioveuCustomerVO> getAioveuCustomerPage(Page<AioveuCustomerVO> page, AioveuCustomerQuery queryParams);
+
+    @Select("SELECT id FROM aioveu_customer WHERE name = #{name}")
+    Long findIdByName(@Param("name") String name);
+
 
 }

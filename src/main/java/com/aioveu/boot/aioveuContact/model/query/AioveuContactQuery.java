@@ -19,7 +19,10 @@ public class AioveuContactQuery extends BasePageQuery {
     @Schema(description = "联系人ID（主键）")
     private Integer id;
     @Schema(description = "客户ID")
-    private Integer customerId;
+    private Long customerId;
+
+    private String customerName;
+
     @Schema(description = "联系人姓名")
     private String name;
     @Schema(description = "手机号码")

@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuContact.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
 import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
@@ -65,6 +66,13 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
     */
     @Override
     public IPage<AioveuContactVO> getAioveuContactPage(AioveuContactQuery queryParams) {
+        // 处理客户名称映射
+        if (StringUtils.isNotBlank(queryParams.getCustomerName())) {
+            Long customerId = aioveuCustomerService.getIdByName(queryParams.getCustomerName());
+            queryParams.setCustomerId(customerId);
+        }
+
+
         Page<AioveuContactVO> pageVO = this.baseMapper.getAioveuContactPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
