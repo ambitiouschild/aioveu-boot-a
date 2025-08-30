@@ -251,18 +251,6 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
             log.info("员工编号未修改，跳过唯一性检查");
         }
         //--------------------------------------------------------------------------------
-        LambdaQueryWrapper<AioveuEmployee> queryWrapper = new LambdaQueryWrapper<>();
-        // 字段2：检查是否已存在相同名称的记录（对于不依赖外键的字段，不可重复）
-        queryWrapper.eq(AioveuEmployee::getName, formData.getName());
-        if (count(queryWrapper) > 0) {
-            throw new RuntimeException("姓名: "+ formData.getName() +"已存在");
-        }
-
-        // 字段3：检查员工编号是否唯一（对于不依赖外键的字段，不可重复）
-        queryWrapper.eq(AioveuEmployee::getIdCard, formData.getIdCard());
-        if (count(queryWrapper) > 0) {
-            throw new ServiceException("身份证号: " + formData.getIdCard() + " 已存在");
-        }
 
         // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "岗位不存在")
         LambdaQueryWrapper<AioveuDepartment> depWrapper = new LambdaQueryWrapper<>();
