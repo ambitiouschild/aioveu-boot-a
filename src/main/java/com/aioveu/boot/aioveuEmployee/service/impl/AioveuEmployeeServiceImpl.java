@@ -11,6 +11,7 @@ import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import com.aioveu.boot.aioveuPosition.service.AioveuPositionService;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import groovy.lang.Lazy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,6 +87,10 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
             Long positionId = aioveuPositionService.getIdByName(queryParams.getPositionName());
             queryParams.setPositionId(positionId);
         }
+
+        // 创建分页对象，并强制添加创建时间降序排序（最新在前）
+        Page<AioveuEmployeeVO> page = new Page<>(queryParams.getPageNum(), queryParams.getPageSize());
+        page.addOrder(OrderItem.desc("create_time")); // 添加这一行即可
 
         Page<AioveuEmployeeVO> pageVO = this.baseMapper.getAioveuEmployeePage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
