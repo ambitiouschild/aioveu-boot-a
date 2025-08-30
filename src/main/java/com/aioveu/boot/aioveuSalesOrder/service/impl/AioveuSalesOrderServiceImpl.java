@@ -7,6 +7,7 @@ import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
 import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuDepartment.mapper.AioveuDepartmentMapper;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
@@ -62,6 +63,15 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
 
     @Autowired
     private AioveuContactService aioveuContactService;
+
+
+    @Autowired
+    private AioveuSalesOrderMapper aioveuSalesOrderMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuSalesOrderMapper.findIdByName(name);
+    }
 
 
     /**

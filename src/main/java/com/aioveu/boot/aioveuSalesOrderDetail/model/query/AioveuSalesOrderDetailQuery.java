@@ -20,11 +20,20 @@ public class AioveuSalesOrderDetailQuery extends BasePageQuery {
     @Schema(description = "明细ID")
     private Integer id;
     @Schema(description = "订单ID")
-    private Integer orderId;
+    private Long orderId;
+
+    private String orderName;
+
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    private String materialName;
+
     @Schema(description = "发货仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    private String warehouseName;
+
     @Schema(description = "明细状态")
     private Integer status;
 }

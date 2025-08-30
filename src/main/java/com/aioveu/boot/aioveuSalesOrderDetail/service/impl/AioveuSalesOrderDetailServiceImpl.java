@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuSalesOrderDetail.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
@@ -68,6 +69,24 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     */
     @Override
     public IPage<AioveuSalesOrderDetailVO> getAioveuSalesOrderDetailPage(AioveuSalesOrderDetailQuery queryParams) {
+
+        // 处理订单名称映射
+        if (StringUtils.isNotBlank(queryParams.getOrderName())) {
+            Long salesOrderId = aioveuSalesOrderService.getIdByName(queryParams.getOrderName());
+            queryParams.setOrderId(salesOrderId);
+        }
+
+        // 处理物资名称映射
+        if (StringUtils.isNotBlank(queryParams.getMaterialName())) {
+            Long materialId = aioveuMaterialService.getIdByName(queryParams.getMaterialName());
+            queryParams.setMaterialId(materialId);
+        }
+
+        // 处理仓库名称映射
+        if (StringUtils.isNotBlank(queryParams.getWarehouseName())) {
+            Long warehouseId = aioveuWarehouseService.getIdByName(queryParams.getWarehouseName());
+            queryParams.setWarehouseId(warehouseId);
+        }
         Page<AioveuSalesOrderDetailVO> pageVO = this.baseMapper.getAioveuSalesOrderDetailPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
