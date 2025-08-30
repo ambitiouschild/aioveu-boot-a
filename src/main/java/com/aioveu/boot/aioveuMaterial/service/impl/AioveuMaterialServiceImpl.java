@@ -55,6 +55,14 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
     private AioveuCategoryService aioveuCategoryService;
 
 
+    @Autowired
+    private AioveuMaterialMapper aioveuMaterialMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuMaterialMapper.findIdByName(name);
+    }
+
     /**
     * 获取物资分页列表
     *

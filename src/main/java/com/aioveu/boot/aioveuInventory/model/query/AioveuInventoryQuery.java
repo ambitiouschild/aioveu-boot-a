@@ -22,9 +22,13 @@ public class AioveuInventoryQuery extends BasePageQuery {
     @Schema(description = "库存ID")
     private Integer id;
     @Schema(description = "仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    private String warehouseName;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    private String materialName;
     @Schema(description = "生产日期")
     private List<String> productionDate;
     @Schema(description = "有效期至")

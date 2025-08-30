@@ -21,6 +21,7 @@ public interface AioveuMaterialService extends IService<AioveuMaterial> {
 
 
 
+    Long getIdByName(String name);
 
     /**
      *物资分页列表

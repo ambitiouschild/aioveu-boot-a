@@ -1,6 +1,7 @@
 package com.aioveu.boot.aioveuWarehouse.service.impl;
 
 import cn.idev.excel.util.StringUtils;
+import com.aioveu.boot.aioveuDepartment.mapper.AioveuDepartmentMapper;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
@@ -47,6 +48,16 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
 
     @Autowired
     private AioveuEmployeeService aioveuEmployeeService;
+
+
+    @Autowired
+    private AioveuWarehouseMapper aioveuWarehouseMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuWarehouseMapper.findIdByName(name);
+    }
+
 
     /**
     * 获取仓库信息分页列表

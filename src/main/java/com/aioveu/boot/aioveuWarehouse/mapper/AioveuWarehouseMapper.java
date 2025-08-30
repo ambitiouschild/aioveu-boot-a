@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuWarehouse.model.query.AioveuWarehouseQuery;
 import com.aioveu.boot.aioveuWarehouse.model.vo.AioveuWarehouseVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 仓库信息Mapper接口
@@ -24,5 +26,8 @@ public interface AioveuWarehouseMapper extends BaseMapper<AioveuWarehouse> {
      * @return {@link Page<AioveuWarehouseVO>} 仓库信息分页列表
      */
     Page<AioveuWarehouseVO> getAioveuWarehousePage(Page<AioveuWarehouseVO> page, AioveuWarehouseQuery queryParams);
+
+    @Select("SELECT id FROM aioveu_warehouse WHERE name = #{name}")
+    Long findIdByName(@Param("name") String name);
 
 }

@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuInventory.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
@@ -59,6 +60,20 @@ public class AioveuInventoryServiceImpl extends ServiceImpl<AioveuInventoryMappe
     */
     @Override
     public IPage<AioveuInventoryVO> getAioveuInventoryPage(AioveuInventoryQuery queryParams) {
+
+        // 处理仓库名称映射
+        if (StringUtils.isNotBlank(queryParams.getWarehouseName())) {
+            Long warehouseId = aioveuWarehouseService.getIdByName(queryParams.getWarehouseName());
+            queryParams.setWarehouseId(warehouseId);
+        }
+
+
+        // 处理物资名称映射
+        if (StringUtils.isNotBlank(queryParams.getMaterialName())) {
+            Long materialId = aioveuMaterialService.getIdByName(queryParams.getMaterialName());
+            queryParams.setMaterialId(materialId);
+        }
+
         Page<AioveuInventoryVO> pageVO = this.baseMapper.getAioveuInventoryPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
