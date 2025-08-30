@@ -28,7 +28,7 @@ import java.util.function.ToLongFunction;
 
 /**
  * 员工姓名验证器
- *
+ * 最成功的系统是平衡了抽象和具体的系统。抽象方法就像软件设计中的食盐：太少则设计平淡无力，太多则破坏整体风味。
  * <p>在构造函数中直接执行验证逻辑</p>
  */
 public class NameValidator {

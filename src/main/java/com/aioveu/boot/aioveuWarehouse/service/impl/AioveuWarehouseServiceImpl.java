@@ -145,7 +145,7 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
                 AioveuWarehouseForm::setManagerId, // 直接使用方法引用
                 AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
                 aioveuEmployeeService,  // 员工服务（不是this）
-                "经理"  // 实体名称（用于错误消息）
+                "负责人： "  // 实体名称（用于错误消息）
         );
 
 
@@ -169,6 +169,18 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
             throw new ServiceException("记录不存在");
 
         }
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuWarehouseForm::getManagerName,  // 获取经理姓名的方法
+                AioveuEmployee::getName,  // 实体字段：员工姓名
+//                (form, id) -> form.setManagerId(id), // 设置经理ID的方法  // 使用显式Lambda（推荐）
+                AioveuWarehouseForm::setManagerId, // 直接使用方法引用
+                AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
+                aioveuEmployeeService,  // 员工服务（不是this）
+                "负责人： "  // 实体名称（用于错误消息）
+        );
 
         // 2. 将表单数据转换为实体对象
         AioveuWarehouse entity = aioveuWarehouseConverter.toEntity(formData);
