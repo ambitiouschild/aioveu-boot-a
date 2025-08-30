@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuSalary.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
@@ -50,6 +51,13 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
     */
     @Override
     public IPage<AioveuSalaryVO> getAioveuSalaryPage(AioveuSalaryQuery queryParams) {
+
+        // 处理部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getEmployeeName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getEmployeeName());
+            queryParams.setEmployeeId(employeeId);
+        }
+
         Page<AioveuSalaryVO> pageVO = this.baseMapper.getAioveuSalaryPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

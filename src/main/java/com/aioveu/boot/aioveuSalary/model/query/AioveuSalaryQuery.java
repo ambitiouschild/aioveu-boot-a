@@ -21,7 +21,10 @@ public class AioveuSalaryQuery extends BasePageQuery {
     @Schema(description = "工资记录ID")
     private Long id;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
+
+    private String employeeName;
+
     @Schema(description = "工资周期（月份）")
     private List<String> salaryPeriod;
     @Schema(description = "基本工资")
