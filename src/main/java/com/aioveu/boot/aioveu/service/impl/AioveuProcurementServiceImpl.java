@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveu.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
@@ -68,6 +69,20 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
     */
     @Override
     public IPage<AioveuProcurementVO> getAioveuProcurementPage(AioveuProcurementQuery queryParams) {
+
+        // 处理物资名称映射
+        if (StringUtils.isNotBlank(queryParams.getMaterialName())) {
+            Long materialId = aioveuMaterialService.getIdByName(queryParams.getMaterialName());
+            queryParams.setMaterialId(materialId);
+        }
+
+
+        // 处理申请人名称映射
+        if (StringUtils.isNotBlank(queryParams.getApplicantName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getApplicantName());
+            queryParams.setApplicantId(employeeId);
+        }
+
         Page<AioveuProcurementVO> pageVO = this.baseMapper.getAioveuProcurementPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

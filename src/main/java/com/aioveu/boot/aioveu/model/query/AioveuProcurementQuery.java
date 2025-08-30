@@ -26,11 +26,16 @@ public class AioveuProcurementQuery extends BasePageQuery {
     @Schema(description = "供应商ID")
     private Integer supplierId;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    private String materialName;
+
     @Schema(description = "下单时间")
     private List<String> orderDate;
     @Schema(description = "状态")
     private Integer status;
     @Schema(description = "申请人ID")
-    private Integer applicantId;
+    private Long applicantId;
+
+    private String applicantName;
 }
