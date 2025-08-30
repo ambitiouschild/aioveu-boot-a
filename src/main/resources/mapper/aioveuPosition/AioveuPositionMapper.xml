@@ -24,8 +24,8 @@
             <if test="queryParams.deptId != null">
                 AND dept_id LIKE CONCAT('%', #{queryParams.deptId}, '%')
             </if>
-            <if test="queryParams.positionLevel != null">
-                AND position_level LIKE CONCAT('%', #{queryParams.positionLevel}, '%')
+            <if test="queryParams.positionLevel != null  and queryParams.positionLevel != ''">
+                AND position_level = #{queryParams.positionLevel}
             </if>
             <if test="queryParams.description != null and queryParams.description != ''">
                 AND description LIKE CONCAT('%', #{queryParams.description}, '%')
