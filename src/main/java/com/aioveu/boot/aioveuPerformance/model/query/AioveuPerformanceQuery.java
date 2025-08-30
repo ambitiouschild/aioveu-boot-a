@@ -21,7 +21,9 @@ public class AioveuPerformanceQuery extends BasePageQuery {
     @Schema(description = "绩效记录ID")
     private Long id;
     @Schema(description = "员工ID")
-    private Integer employeeId;
+    private Long employeeId;
+
+    private String employeeName;
     @Schema(description = "考核年份")
     private Integer periodYear;
     @Schema(description = "考核季度(1-4)")

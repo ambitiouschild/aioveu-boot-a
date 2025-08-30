@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuPerformance.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
@@ -55,6 +56,14 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
     */
     @Override
     public IPage<AioveuPerformanceVO> getAioveuPerformancePage(AioveuPerformanceQuery queryParams) {
+
+        // 处理员工名称映射
+        if (StringUtils.isNotBlank(queryParams.getEmployeeName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getEmployeeName());
+            queryParams.setEmployeeId(employeeId);
+        }
+
+
         Page<AioveuPerformanceVO> pageVO = this.baseMapper.getAioveuPerformancePage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
