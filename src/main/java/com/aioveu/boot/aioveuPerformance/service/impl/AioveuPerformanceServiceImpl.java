@@ -159,6 +159,16 @@ public class AioveuPerformanceServiceImpl extends ServiceImpl<AioveuPerformanceM
             throw new ServiceException("绩效考评记录不存在");
         }
 
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuPerformanceForm::getEmployeeName, // 方法引用
+                AioveuEmployee::getName, // 方法引用
+                AioveuPerformanceForm::setEmployeeId,
+                AioveuEmployee::getEmployeeId, // 方法引用返回 long
+                aioveuEmployeeService,
+                "员工"
+        );
+
         // 3. 将表单数据转换为实体对象
         AioveuPerformance entity = aioveuPerformanceConverter.toEntity(formData);
 
