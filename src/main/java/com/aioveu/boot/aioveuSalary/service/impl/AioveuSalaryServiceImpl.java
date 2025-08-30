@@ -141,6 +141,18 @@ public class AioveuSalaryServiceImpl extends ServiceImpl<AioveuSalaryMapper, Aio
             throw new RuntimeException("工资记录不存在，ID: " + id);
         }
 
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalaryForm::getEmployeeName,  // 获取经理姓名的方法
+                AioveuEmployee::getName,  // 实体字段：员工姓名
+//                (form, id) -> form.setManagerId(id), // 设置经理ID的方法  // 使用显式Lambda（推荐）
+                AioveuSalaryForm::setEmployeeId, // 直接使用方法引用
+                AioveuEmployee::getEmployeeId, // 从员工实体获取ID的方法
+                aioveuEmployeeService,  // 员工服务（不是this）
+                "员工"  // 实体名称（用于错误消息）
+        );
+
         // 2. 转换表单数据到实体对象并设置ID
         AioveuSalary entity = aioveuSalaryConverter.toEntity(formData);
         entity.setId(id);  // 设置主键ID
