@@ -4,11 +4,13 @@ import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
 import com.aioveu.boot.aioveuMaterial.service.impl.MaterialNameSetter;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
 import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
@@ -168,6 +170,66 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
      */
     @Override
     public boolean saveAioveuProcurement(AioveuProcurementForm formData) {
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuProcurementForm::getProcurementNo,
+                AioveuProcurement::getProcurementNo,
+                null,
+                this,
+                "采购单号： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuProcurementForm::setMaterialId,
+                AioveuMaterial::getId,
+                aioveuMaterialService,
+                "物资： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuProcurementForm::setWarehouseId,
+                AioveuWarehouse::getId,
+                aioveuWarehouseService,
+                "仓库: "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getApplicantName,
+                AioveuEmployee::getName,
+                AioveuProcurementForm::setApplicantId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "申请人: "
+        );
+
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getReviewerName,
+                AioveuEmployee::getName,
+                AioveuProcurementForm::setReviewerId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "审核人: "
+        );
+
+
+
+
+
         AioveuProcurement entity = aioveuProcurementConverter.toEntity(formData);
         return this.save(entity);
     }

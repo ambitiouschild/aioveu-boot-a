@@ -32,12 +32,10 @@ public class AioveuProcurementForm implements Serializable {
     private String procurementNo;
 
     @Schema(description = "供应商ID")
-    @NotNull(message = "供应商ID不能为空")
     private Integer supplierId;
 
     @Schema(description = "物资ID")
-    @NotNull(message = "物资ID不能为空")
-    private Integer materialId;
+    private Long materialId;
 
     private String materialName;
 
@@ -69,7 +67,7 @@ public class AioveuProcurementForm implements Serializable {
     private LocalDateTime receiptDate;
 
     @Schema(description = "入库仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
 
     private String warehouseName;
 
@@ -82,7 +80,6 @@ public class AioveuProcurementForm implements Serializable {
     private Integer status;
 
     @Schema(description = "申请人ID")
-    @NotNull(message = "申请人ID不能为空")
     private Long applicantId;
 
     /**
@@ -91,7 +88,6 @@ public class AioveuProcurementForm implements Serializable {
     private String applicantName;
 
     @Schema(description = "审核人ID")
-    @NotNull(message = "审核人ID不能为空")
     private Long reviewerId;
 
     /**
