@@ -1,19 +1,16 @@
 package com.aioveu.boot.aioveuTransaction.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuContact.model.entity.AioveuContact;
 import com.aioveu.boot.aioveuContact.service.AioveuContactService;
 import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
 import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
-import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
 import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
-import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
-import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
-import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +29,6 @@ import com.aioveu.boot.aioveuTransaction.converter.AioveuTransactionConverter;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
@@ -70,6 +66,20 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
     */
     @Override
     public IPage<AioveuTransactionVO> getAioveuTransactionPage(AioveuTransactionQuery queryParams) {
+
+        // 处理客户名称映射
+        if (StringUtils.isNotBlank(queryParams.getCustomerName())) {
+            Long customerId = aioveuCustomerService.getIdByName(queryParams.getCustomerName());
+            queryParams.setCustomerId(customerId);
+        }
+
+        // 处理联系人名称映射
+        if (StringUtils.isNotBlank(queryParams.getContactName())) {
+            Long contactId = aioveuContactService.getIdByName(queryParams.getContactName());
+            queryParams.setContactId(contactId);
+        }
+
+
         Page<AioveuTransactionVO> pageVO = this.baseMapper.getAioveuTransactionPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

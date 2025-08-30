@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuContact.model.query.AioveuContactQuery;
 import com.aioveu.boot.aioveuContact.model.vo.AioveuContactVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 客户联系人Mapper接口
@@ -24,5 +26,10 @@ public interface AioveuContactMapper extends BaseMapper<AioveuContact> {
      * @return {@link Page<AioveuContactVO>} 客户联系人分页列表
      */
     Page<AioveuContactVO> getAioveuContactPage(Page<AioveuContactVO> page, AioveuContactQuery queryParams);
+
+    @Select("SELECT id FROM aioveu_contact WHERE name = #{name}")
+    Long findIdByName(@Param("name") String name);
+
+
 
 }

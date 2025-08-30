@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public interface AioveuContactService extends IService<AioveuContact> {
 
+
+
+    Long getIdByName(String name);
     /**
      *客户联系人分页列表
      *

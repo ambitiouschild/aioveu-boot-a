@@ -24,9 +24,15 @@ public class AioveuTransactionQuery extends BasePageQuery {
     @Schema(description = "交易编号")
     private String transactionNo;
     @Schema(description = "客户ID")
-    private Integer customerId;
+    private Long customerId;
+
+    private String customerName;
+
     @Schema(description = "联系人ID")
-    private Integer contactId;
+    private Long contactId;
+
+    private String contactName;
+
     @Schema(description = "交易日期")
     private List<String> transactionDate;
     @Schema(description = "支付方式")

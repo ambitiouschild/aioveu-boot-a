@@ -2,9 +2,11 @@ package com.aioveu.boot.aioveuContact.service.impl;
 
 import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuContact.model.vo.ContactOptionVO;
+import com.aioveu.boot.aioveuCustomer.mapper.AioveuCustomerMapper;
 import com.aioveu.boot.aioveuCustomer.model.entity.AioveuCustomer;
 import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
+import com.aioveu.boot.aioveuDepartment.mapper.AioveuDepartmentMapper;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
@@ -57,6 +59,16 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
     private AioveuCustomerService aioveuCustomerService;
     @Autowired
     private  AioveuContactMapper  aioveuContactMapper;
+
+
+    @Autowired
+    private AioveuCustomerMapper aioveuCustomerMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuContactMapper.findIdByName(name);
+    }
+
 
     /**
     * 获取客户联系人分页列表
