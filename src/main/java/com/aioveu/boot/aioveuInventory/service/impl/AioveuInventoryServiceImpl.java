@@ -187,6 +187,28 @@ public class AioveuInventoryServiceImpl extends ServiceImpl<AioveuInventoryMappe
 
         }
 
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuInventoryForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuInventoryForm::setWarehouseId,
+                AioveuWarehouse::getId, // 方法引用返回 long
+                aioveuWarehouseService,
+                "仓库："
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuInventoryForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuInventoryForm::setMaterialId,
+                AioveuMaterial::getId, // 方法引用返回 long
+                aioveuMaterialService,
+                "物资："
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuInventory entity = aioveuInventoryConverter.toEntity(formData);
 
