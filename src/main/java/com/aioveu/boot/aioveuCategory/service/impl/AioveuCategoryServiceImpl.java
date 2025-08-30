@@ -1,6 +1,9 @@
 package com.aioveu.boot.aioveuCategory.service.impl;
 
 import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -105,12 +108,15 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
             throw new RuntimeException("分类: " + formData.getName() + " 已存在");
         }
 
-        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
-        new CategoryNameValidator<>(
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
                 formData,
-                (form) -> form.getParentCategoryName(), // Lambda 表达式
-                (form, id) -> form.setParentId(id),
-                this
+                AioveuCategoryForm::getParentCategoryName,
+                AioveuCategory::getName,
+                AioveuCategoryForm::setParentId,
+                AioveuCategory::getId,
+                this,
+                "分类： "
         );
 
         AioveuCategory entity = aioveuCategoryConverter.toEntity(formData);
@@ -133,6 +139,18 @@ public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper,
             throw new ServiceException("记录不存在");
 
         }
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuCategoryForm::getParentCategoryName,
+                AioveuCategory::getName,
+                AioveuCategoryForm::setParentId,
+                AioveuCategory::getId,
+                this,
+                "分类： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuCategory entity = aioveuCategoryConverter.toEntity(formData);
 
