@@ -152,6 +152,16 @@ public class AioveuAttendanceServiceImpl extends ServiceImpl<AioveuAttendanceMap
             throw new ServiceException("考勤记录不存在");
         }
 
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在")
+        LambdaQueryWrapper<AioveuEmployee> employeeWrapper = new LambdaQueryWrapper<>();
+        employeeWrapper.eq(AioveuEmployee::getName, formData.getEmployeeName());
+
+        AioveuEmployee employee = aioveuEmployeeService.getOne(employeeWrapper);
+        if (employee != null) {
+            formData.setEmployeeId(employee.getEmployeeId());
+        } else {
+            throw new RuntimeException("员工: " + formData.getEmployeeName() + " 不存在");
+        }
 
         // 3. 将表单数据转换为实体对象
         AioveuAttendance entity = aioveuAttendanceConverter.toEntity(formData);
