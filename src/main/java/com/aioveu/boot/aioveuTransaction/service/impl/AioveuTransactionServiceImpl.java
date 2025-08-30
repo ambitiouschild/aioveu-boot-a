@@ -216,6 +216,39 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
 
         }
 
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getCustomerName,
+                AioveuCustomer::getName,
+                AioveuTransactionForm::setCustomerId,
+                AioveuCustomer::getId,
+                aioveuCustomerService,
+                "客户： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getContactName,
+                AioveuContact::getName,
+                AioveuTransactionForm::setContactId,
+                AioveuContact::getId,
+                aioveuContactService,
+                "联系人： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getSalesRepName,
+                AioveuEmployee::getName,
+                AioveuTransactionForm::setSalesRepId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "销售负责人： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuTransaction entity = aioveuTransactionConverter.toEntity(formData);
 
