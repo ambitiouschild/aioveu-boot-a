@@ -19,6 +19,9 @@ import java.util.Map;
  */
 public interface AioveuMaterialService extends IService<AioveuMaterial> {
 
+
+
+
     /**
      *物资分页列表
      *

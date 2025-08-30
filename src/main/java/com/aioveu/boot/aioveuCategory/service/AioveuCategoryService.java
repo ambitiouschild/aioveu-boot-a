@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuCategory.service;
 
+import com.aioveu.boot.aioveuCategory.mapper.AioveuCategoryMapper;
 import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.model.form.AioveuCategoryForm;
 import com.aioveu.boot.aioveuCategory.model.query.AioveuCategoryQuery;
@@ -7,6 +8,7 @@ import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import com.aioveu.boot.aioveuCategory.model.vo.CategoryOptionVO;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +21,10 @@ import java.util.Map;
  */
 public interface AioveuCategoryService extends IService<AioveuCategory> {
 
+
+
+
+    Long getIdByName(String name);
     /**
      *物资分类分页列表
      *

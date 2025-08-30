@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuCategory.model.query.AioveuCategoryQuery;
 import com.aioveu.boot.aioveuCategory.model.vo.AioveuCategoryVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 物资分类Mapper接口
@@ -24,5 +26,8 @@ public interface AioveuCategoryMapper extends BaseMapper<AioveuCategory> {
      * @return {@link Page<AioveuCategoryVO>} 物资分类分页列表
      */
     Page<AioveuCategoryVO> getAioveuCategoryPage(Page<AioveuCategoryVO> page, AioveuCategoryQuery queryParams);
+
+    @Select("SELECT id FROM aioveu_category WHERE name = #{name}")
+    Long findIdByName(@Param("name") String name);
 
 }

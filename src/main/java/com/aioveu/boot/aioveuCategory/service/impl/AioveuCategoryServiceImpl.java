@@ -7,6 +7,7 @@ import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -40,6 +41,15 @@ import lombok.extern.slf4j.Slf4j;
 public class AioveuCategoryServiceImpl extends ServiceImpl<AioveuCategoryMapper, AioveuCategory> implements AioveuCategoryService {
 
     private final AioveuCategoryConverter aioveuCategoryConverter;
+
+    @Autowired
+    private AioveuCategoryMapper aioveuCategoryMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuCategoryMapper.findIdByName(name);
+    }
+
 
     /**
     * 获取物资分类分页列表

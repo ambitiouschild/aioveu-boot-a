@@ -22,7 +22,10 @@ public class AioveuMaterialQuery extends BasePageQuery {
     @Schema(description = "物资名称")
     private String name;
     @Schema(description = "分类ID")
-    private Integer categoryId;
+    private Long categoryId;
+
+    private String categoryName;
+
     @Schema(description = "启用状态")
     private Integer isActive;
     @Schema(description = "商品条码")

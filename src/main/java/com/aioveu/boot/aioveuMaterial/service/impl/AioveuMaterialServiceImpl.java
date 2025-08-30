@@ -1,9 +1,12 @@
 package com.aioveu.boot.aioveuMaterial.service.impl;
 
+import cn.idev.excel.util.StringUtils;
+import com.aioveu.boot.aioveuCategory.mapper.AioveuCategoryMapper;
 import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameValidator;
+import com.aioveu.boot.aioveuDepartment.mapper.AioveuDepartmentMapper;
 import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.MaterialOptionVO;
 import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
@@ -51,6 +54,7 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
     @Autowired
     private AioveuCategoryService aioveuCategoryService;
 
+
     /**
     * 获取物资分页列表
     *
@@ -59,6 +63,14 @@ public class AioveuMaterialServiceImpl extends ServiceImpl<AioveuMaterialMapper,
     */
     @Override
     public IPage<AioveuMaterialVO> getAioveuMaterialPage(AioveuMaterialQuery queryParams) {
+
+        // 处理库存分类名称映射
+        if (StringUtils.isNotBlank(queryParams.getCategoryName())) {
+            Long categoryId = aioveuCategoryService.getIdByName(queryParams.getCategoryName());
+            queryParams.setCategoryId(categoryId);
+        }
+
+
         Page<AioveuMaterialVO> pageVO = this.baseMapper.getAioveuMaterialPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
