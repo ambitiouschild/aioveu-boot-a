@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuSalesOrder.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuContact.model.entity.AioveuContact;
 import com.aioveu.boot.aioveuContact.service.AioveuContactService;
 import com.aioveu.boot.aioveuContact.service.impl.ContactNameSetter;
@@ -71,6 +72,21 @@ public class AioveuSalesOrderServiceImpl extends ServiceImpl<AioveuSalesOrderMap
     */
     @Override
     public IPage<AioveuSalesOrderVO> getAioveuSalesOrderPage(AioveuSalesOrderQuery queryParams) {
+
+
+        // 处理客户名称映射
+        if (StringUtils.isNotBlank(queryParams.getCustomerName())) {
+            Long customerd = aioveuCustomerService.getIdByName(queryParams.getCustomerName());
+            queryParams.setCustomerId(customerd);
+        }
+        // 处理销售名称映射
+        if (StringUtils.isNotBlank(queryParams.getSalesRepName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getSalesRepName());
+            queryParams.setSalesRepId(employeeId);
+        }
+
+
+
         Page<AioveuSalesOrderVO> pageVO = this.baseMapper.getAioveuSalesOrderPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

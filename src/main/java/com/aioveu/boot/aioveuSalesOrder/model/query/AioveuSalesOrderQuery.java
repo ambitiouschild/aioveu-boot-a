@@ -24,7 +24,10 @@ public class AioveuSalesOrderQuery extends BasePageQuery {
     @Schema(description = "订单编号（唯一）")
     private String orderNo;
     @Schema(description = "客户ID")
-    private Integer customerId;
+    private Long customerId;
+
+    private String customerName;
+
     @Schema(description = "下单时间")
     private List<String> orderDate;
     @Schema(description = "支付状态")
@@ -34,5 +37,8 @@ public class AioveuSalesOrderQuery extends BasePageQuery {
     @Schema(description = "运输方式")
     private Integer shippingMethod;
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    private String salesRepName;
+
 }
