@@ -204,6 +204,18 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
             throw new BusinessException("该客户需要存在一个主要联系人");
         }
 
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuContactForm::getCustomerName,
+                AioveuCustomer::getName,
+                AioveuContactForm::setCustomerId,
+                AioveuCustomer::getId,
+                aioveuCustomerService,
+                "客户： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuContact entity = aioveuContactConverter.toEntity(formData);
 
