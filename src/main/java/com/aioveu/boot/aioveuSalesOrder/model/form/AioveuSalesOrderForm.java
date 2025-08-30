@@ -32,13 +32,12 @@ public class AioveuSalesOrderForm implements Serializable {
     private String orderNo;
 
     @Schema(description = "客户ID")
-    @NotNull(message = "客户ID不能为空")
-    private Integer customerId;
+    private Long customerId;
 
     private String customerName;
 
     @Schema(description = "联系人ID")
-    private Integer contactId;
+    private Long contactId;
 
     private String contactName;
 
@@ -105,7 +104,6 @@ public class AioveuSalesOrderForm implements Serializable {
 
 
     @Schema(description = "操作员ID")
-    @NotNull(message = "操作员ID不能为空")
     private Long operatorId;
 
     /**
