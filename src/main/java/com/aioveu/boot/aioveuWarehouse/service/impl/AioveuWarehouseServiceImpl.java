@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuWarehouse.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
@@ -55,6 +56,15 @@ public class AioveuWarehouseServiceImpl extends ServiceImpl<AioveuWarehouseMappe
     */
     @Override
     public IPage<AioveuWarehouseVO> getAioveuWarehousePage(AioveuWarehouseQuery queryParams) {
+
+        // 处理负责人名称映射
+        if (StringUtils.isNotBlank(queryParams.getManagerName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getManagerName());
+            queryParams.setManagerId(employeeId);
+        }
+
+
+
         Page<AioveuWarehouseVO> pageVO = this.baseMapper.getAioveuWarehousePage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

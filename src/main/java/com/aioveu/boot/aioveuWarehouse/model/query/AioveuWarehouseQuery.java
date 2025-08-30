@@ -26,7 +26,9 @@ public class AioveuWarehouseQuery extends BasePageQuery {
     @Schema(description = "仓库位置")
     private String location;
     @Schema(description = "负责人ID")
-    private Integer managerId;
+    private Long managerId;
+
+    private String managerName;
     @Schema(description = "联系电话")
     private String contactPhone;
     @Schema(description = "启用状态")
