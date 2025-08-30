@@ -4,6 +4,8 @@ import com.aioveu.boot.common.base.BasePageQuery;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.nio.file.LinkOption;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.math.BigDecimal;
@@ -24,13 +26,22 @@ public class AioveuInboundQuery extends BasePageQuery {
     @Schema(description = "入库单号")
     private String inboundNo;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    private String materialName;
+
+
     @Schema(description = "仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    private String warehouseName;
+
     @Schema(description = "入库类型")
     private Integer inboundType;
     @Schema(description = "入库时间")
     private List<String> inTime;
     @Schema(description = "操作员ID")
-    private Integer operatorId;
+    private Long operatorId;
+
+    private String operatorName;
 }

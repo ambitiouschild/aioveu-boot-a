@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuInbound.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
@@ -69,6 +70,27 @@ public class AioveuInboundServiceImpl extends ServiceImpl<AioveuInboundMapper, A
     */
     @Override
     public IPage<AioveuInboundVO> getAioveuInboundPage(AioveuInboundQuery queryParams) {
+
+        // 处理物资名称映射
+        if (StringUtils.isNotBlank(queryParams.getMaterialName())) {
+            Long materialId = aioveuMaterialService.getIdByName(queryParams.getMaterialName());
+            queryParams.setMaterialId(materialId);
+        }
+
+
+        // 处理仓库名称映射
+        if (StringUtils.isNotBlank(queryParams.getWarehouseName())) {
+            Long warehouseId = aioveuWarehouseService.getIdByName(queryParams.getWarehouseName());
+            queryParams.setWarehouseId(warehouseId);
+        }
+
+
+        // 处理操作员名称映射
+        if (StringUtils.isNotBlank(queryParams.getOperatorName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getOperatorName());
+            queryParams.setOperatorId(employeeId);
+        }
+
         Page<AioveuInboundVO> pageVO = this.baseMapper.getAioveuInboundPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
