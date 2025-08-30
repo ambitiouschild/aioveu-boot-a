@@ -35,7 +35,7 @@ import com.aioveu.boot.aioveuOutbound.converter.AioveuOutboundConverter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import cn.idev.excel.util.StringUtils;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.util.StrUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +74,27 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
     */
     @Override
     public IPage<AioveuOutboundVO> getAioveuOutboundPage(AioveuOutboundQuery queryParams) {
+
+
+        // 处理物资名称映射
+        if (StringUtils.isNotBlank(queryParams.getMaterialName())) {
+            Long materialId = aioveuMaterialService.getIdByName(queryParams.getMaterialName());
+            queryParams.setMaterialId(materialId);
+        }
+
+        // 处理仓库名称映射
+        if (StringUtils.isNotBlank(queryParams.getWarehouseName())) {
+            Long warehouseId = aioveuWarehouseService.getIdByName(queryParams.getWarehouseName());
+            queryParams.setWarehouseId(warehouseId);
+        }
+
+        // 处理领用人名称映射
+        if (StringUtils.isNotBlank(queryParams.getRecipientName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getRecipientName());
+            queryParams.setRecipientId(employeeId);
+        }
+
+
         Page<AioveuOutboundVO> pageVO = this.baseMapper.getAioveuOutboundPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

@@ -24,13 +24,21 @@ public class AioveuOutboundQuery extends BasePageQuery {
     @Schema(description = "出库单号")
     private String outboundNo;
     @Schema(description = "物资ID")
-    private Integer materialId;
+    private Long materialId;
+
+    private String materialName;
+
     @Schema(description = "仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
+
+    private String warehouseName;
     @Schema(description = "出库时间")
     private List<String> outTime;
     @Schema(description = "领用人ID")
-    private Integer recipientId;
+    private Long recipientId;
+
+    private String recipientName;
+
     @Schema(description = "状态")
     private Integer status;
 }
