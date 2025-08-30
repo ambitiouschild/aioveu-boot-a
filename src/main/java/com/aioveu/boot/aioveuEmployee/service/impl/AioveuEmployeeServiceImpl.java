@@ -179,15 +179,18 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
             throw new ServiceException("员工编号: " + formData.getEmpCode() + " 已存在");
         }
 
+        // 问题：继续使用同一个queryWrapper，添加了额外条件
         // 字段2：检查是否已存在相同名称的记录（对于不依赖外键的字段，不可重复）
-        queryWrapper.eq(AioveuEmployee::getName, formData.getName());
-        if (count(queryWrapper) > 0) {
+        LambdaQueryWrapper<AioveuEmployee> nameQueryWrapper = new LambdaQueryWrapper<>();
+        nameQueryWrapper.eq(AioveuEmployee::getName, formData.getName());
+        if (count(nameQueryWrapper) > 0) {
             throw new RuntimeException("姓名: "+ formData.getName() +"已存在");
         }
 
         // 字段3：检查员工编号是否唯一（对于不依赖外键的字段，不可重复）
-        queryWrapper.eq(AioveuEmployee::getIdCard, formData.getIdCard());
-        if (count(queryWrapper) > 0) {
+        LambdaQueryWrapper<AioveuEmployee> idWrapper = new LambdaQueryWrapper<>();
+        idWrapper.eq(AioveuEmployee::getIdCard, formData.getIdCard());
+        if (count(idWrapper) > 0) {
             throw new ServiceException("身份证号: " + formData.getIdCard() + " 已存在");
         }
 
