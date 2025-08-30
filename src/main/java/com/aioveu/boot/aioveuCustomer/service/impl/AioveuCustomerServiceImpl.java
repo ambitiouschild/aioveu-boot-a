@@ -6,7 +6,10 @@ import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -108,6 +111,38 @@ public class AioveuCustomerServiceImpl extends ServiceImpl<AioveuCustomerMapper,
      */
     @Override
     public boolean saveAioveuCustomer(AioveuCustomerForm formData) {
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuCustomerForm::getCustomerNo,
+                AioveuCustomer::getCustomerNo,
+                null,
+                this,
+                "客户编号： "
+        );
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuCustomerForm::getName,
+                AioveuCustomer::getName,
+                null,
+                this,
+                "客户名称： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuCustomerForm::getSalesRepName,
+                AioveuEmployee::getName,
+                AioveuCustomerForm::setSalesRepId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "销售负责人： "
+        );
+
+
         AioveuCustomer entity = aioveuCustomerConverter.toEntity(formData);
         return this.save(entity);
     }
