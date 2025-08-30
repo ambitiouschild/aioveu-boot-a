@@ -32,14 +32,12 @@ public class AioveuInboundForm implements Serializable {
     private String inboundNo;
 
     @Schema(description = "物资ID")
-    @NotNull(message = "物资ID不能为空")
-    private Integer materialId;
+    private Long materialId;
 
     private String materialName;
 
     @Schema(description = "仓库ID")
-    @NotNull(message = "仓库ID不能为空")
-    private Integer warehouseId;
+    private Long warehouseId;
 
     private String warehouseName;
 
@@ -77,7 +75,6 @@ public class AioveuInboundForm implements Serializable {
     private LocalDateTime inTime;
 
     @Schema(description = "操作员ID")
-    @NotNull(message = "操作员ID不能为空")
     private Long operatorId;
 
     /**
