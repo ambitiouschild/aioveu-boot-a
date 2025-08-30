@@ -204,6 +204,39 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
         }
 
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getOrderName,
+                AioveuSalesOrder::getOrderNo,
+                AioveuSalesOrderDetailForm::setOrderId,
+                AioveuSalesOrder::getId,
+                aioveuSalesOrderService,
+                "订单： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuSalesOrderDetailForm::setMaterialId,
+                AioveuMaterial::getId,
+                aioveuMaterialService,
+                "物资： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuSalesOrderDetailForm::setWarehouseId,
+                AioveuWarehouse::getId,
+                aioveuWarehouseService,
+                "仓库： "
+        );
+
         // 2. 将表单数据转换为实体对象（计算字段会在getter中自动计算）
         AioveuSalesOrderDetail entity = aioveuSalesOrderDetailConverter.toEntity(formData);
 
