@@ -24,11 +24,16 @@ public class AioveuEquipmentQuery extends BasePageQuery {
     @Schema(description = "设备名称")
     private String name;
     @Schema(description = "设备分类ID")
-    private Integer categoryId;
+    private Long categoryId;
+
+    private String categoryName;
+
     @Schema(description = "序列号")
     private String serialNo;
     @Schema(description = "责任人")
-    private Integer responsiblePerson;
+    private Long responsiblePerson;
+
+    private String responsiblePersonName;
     @Schema(description = "状态")
     private Integer status;
 }

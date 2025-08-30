@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuEquipment.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuCategory.model.entity.AioveuCategory;
 import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
@@ -69,6 +70,19 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
     */
     @Override
     public IPage<AioveuEquipmentVO> getAioveuEquipmentPage(AioveuEquipmentQuery queryParams) {
+
+        // 处理部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getCategoryName())) {
+            Long categoryId = aioveuCategoryService.getIdByName(queryParams.getCategoryName());
+            queryParams.setCategoryId(categoryId);
+        }
+
+        // 处理部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getResponsiblePersonName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getResponsiblePersonName());
+            queryParams.setResponsiblePerson(employeeId);
+        }
+
         Page<AioveuEquipmentVO> pageVO = this.baseMapper.getAioveuEquipmentPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
