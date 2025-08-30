@@ -162,6 +162,27 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
             }
         }
 
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段）
+        LambdaQueryWrapper<AioveuDepartment> depWrapper = new LambdaQueryWrapper<>();
+        depWrapper.eq(AioveuDepartment::getDeptName, formData.getDeptName());
+
+
+        AioveuDepartment department = aioveuDepartmentService.getOne(depWrapper);
+        if (department != null) {
+            formData.setDeptId(department.getDeptId());
+        } else {
+            throw new RuntimeException("部门名称不存在");
+        }
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段）
+//        if (formData.getPositionLevel() >= 10) {
+//            throw new RuntimeException("职位级别错误");
+//        }else if(formData.getPositionLevel() <= 0){
+//            throw new RuntimeException("职位级别错误");
+//        }
+
+
         // 3. 将表单数据转换为实体对象
         AioveuPosition entity = aioveuPositionConverter.toEntity(formData);
 
