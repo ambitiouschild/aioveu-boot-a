@@ -25,14 +25,12 @@ public class AioveuSalesOrderDetailForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "订单ID")
-    @NotNull(message = "订单ID不能为空")
-    private Integer orderId;
+    private Long orderId;
 
     private String orderName;
 
     @Schema(description = "物资ID")
-    @NotNull(message = "物资ID不能为空")
-    private Integer materialId;
+    private Long materialId;
 
     private String materialName;
 
@@ -67,7 +65,7 @@ public class AioveuSalesOrderDetailForm implements Serializable {
     private LocalDate deliveryDate;
 
     @Schema(description = "发货仓库ID")
-    private Integer warehouseId;
+    private Long warehouseId;
 
     private String warehouseName;
 

@@ -1,6 +1,7 @@
 package com.aioveu.boot.aioveuSalesOrderDetail.service.impl;
 
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.entity.AioveuMaterial;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
 import com.aioveu.boot.aioveuMaterial.service.AioveuMaterialService;
@@ -10,6 +11,7 @@ import com.aioveu.boot.aioveuSalesOrder.model.entity.AioveuSalesOrder;
 import com.aioveu.boot.aioveuSalesOrder.service.AioveuSalesOrderService;
 import com.aioveu.boot.aioveuSalesOrder.service.impl.SalesOrderNameSetter;
 import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aioveu.boot.aioveuWarehouse.service.AioveuWarehouseService;
 import com.aioveu.boot.aioveuWarehouse.service.impl.WarehouseNameSetter;
 import com.aliyun.oss.ServiceException;
@@ -146,6 +148,39 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
      */
     @Override
     public boolean saveAioveuSalesOrderDetail(AioveuSalesOrderDetailForm formData) {
+
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getOrderName,
+                AioveuSalesOrder::getOrderNo,
+                AioveuSalesOrderDetailForm::setOrderId,
+                AioveuSalesOrder::getId,
+                aioveuSalesOrderService,
+                "订单： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuSalesOrderDetailForm::setMaterialId,
+                AioveuMaterial::getId,
+                aioveuMaterialService,
+                "物资： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuSalesOrderDetailForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuSalesOrderDetailForm::setWarehouseId,
+                AioveuWarehouse::getId,
+                aioveuWarehouseService,
+                "仓库： "
+        );
         // 将表单数据转换为实体（计算字段会在getter中自动计算）
         AioveuSalesOrderDetail entity = aioveuSalesOrderDetailConverter.toEntity(formData);
         return this.save(entity);
