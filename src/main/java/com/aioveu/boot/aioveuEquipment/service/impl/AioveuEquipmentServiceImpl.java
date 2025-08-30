@@ -5,10 +5,14 @@ import com.aioveu.boot.aioveuCategory.service.AioveuCategoryService;
 import com.aioveu.boot.aioveuCategory.service.impl.CategoryNameSetter;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
+import com.aioveu.boot.aioveuDepartment.service.impl.DepartmentNameSetter;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuMaterial.model.vo.AioveuMaterialVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -74,6 +78,13 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
         setEmployeeNames(pageVO.getRecords());
 
         setCategoryNames(pageVO.getRecords());
+
+        DepartmentNameSetter.setDepartmentNames(
+                pageVO.getRecords() ,
+                AioveuEquipmentVO::getDepartmentId, // 获取库存分类ID
+                AioveuEquipmentVO::setDepartmentName, // 设置库存分类姓名
+                aioveuDepartmentService
+        );
 
         return pageVO;
     }
@@ -143,6 +154,60 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
      */
     @Override
     public boolean saveAioveuEquipment(AioveuEquipmentForm formData) {
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuEquipmentForm::getAssetNo,
+                AioveuEquipment::getAssetNo,
+                null,
+                this,
+                "资产编号： "
+        );
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuEquipmentForm::getName,
+                AioveuEquipment::getName,
+                null,
+                this,
+                "设备名称： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getCategoryName,
+                AioveuCategory::getName,
+                AioveuEquipmentForm::setCategoryId,
+                AioveuCategory::getId,
+                aioveuCategoryService,
+                "设备分类： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getDepartmentName,
+                AioveuDepartment::getDeptName,
+                AioveuEquipmentForm::setDepartmentId,
+                AioveuDepartment::getDeptId,
+                aioveuDepartmentService,
+                "所属部门： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getResponsiblePersonName,
+                AioveuEmployee::getName,
+                AioveuEquipmentForm::setResponsiblePerson,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "责任人： "
+        );
+
         AioveuEquipment entity = aioveuEquipmentConverter.toEntity(formData);
         return this.save(entity);
     }

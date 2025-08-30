@@ -44,7 +44,9 @@ public class AioveuEquipmentVO implements Serializable {
     @Schema(description = "位置ID")
     private Integer locationId;
     @Schema(description = "所属部门ID")
-    private Integer departmentId;
+    private Long departmentId;
+
+    private String departmentName;
     @Schema(description = "责任人")
     private Long responsiblePerson;
 

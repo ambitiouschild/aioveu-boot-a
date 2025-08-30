@@ -35,8 +35,7 @@ public class AioveuEquipmentForm implements Serializable {
     private String name;
 
     @Schema(description = "设备分类ID")
-    @NotNull(message = "设备分类ID不能为空")
-    private Integer categoryId;
+        private Long categoryId;
 
     private String categoryName;
 
@@ -52,7 +51,7 @@ public class AioveuEquipmentForm implements Serializable {
 //    private Integer locationId;
 
     @Schema(description = "所属部门ID")
-    private Integer departmentId;
+    private Long departmentId;
 
     private String departmentName;
 
