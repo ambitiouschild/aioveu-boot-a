@@ -165,6 +165,17 @@ public class AioveuCustomerServiceImpl extends ServiceImpl<AioveuCustomerMapper,
 
         }
 
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuCustomerForm::getSalesRepName,
+                AioveuEmployee::getName,
+                AioveuCustomerForm::setSalesRepId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "销售负责人： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuCustomer entity = aioveuCustomerConverter.toEntity(formData);
 
