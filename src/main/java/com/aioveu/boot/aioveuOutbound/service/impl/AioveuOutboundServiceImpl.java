@@ -263,6 +263,61 @@ public class AioveuOutboundServiceImpl extends ServiceImpl<AioveuOutboundMapper,
 
         }
 
+        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuOutboundForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuOutboundForm::setMaterialId,
+                AioveuMaterial::getId,
+                aioveuMaterialService,
+                "物资： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuOutboundForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuOutboundForm::setWarehouseId,
+                AioveuWarehouse::getId,
+                aioveuWarehouseService,
+                "仓库： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuOutboundForm::getOperatorName,
+                AioveuEmployee::getName,
+                AioveuOutboundForm::setOperatorId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "操作员： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuOutboundForm::getRecipientName,
+                AioveuEmployee::getName,
+                AioveuOutboundForm::setRecipientId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "领用人： "
+        );
+
+        // 字段5：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuOutboundForm::getDepartmentName,
+                AioveuDepartment::getDeptName,
+                AioveuOutboundForm::setDepartmentId,
+                AioveuDepartment::getDeptId,
+                aioveuDepartmentService,
+                "领用部门： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuOutbound entity = aioveuOutboundConverter.toEntity(formData);
 
