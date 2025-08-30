@@ -263,6 +263,17 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
             throw new RuntimeException("部门: " + formData.getDeptName() + " 不存在");
         }
 
+        // 字段5：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "岗位不存在")
+        LambdaQueryWrapper<AioveuPosition> positionWrapper = new LambdaQueryWrapper<>();
+        positionWrapper.eq(AioveuPosition::getPositionName, formData.getPositionName());
+
+        AioveuPosition position = aioveuPositionService.getOne(positionWrapper);
+        if (position != null) {
+            formData.setPositionId(position.getPositionId());
+        } else {
+            throw new RuntimeException("岗位： " + formData.getPositionName() + " 不存在");
+        }
+
         // 4. 将表单数据转换为实体对象
         AioveuEmployee entity = aioveuEmployeeConverter.toEntity(formData);
         entity.setEmployeeId(employeeId); // 设置员工ID
