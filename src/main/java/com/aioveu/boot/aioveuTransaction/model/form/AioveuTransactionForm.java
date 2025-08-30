@@ -30,13 +30,12 @@ public class AioveuTransactionForm implements Serializable {
     private String transactionNo;
 
     @Schema(description = "客户ID")
-    @NotNull(message = "客户ID不能为空")
-    private Integer customerId;
+    private Long customerId;
 
     private String customerName;
 
     @Schema(description = "联系人ID")
-    private Integer contactId;
+    private Long contactId;
 
     private String contactName;
 

@@ -10,7 +10,10 @@ import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
 import com.aioveu.boot.aioveuEmployee.service.AioveuEmployeeService;
 import com.aioveu.boot.aioveuEmployee.service.impl.EmployeeNameSetter;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
@@ -147,6 +150,50 @@ public class AioveuTransactionServiceImpl extends ServiceImpl<AioveuTransactionM
      */
     @Override
     public boolean saveAioveuTransaction(AioveuTransactionForm formData) {
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuTransactionForm::getTransactionNo,
+                AioveuTransaction::getTransactionNo,
+                null,
+                this,
+                "交易编号： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getCustomerName,
+                AioveuCustomer::getName,
+                AioveuTransactionForm::setCustomerId,
+                AioveuCustomer::getId,
+                aioveuCustomerService,
+                "客户： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getContactName,
+                AioveuContact::getName,
+                AioveuTransactionForm::setContactId,
+                AioveuContact::getId,
+                aioveuContactService,
+                "联系人： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuTransactionForm::getSalesRepName,
+                AioveuEmployee::getName,
+                AioveuTransactionForm::setSalesRepId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "销售负责人： "
+        );
+
         AioveuTransaction entity = aioveuTransactionConverter.toEntity(formData);
         return this.save(entity);
     }
