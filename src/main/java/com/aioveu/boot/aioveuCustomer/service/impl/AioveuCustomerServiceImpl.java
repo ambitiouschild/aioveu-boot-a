@@ -1,5 +1,5 @@
 package com.aioveu.boot.aioveuCustomer.service.impl;
-
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuCustomer.model.vo.CustomerOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
@@ -60,6 +60,14 @@ public class AioveuCustomerServiceImpl extends ServiceImpl<AioveuCustomerMapper,
     */
     @Override
     public IPage<AioveuCustomerVO> getAioveuCustomerPage(AioveuCustomerQuery queryParams) {
+
+        // 处理销售负责人名称映射
+        if (StringUtils.isNotBlank(queryParams.getSalesRepName())) {
+            Long employeeId = aioveuEmployeeService.getIdByName(queryParams.getSalesRepName());
+            queryParams.setSalesRepId(employeeId);
+        }
+
+
         Page<AioveuCustomerVO> pageVO = this.baseMapper.getAioveuCustomerPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

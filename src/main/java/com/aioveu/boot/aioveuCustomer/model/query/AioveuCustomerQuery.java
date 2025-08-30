@@ -38,5 +38,7 @@ public class AioveuCustomerQuery extends BasePageQuery {
     @Schema(description = "客户来源")
     private Integer source;
     @Schema(description = "销售负责人ID")
-    private Integer salesRepId;
+    private Long salesRepId;
+
+    private String salesRepName;
 }
