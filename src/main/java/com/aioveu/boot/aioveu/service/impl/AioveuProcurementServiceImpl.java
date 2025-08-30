@@ -251,6 +251,52 @@ public class AioveuProcurementServiceImpl extends ServiceImpl<AioveuProcurementM
             throw new ServiceException("记录不存在");
 
         }
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getMaterialName,
+                AioveuMaterial::getName,
+                AioveuProcurementForm::setMaterialId,
+                AioveuMaterial::getId,
+                aioveuMaterialService,
+                "物资： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getWarehouseName,
+                AioveuWarehouse::getName,
+                AioveuProcurementForm::setWarehouseId,
+                AioveuWarehouse::getId,
+                aioveuWarehouseService,
+                "仓库: "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getApplicantName,
+                AioveuEmployee::getName,
+                AioveuProcurementForm::setApplicantId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "申请人: "
+        );
+
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuProcurementForm::getReviewerName,
+                AioveuEmployee::getName,
+                AioveuProcurementForm::setReviewerId,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "审核人: "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuProcurement entity = aioveuProcurementConverter.toEntity(formData);
 
