@@ -6,7 +6,10 @@ import com.aioveu.boot.aioveuCustomer.service.AioveuCustomerService;
 import com.aioveu.boot.aioveuCustomer.service.impl.CustomerNameSetter;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
+import com.aioveu.boot.aioveuEmployee.service.impl.NameValidator;
 import com.aioveu.boot.aioveuPerformance.model.vo.AioveuPerformanceVO;
+import com.aioveu.boot.aioveuWarehouse.model.entity.AioveuWarehouse;
+import com.aioveu.boot.aioveuWarehouse.model.form.AioveuWarehouseForm;
 import com.aioveu.boot.common.exception.BusinessException;
 import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -131,6 +134,30 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
                 throw new BusinessException("该客户已存在主要联系人");
             }
         }
+
+        // 字段1：检查编号是否唯一（对于不依赖外键的字段，不可重复）
+        NameValidator.validateEntityUnique(
+                formData,
+                AioveuContactForm::getName,
+                AioveuContact::getName,
+                null,
+                this,
+                "联系人： "
+        );
+
+        // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuContactForm::getCustomerName,
+                AioveuCustomer::getName,
+                AioveuContactForm::setCustomerId,
+                AioveuCustomer::getId,
+                aioveuCustomerService,
+                "客户： "
+        );
+
+
+
 
 
         AioveuContact entity = aioveuContactConverter.toEntity(formData);

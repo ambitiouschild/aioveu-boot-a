@@ -24,8 +24,7 @@ public class AioveuContactForm implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "客户ID")
-    @NotNull(message = "客户ID不能为空")
-    private Integer customerId;
+    private Long customerId;
 
     private String customerName;
 
