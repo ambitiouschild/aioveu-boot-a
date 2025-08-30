@@ -21,6 +21,7 @@ public interface AioveuPositionService extends IService<AioveuPosition> {
 
 
 
+    Long getIdByName(String name);
     /**
      * 批量获取岗位信息（新增方法）
      */

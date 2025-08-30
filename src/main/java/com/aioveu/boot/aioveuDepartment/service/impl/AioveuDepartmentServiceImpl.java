@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuDepartment.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuDepartment.model.vo.ParentDeptOptionVO;
 import com.aioveu.boot.aioveuEmployee.model.entity.AioveuEmployee;
@@ -11,6 +12,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import groovy.lang.Lazy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.math3.ml.neuralnet.twod.util.TopographicErrorHistogram;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -49,6 +51,13 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 //    private final AioveuEmployeeService aioveuEmployeeService;
 
 
+    @Autowired
+    private AioveuDepartmentMapper aioveuDepartmentMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return aioveuDepartmentMapper.findIdByName(name);
+    }
 
     /**
     * 获取公司部门组织结构分页列表
@@ -58,6 +67,13 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     */
     @Override
     public IPage<AioveuDepartmentVO> getAioveuDepartmentPage(AioveuDepartmentQuery queryParams) {
+
+        // 处理部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getDeptName())) {
+            Long deptId = this.getIdByName(queryParams.getDeptName());
+            queryParams.setDeptId(deptId);
+        }
+
         Page<AioveuDepartmentVO> pageVO = this.baseMapper.getAioveuDepartmentPage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams
@@ -324,6 +340,28 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
     }
 
     /**
+     * 根据部门名称列表获取部门ID映射
+     */
+    @Override
+    public Map<String, Long> getDepartmentIdMapByNames(List<String> deptNames) {
+        if (deptNames == null || deptNames.isEmpty()) {
+            return Map.of();
+        }
+
+        // 使用部门名称列表查询部门
+        LambdaQueryWrapper<AioveuDepartment> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.in(AioveuDepartment::getDeptName, deptNames);
+        List<AioveuDepartment> departments = this.list(queryWrapper);
+
+        // 转换为Map: key=部门名称, value=部门ID
+        return departments.stream()
+                .collect(Collectors.toMap(
+                        AioveuDepartment::getDeptName,
+                        AioveuDepartment::getDeptId
+                ));
+    }
+
+    /**
      * 获取所有部门列表（用于下拉选择框）
      *
      * @return 部门选项列表
@@ -432,11 +470,7 @@ public class AioveuDepartmentServiceImpl extends ServiceImpl<AioveuDepartmentMap
 //                vo.setManagerName("");
 //            }
 //        });
-//    }
-
-    // 使用 @Autowired 注入
-    @Autowired
-    private AioveuDepartmentMapper aioveuDepartmentMapper;
+//
 
 
     // 在服务层直接实现，不需要在 Mapper 中添加方法

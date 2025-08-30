@@ -121,6 +121,18 @@ public class AioveuDepartmentController  {
     }
 
     /**
+     * 根据部门名称列表获取部门ID映射
+     * @param deptNames 部门名称列表
+     * @return 部门名称到部门ID的映射
+     */
+    @Operation(summary = "根据部门名称列表获取部门ID映射")
+    @PostMapping("/map/names-to-ids")
+    public Result<Map<String, Long>> getDepartmentIdMapByNames(@RequestBody List<String> deptNames) {
+        Map<String, Long> departmentMap = aioveuDepartmentService.getDepartmentIdMapByNames(deptNames);
+        return Result.success(departmentMap);
+    }
+
+    /**
      * 获取所有部门列表（用于下拉选择框）
      * @return 部门选项列表
      */

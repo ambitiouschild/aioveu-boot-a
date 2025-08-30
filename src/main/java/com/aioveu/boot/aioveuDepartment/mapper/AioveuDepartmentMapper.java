@@ -7,6 +7,7 @@ import com.aioveu.boot.aioveuDepartment.model.query.AioveuDepartmentQuery;
 import com.aioveu.boot.aioveuDepartment.model.vo.AioveuDepartmentVO;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 import java.util.Map;
@@ -29,5 +30,9 @@ public interface AioveuDepartmentMapper extends BaseMapper<AioveuDepartment> {
      * @return {@link Page<AioveuDepartmentVO>} 公司部门组织结构分页列表
      */
     Page<AioveuDepartmentVO> getAioveuDepartmentPage(Page<AioveuDepartmentVO> page, AioveuDepartmentQuery queryParams);
+
+
+    @Select("SELECT dept_id FROM aioveu_department WHERE dept_name = #{name}")
+    Long findIdByName(@Param("name") String name);
 
 }

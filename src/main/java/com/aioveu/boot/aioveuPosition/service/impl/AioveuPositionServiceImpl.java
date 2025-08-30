@@ -7,6 +7,7 @@ import com.aliyun.oss.ServiceException;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -42,6 +43,14 @@ public class AioveuPositionServiceImpl extends ServiceImpl<AioveuPositionMapper,
     private final AioveuPositionConverter aioveuPositionConverter;
     //添加部门服务依赖,注入 `AioveuDepartmentService`用于查询部门信息
     private final AioveuDepartmentService aioveuDepartmentService;
+
+    @Autowired
+    private AioveuPositionMapper positionMapper;
+
+    @Override
+    public Long getIdByName(String name) {
+        return positionMapper.findIdByName(name);
+    }
 
     /**
     * 获取公司岗位信息分页列表

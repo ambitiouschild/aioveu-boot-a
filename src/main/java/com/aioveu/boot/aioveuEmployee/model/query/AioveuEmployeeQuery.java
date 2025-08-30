@@ -35,9 +35,18 @@ public class AioveuEmployeeQuery extends BasePageQuery {
     @Schema(description = "邮箱")
     private String email;
     @Schema(description = "所属部门")
-    private Integer deptId;
+    private Long deptId;
+
+    @Schema(description = "部门名称")
+    private String deptName;
+
+
     @Schema(description = "岗位ID")
-    private Integer positionId;
+    private Long positionId;
+
+    @Schema(description = "岗位名称")
+    private String positionName;
+
     @Schema(description = "入职日期")
     private List<String> hireDate;
     @Schema(description = "基本薪资")

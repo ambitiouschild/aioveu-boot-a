@@ -1,5 +1,6 @@
 package com.aioveu.boot.aioveuEmployee.service.impl;
 
+import cn.idev.excel.util.StringUtils;
 import com.aioveu.boot.aioveuDepartment.model.entity.AioveuDepartment;
 import com.aioveu.boot.aioveuDepartment.model.vo.DeptOptionVO;
 import com.aioveu.boot.aioveuDepartment.service.AioveuDepartmentService;
@@ -64,6 +65,19 @@ public class AioveuEmployeeServiceImpl extends ServiceImpl<AioveuEmployeeMapper,
     */
     @Override
     public IPage<AioveuEmployeeVO> getAioveuEmployeePage(AioveuEmployeeQuery queryParams) {
+
+        // 处理部门名称映射
+        if (StringUtils.isNotBlank(queryParams.getDeptName())) {
+            Long deptId = aioveuDepartmentService.getIdByName(queryParams.getDeptName());
+            queryParams.setDeptId(deptId);
+        }
+
+        // 处理岗位名称映射
+        if (StringUtils.isNotBlank(queryParams.getPositionName())) {
+            Long positionId = aioveuPositionService.getIdByName(queryParams.getPositionName());
+            queryParams.setPositionId(positionId);
+        }
+
         Page<AioveuEmployeeVO> pageVO = this.baseMapper.getAioveuEmployeePage(
                 new Page<>(queryParams.getPageNum(), queryParams.getPageSize()),
                 queryParams

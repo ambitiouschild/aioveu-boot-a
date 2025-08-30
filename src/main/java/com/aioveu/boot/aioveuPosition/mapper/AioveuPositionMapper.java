@@ -6,6 +6,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.aioveu.boot.aioveuPosition.model.query.AioveuPositionQuery;
 import com.aioveu.boot.aioveuPosition.model.vo.AioveuPositionVO;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 /**
  * 公司岗位信息Mapper接口
@@ -24,5 +26,9 @@ public interface AioveuPositionMapper extends BaseMapper<AioveuPosition> {
      * @return {@link Page<AioveuPositionVO>} 公司岗位信息分页列表
      */
     Page<AioveuPositionVO> getAioveuPositionPage(Page<AioveuPositionVO> page, AioveuPositionQuery queryParams);
+
+
+    @Select("SELECT position_id FROM aioveu_position WHERE position_name = #{name}")
+    Long findIdByName(@Param("name") String name);
 
 }

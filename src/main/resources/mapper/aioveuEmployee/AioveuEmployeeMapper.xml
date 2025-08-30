@@ -23,6 +23,17 @@
         FROM
             aioveu_employee
         <where>
+
+<!--            &lt;!&ndash; 部门ID查询 &ndash;&gt;-->
+<!--            <if test="queryParams.deptId != null">-->
+<!--                AND e.dept_id = #{queryParams.deptId}-->
+<!--            </if>-->
+
+<!--            &lt;!&ndash; 岗位ID查询 &ndash;&gt;-->
+<!--            <if test="queryParams.positionId != null">-->
+<!--                AND e.position_id = #{queryParams.positionId}-->
+<!--            </if>-->
+
             <if test="queryParams.employeeId != null">
                 AND employee_id LIKE CONCAT('%', #{queryParams.employeeId}, '%')
             </if>

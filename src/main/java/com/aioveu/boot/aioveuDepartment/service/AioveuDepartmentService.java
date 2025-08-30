@@ -20,6 +20,8 @@ import java.util.Map;
  */
 public interface AioveuDepartmentService extends IService<AioveuDepartment> {
 
+
+    Long getIdByName(String name);
     /**
      *公司部门组织结构分页列表
      *
@@ -65,6 +67,14 @@ public interface AioveuDepartmentService extends IService<AioveuDepartment> {
      * 批量获取部门信息（新增方法）
      */
     Map<Long, String> getDepartmentMapByIds(List<Long> deptIds);
+
+    /**
+     * 根据部门名称列表获取部门ID映射
+     * @param deptNames 部门名称列表
+     * @return 部门名称到部门ID的映射
+     */
+    Map<String, Long> getDepartmentIdMapByNames(List<String> deptNames);
+
 
     /**
      * 获取所有部门列表（用于下拉选择框）
