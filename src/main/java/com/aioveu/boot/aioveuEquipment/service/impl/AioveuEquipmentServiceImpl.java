@@ -229,6 +229,40 @@ public class AioveuEquipmentServiceImpl extends ServiceImpl<AioveuEquipmentMappe
             throw new ServiceException("记录不存在");
 
         }
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getCategoryName,
+                AioveuCategory::getName,
+                AioveuEquipmentForm::setCategoryId,
+                AioveuCategory::getId,
+                aioveuCategoryService,
+                "设备分类： "
+        );
+
+        // 字段3：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getDepartmentName,
+                AioveuDepartment::getDeptName,
+                AioveuEquipmentForm::setDepartmentId,
+                AioveuDepartment::getDeptId,
+                aioveuDepartmentService,
+                "所属部门： "
+        );
+
+        // 字段4：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+        NameValidator.validateEntityExists(
+                formData,
+                AioveuEquipmentForm::getResponsiblePersonName,
+                AioveuEmployee::getName,
+                AioveuEquipmentForm::setResponsiblePerson,
+                AioveuEmployee::getEmployeeId,
+                aioveuEmployeeService,
+                "责任人： "
+        );
+
         // 2. 将表单数据转换为实体对象
         AioveuEquipment entity = aioveuEquipmentConverter.toEntity(formData);
 
