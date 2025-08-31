@@ -13,9 +13,11 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot_slave CHARACTER SET utf8mb4 DEFAULT CO
 -- 2. 创建表 && 数据初始化
 -- ----------------------------
 use aioveu_boot_slave;
+-- # 设置字符集
+SET NAMES utf8mb4;
 
-SET NAMES utf8mb4;  # 设置字符集
-SET FOREIGN_KEY_CHECKS = 0; # 关闭外键检查，加快导入速度
+--  关闭外键检查，加快导入速度
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_dept

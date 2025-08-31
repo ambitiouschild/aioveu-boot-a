@@ -15,7 +15,7 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_customer`;
 
 CREATE TABLE `aioveu_customer` (
-                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '客户ID（主键）',
+                                   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '客户ID（主键）',
                                    `customer_no` VARCHAR(50) NOT NULL COMMENT '客户编号（唯一）',
                                    `name` VARCHAR(100) NOT NULL COMMENT '客户名称',
                                    `type` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '客户类型：1-企业，2-个人，3-政府，4-其他',
@@ -37,7 +37,7 @@ CREATE TABLE `aioveu_customer` (
                                    `employee_count` INT UNSIGNED COMMENT '员工人数',
                                    `established_date` DATE COMMENT '成立日期',
                                    `source` TINYINT UNSIGNED COMMENT '客户来源：1-线上推广，2-线下活动，3-客户推荐，4-销售开发，5-其他',
-                                   `sales_rep_id` INT UNSIGNED COMMENT '销售负责人ID',
+                                   `sales_rep_id` BIGINT UNSIGNED COMMENT '销售负责人ID',
                                    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                    `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
 

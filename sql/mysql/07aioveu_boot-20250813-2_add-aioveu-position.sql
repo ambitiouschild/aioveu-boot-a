@@ -16,9 +16,9 @@ DROP TABLE IF EXISTS `aioveu_position`;
 
 -- 创建规范化的岗位表
 CREATE TABLE `aioveu_position` (
-                                   `position_id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+                                   `position_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
                                    `position_name` VARCHAR(50) NOT NULL COMMENT '岗位名称', -- 使用 position_name替代模糊的 name，明确表示岗位名称
-                                   `dept_id` INT UNSIGNED DEFAULT NULL COMMENT '所属部门ID',  -- 添加部门关联字段，明确岗位归属 支持按职级进行薪酬体系管理
+                                   `dept_id` BIGINT UNSIGNED DEFAULT NULL COMMENT '所属部门ID',  -- 添加部门关联字段，明确岗位归属 支持按职级进行薪酬体系管理
                                    `position_level` TINYINT UNSIGNED COMMENT '职级(1-10，数字越大职级越高)', -- 建立标准职级体系（1-10级）
                                    `description` TEXT COMMENT '岗位描述', -- 从 VARCHAR(200) 扩展到 TEXT 类型,支持存储详细的岗位职责和要求,为岗位说明书提供存储空间
                                    `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间', -- 审计字段添加 支持岗位变更历史追踪

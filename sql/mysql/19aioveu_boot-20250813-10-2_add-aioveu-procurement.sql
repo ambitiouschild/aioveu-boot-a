@@ -15,10 +15,10 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_procurement`;
 
 CREATE TABLE `aioveu_procurement` (
-                                      `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '采购ID（主键）',
+                                      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '采购ID（主键）',
                                       `procurement_no` VARCHAR(50) NOT NULL COMMENT '采购单号（唯一）',
                                       `supplier_id` INT UNSIGNED NOT NULL COMMENT '供应商ID',
-                                      `material_id` INT UNSIGNED NOT NULL COMMENT '物资ID',
+                                      `material_id` BIGINT UNSIGNED NOT NULL COMMENT '物资ID',
                                       `quantity` INT UNSIGNED NOT NULL COMMENT '采购数量',
                                       `unit_price` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '采购单价',
                                       `total_amount` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '总金额',
@@ -26,11 +26,11 @@ CREATE TABLE `aioveu_procurement` (
                                       `expected_delivery` DATE COMMENT '预计到货日期',
                                       `actual_delivery` DATE COMMENT '实际到货日期',
                                       `receipt_date` DATETIME COMMENT '签收时间',
-                                      `warehouse_id` INT UNSIGNED COMMENT '入库仓库ID',
+                                      `warehouse_id` BIGINT UNSIGNED COMMENT '入库仓库ID',
                                       `inbound_date` DATETIME COMMENT '入库时间',
                                       `status` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态：1-待审核，2-已下单，3-已发货，4-已收货，5-已入库，6-已取消',
-                                      `applicant_id` INT UNSIGNED NOT NULL COMMENT '申请人ID（关联员工表）',
-                                      `reviewer_id` INT UNSIGNED COMMENT '审核人ID',
+                                      `applicant_id` BIGINT UNSIGNED NOT NULL COMMENT '申请人ID（关联员工表）',
+                                      `reviewer_id` BIGINT UNSIGNED COMMENT '审核人ID',
                                       `review_time` DATETIME COMMENT '审核时间',
                                       `remark` VARCHAR(500) COMMENT '备注',
                                       `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

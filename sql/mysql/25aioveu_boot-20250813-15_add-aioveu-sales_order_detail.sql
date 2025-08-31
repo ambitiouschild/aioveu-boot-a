@@ -15,9 +15,9 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_sales_order_detail`;
 
 CREATE TABLE `aioveu_sales_order_detail` (
-                                             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '明细ID（主键）',
-                                             `order_id` INT UNSIGNED NOT NULL COMMENT '订单ID',
-                                             `material_id` INT UNSIGNED NOT NULL COMMENT '物资ID',
+                                             `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '明细ID（主键）',
+                                             `order_id` BIGINT UNSIGNED NOT NULL COMMENT '订单ID',
+                                             `material_id` BIGINT UNSIGNED NOT NULL COMMENT '物资ID',
                                              `quantity` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '数量',
                                              `unit_price` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '单价',
                                              `discount` DECIMAL(5,2) DEFAULT 0 COMMENT '折扣率',
@@ -27,7 +27,7 @@ CREATE TABLE `aioveu_sales_order_detail` (
                                              `total_price` DECIMAL(15,4)  COMMENT '总金额',
                                              `batch_number` VARCHAR(50) COMMENT '批次号',
                                              `delivery_date` DATE COMMENT '要求交货日期',
-                                             `warehouse_id` INT UNSIGNED COMMENT '发货仓库ID',
+                                             `warehouse_id` BIGINT UNSIGNED COMMENT '发货仓库ID',
                                              `status` TINYINT UNSIGNED DEFAULT 1 COMMENT '明细状态：1-待处理，2-备货中，3-已发货，4-已收货，5-已取消',
                                              `notes` VARCHAR(200) COMMENT '备注',
                                              `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

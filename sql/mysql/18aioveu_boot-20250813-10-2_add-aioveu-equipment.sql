@@ -15,15 +15,15 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_equipment`;
 
 CREATE TABLE `aioveu_equipment` (
-                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '设备ID（主键）',
+                                    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '设备ID（主键）',
                                     `asset_no` VARCHAR(50) NOT NULL COMMENT '资产编号（唯一）',
                                     `name` VARCHAR(100) NOT NULL COMMENT '设备名称',
-                                    `category_id` INT UNSIGNED NOT NULL COMMENT '设备分类ID',
+                                    `category_id` BIGINT UNSIGNED NOT NULL COMMENT '设备分类ID',
                                     `model` VARCHAR(50) COMMENT '设备型号',
                                     `serial_no` VARCHAR(50) UNIQUE COMMENT '序列号（唯一）',
                                     `location_id` INT UNSIGNED COMMENT '位置ID（关联位置表）',
-                                    `department_id` INT UNSIGNED COMMENT '所属部门ID',
-                                    `responsible_person` INT UNSIGNED COMMENT '责任人（关联员工表）',
+                                    `department_id` BIGINT UNSIGNED COMMENT '所属部门ID',
+                                    `responsible_person` BIGINT UNSIGNED COMMENT '责任人（关联员工表）',
                                     `purchase_date` DATE COMMENT '采购日期',
                                     `purchase_price` DECIMAL(12,2) UNSIGNED COMMENT '采购价格',
                                     `warranty_period` TINYINT UNSIGNED COMMENT '保修期（月）',

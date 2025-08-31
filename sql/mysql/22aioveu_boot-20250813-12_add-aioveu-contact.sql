@@ -15,8 +15,8 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_contact`;
 
 CREATE TABLE `aioveu_contact` (
-                                  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '联系人ID（主键）',
-                                  `customer_id` INT UNSIGNED NOT NULL COMMENT '客户ID',
+                                  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '联系人ID（主键）',
+                                  `customer_id` BIGINT UNSIGNED NOT NULL COMMENT '客户ID',
                                   `name` VARCHAR(50) NOT NULL COMMENT '联系人姓名',
                                   `position` VARCHAR(50) COMMENT '职位',
                                   `department` VARCHAR(50) COMMENT '部门',

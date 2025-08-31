@@ -15,9 +15,9 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_category`;
 
 CREATE TABLE `aioveu_category` (
-                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID（主键）',
+                                   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '分类ID（主键）',
                                    `name` VARCHAR(50) NOT NULL COMMENT '分类名称',
-                                   `parent_id` INT UNSIGNED DEFAULT 0 COMMENT '父分类ID',
+                                   `parent_id` BIGINT UNSIGNED DEFAULT 0 COMMENT '父分类ID',
                                    `level` TINYINT UNSIGNED DEFAULT 1 COMMENT '分类层级',
                                    `description` VARCHAR(200) COMMENT '分类描述',
                                    `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',

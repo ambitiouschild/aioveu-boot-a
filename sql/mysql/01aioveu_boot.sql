@@ -13,9 +13,10 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot CHARACTER SET utf8mb4 DEFAULT COLLATE 
 -- 2. 创建表 && 数据初始化
 -- ----------------------------
 use aioveu_boot;
-
-SET NAMES utf8mb4;  --设置字符集
-SET FOREIGN_KEY_CHECKS = 0; -- 关闭外键检查，加快导入速度
+-- 设置字符集
+SET NAMES utf8mb4;
+-- 关闭外键检查，加快导入速度
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_dept

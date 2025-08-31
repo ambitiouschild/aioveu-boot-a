@@ -15,10 +15,10 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_inbound`;
 
 CREATE TABLE `aioveu_inbound` (
-                                  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '入库ID（主键）',
+                                  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '入库ID（主键）',
                                   `inbound_no` VARCHAR(50) NOT NULL COMMENT '入库单号（唯一）',
-                                  `material_id` INT UNSIGNED NOT NULL COMMENT '物资ID',
-                                  `warehouse_id` INT UNSIGNED NOT NULL COMMENT '仓库ID',
+                                  `material_id` BIGINT UNSIGNED NOT NULL COMMENT '物资ID',
+                                  `warehouse_id` BIGINT UNSIGNED NOT NULL COMMENT '仓库ID',
                                   `quantity` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '入库数量（支持小数计量）',
                                   `unit_price` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '入库单价',
                                   `total_amount` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '总金额',
@@ -28,7 +28,7 @@ CREATE TABLE `aioveu_inbound` (
                                   `supplier_id` INT UNSIGNED COMMENT '供应商ID',
                                   `inbound_type` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '入库类型：1-采购入库，2-退货入库，3-调拨入库，4-其他',
                                   `in_time` DATETIME NOT NULL COMMENT '入库时间',
-                                  `operator_id` INT UNSIGNED NOT NULL COMMENT '操作员ID（关联员工表）',
+                                  `operator_id` BIGINT UNSIGNED NOT NULL COMMENT '操作员ID（关联员工表）',
                                   `remark` VARCHAR(500) COMMENT '备注',
                                   `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                   `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

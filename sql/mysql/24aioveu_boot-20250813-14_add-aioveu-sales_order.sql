@@ -15,10 +15,10 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_sales_order`;
 
 CREATE TABLE `aioveu_sales_order` (
-                                      `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '订单ID（主键）',
+                                      `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '订单ID（主键）',
                                       `order_no` VARCHAR(50) NOT NULL COMMENT '订单编号（唯一）',
-                                      `customer_id` INT UNSIGNED NOT NULL COMMENT '客户ID',
-                                      `contact_id` INT UNSIGNED COMMENT '联系人ID',
+                                      `customer_id` BIGINT UNSIGNED NOT NULL COMMENT '客户ID',
+                                      `contact_id` BIGINT UNSIGNED COMMENT '联系人ID',
                                       `order_date` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '下单时间',
                                       `expected_delivery` DATE COMMENT '预计交货日期',
                                       `actual_delivery` DATE COMMENT '实际交货日期',
@@ -34,8 +34,8 @@ CREATE TABLE `aioveu_sales_order` (
                                       `shipping_address` VARCHAR(200) COMMENT '收货地址',
                                       `shipping_method` TINYINT UNSIGNED COMMENT '运输方式：1-快递，2-物流，3-自提，4-其他',
                                       `tracking_no` VARCHAR(50) COMMENT '物流单号',
-                                      `sales_rep_id` INT UNSIGNED COMMENT '销售负责人ID',
-                                      `operator_id` INT UNSIGNED NOT NULL COMMENT '操作员ID',
+                                      `sales_rep_id` BIGINT UNSIGNED COMMENT '销售负责人ID',
+                                      `operator_id` BIGINT UNSIGNED NOT NULL COMMENT '操作员ID',
                                       `notes` TEXT COMMENT '备注',
                                       `create_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                                       `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',

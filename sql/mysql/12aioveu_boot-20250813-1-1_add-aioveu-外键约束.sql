@@ -1,4 +1,8 @@
+
+-- 在每个SQL脚本开头指定要使用的数据库
+use aioveu_boot;
 -- 禁用外键检查
+
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- 1. 部门表外键约束

@@ -15,13 +15,13 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_warehouse`;
 
 CREATE TABLE `aioveu_warehouse` (
-                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '仓库ID（主键）',
+                                    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '仓库ID（主键）',
                                     `name` VARCHAR(50) NOT NULL COMMENT '仓库名称',
                                     `code` VARCHAR(20) UNIQUE NOT NULL COMMENT '仓库编码（唯一标识）',
                                     `location` VARCHAR(100) NOT NULL COMMENT '仓库位置',
                                     `area` DECIMAL(10,2) UNSIGNED COMMENT '仓库面积（平方米）',
                                     `capacity` DECIMAL(10,2) UNSIGNED COMMENT '存储容量（立方米）',
-                                    `manager_id` INT UNSIGNED COMMENT '负责人ID（关联员工表）',
+                                    `manager_id` BIGINT UNSIGNED COMMENT '负责人ID（关联员工表）',
                                     `contact_phone` VARCHAR(20) COMMENT '联系电话',
                                     `description` TEXT COMMENT '仓库描述',
                                     `is_active` TINYINT(1) NOT NULL DEFAULT 1 COMMENT '启用状态：0-停用，1-启用',

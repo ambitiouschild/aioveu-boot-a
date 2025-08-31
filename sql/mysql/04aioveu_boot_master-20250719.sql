@@ -14,8 +14,8 @@ CREATE DATABASE IF NOT EXISTS aioveu_boot_master CHARACTER SET utf8mb4 DEFAULT C
 -- ----------------------------
 use aioveu_boot_master;
 
-SET NAMES utf8mb4;  # 设置字符集
-SET FOREIGN_KEY_CHECKS = 0; # 关闭外键检查，加快导入速度
+SET NAMES utf8mb4;
+SET FOREIGN_KEY_CHECKS = 0;
 
 -- ----------------------------
 -- Table structure for sys_dept

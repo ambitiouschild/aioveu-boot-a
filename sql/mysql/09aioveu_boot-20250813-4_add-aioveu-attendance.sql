@@ -15,8 +15,8 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_attendance`;
 
 CREATE TABLE `aioveu_attendance` (
-                                    attendance_id INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT, -- 更规范的自增主键 UNSIGNED（非负整数）
-                                    employee_id INT UNSIGNED NOT NULL COMMENT '员工ID', -- UNSIGNED（非负整数）
+                                    attendance_id BIGINT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT, -- 更规范的自增主键 UNSIGNED（非负整数）
+                                    employee_id BIGINT UNSIGNED NOT NULL COMMENT '员工ID', -- UNSIGNED（非负整数）
                                     `date` DATE NOT NULL COMMENT '日期',  -- date是保留字，建议用反引号包裹
                                     checkin_time DATETIME COMMENT '上班打卡时间',
                                     checkout_time DATETIME COMMENT '下班打卡时间',

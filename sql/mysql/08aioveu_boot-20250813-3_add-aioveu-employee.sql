@@ -15,7 +15,7 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_employee`;
 -- 创建规范化的员工表
 CREATE TABLE `aioveu_employee` (
-                                   `employee_id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '员工ID',
+                                   `employee_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '员工ID',
                                    `emp_code` VARCHAR(20) NOT NULL COMMENT '员工编号',
                                    `name` VARCHAR(50) NOT NULL COMMENT '姓名',
                                    `gender` TINYINT(1) DEFAULT NULL COMMENT '性别：0-女，1-男', -- 使用 TINYINT(1)明确表示布尔/枚举类型
@@ -23,8 +23,8 @@ CREATE TABLE `aioveu_employee` (
                                    `id_card` VARCHAR(20) COMMENT '身份证号',
                                    `phone` VARCHAR(20) COMMENT '手机号码',
                                    `email` VARCHAR(50) COMMENT '邮箱',
-                                   `dept_id` INT UNSIGNED COMMENT '所属部门',
-                                   `position_id` INT UNSIGNED  COMMENT '岗位ID',
+                                   `dept_id` BIGINT UNSIGNED COMMENT '所属部门',
+                                   `position_id` BIGINT UNSIGNED  COMMENT '岗位ID',
                                    `hire_date` DATE NOT NULL COMMENT '入职日期',
                                    `salary` DECIMAL(10,2) COMMENT '基本薪资',
                                    `status` TINYINT(1) DEFAULT 1 COMMENT '状态：0-离职，1-在职,2-休假,3-实习', -- 调整状态值：2-休假，3-实习（更符合实际业务）

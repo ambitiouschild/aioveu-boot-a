@@ -15,9 +15,9 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_inventory`;
 
 CREATE TABLE `aioveu_inventory` (
-                                    `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '库存ID（主键）',
-                                    `warehouse_id` INT UNSIGNED NOT NULL COMMENT '仓库ID',
-                                    `material_id` INT UNSIGNED NOT NULL COMMENT '物资ID',
+                                    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '库存ID（主键）',
+                                    `warehouse_id` BIGINT UNSIGNED NOT NULL COMMENT '仓库ID',
+                                    `material_id` BIGINT UNSIGNED NOT NULL COMMENT '物资ID',
                                     `quantity` DECIMAL(12,4) UNSIGNED NOT NULL DEFAULT 0 COMMENT '当前库存数量（支持小数计量）',
                                     `batch_number` VARCHAR(50) COMMENT '批次号',
                                     `production_date` DATE COMMENT '生产日期',

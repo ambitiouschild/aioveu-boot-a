@@ -22,12 +22,13 @@ DROP TABLE IF EXISTS `aioveu_performance`;
 
 CREATE TABLE `aioveu_performance` (
                                       `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '绩效记录ID',
-                                      `employee_id` INT UNSIGNED NOT NULL COMMENT '员工ID',
+                                      `employee_id` BIGINT UNSIGNED NOT NULL COMMENT '员工ID',
                                       `period_year` SMALLINT UNSIGNED NOT NULL COMMENT '考核年份', -- 拆分为年份+季度字段，支持灵活查询季度/年度绩效
                                       `period_quarter` TINYINT UNSIGNED COMMENT '考核季度(1-4)',
                                       `kpi_score` TINYINT UNSIGNED COMMENT 'KPI评分(1-100分)', -- 从模糊的1-5分改为更精确的百分制（0-100） TINYINT UNSIGNED 范围0-255完全够用
                                       `productivity` DECIMAL(5,2) UNSIGNED COMMENT '生产率百分比(%)', -- DECIMAL(5,2) 精确存储小数（如98.76%）
                                       `review` TEXT COMMENT '主管评语',
+                                      `performance_grade` VARCHAR(10) COMMENT '绩效等级',
                                       `create_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',  -- 审计字段添加 自动记录数据创建和更新时间
                                       `update_time` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间', -- 满足数据审计要求 支持绩效历史追踪
 
@@ -44,16 +45,16 @@ CREATE TABLE `aioveu_performance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='员工绩效考评表';
 
 -- 绩效等级计算列
-ALTER TABLE aioveu_performance
-    ADD performance_grade VARCHAR(10)
-        GENERATED ALWAYS AS (
-            CASE
-                WHEN kpi_score >= 90 THEN 'A'
-                WHEN kpi_score >= 80 THEN 'B'
-                WHEN kpi_score >= 70 THEN 'C'
-                ELSE 'D'
-                END
-            ) VIRTUAL COMMENT '绩效等级';
+# ALTER TABLE aioveu_performance
+#     ADD performance_grade VARCHAR(10)
+#         GENERATED ALWAYS AS (
+#             CASE
+#                 WHEN kpi_score >= 90 THEN 'A'
+#                 WHEN kpi_score >= 80 THEN 'B'
+#                 WHEN kpi_score >= 70 THEN 'C'
+#                 ELSE 'D'
+#                 END
+#             ) VIRTUAL COMMENT '绩效等级';
 
 
 -- 查询2024年Q2所有绩效
@@ -111,8 +112,8 @@ INSERT INTO `aioveu_performance` (
 
 --  修改数据库表结构（可选） 如果不需要生成列，可以将其改为普通列
 
-ALTER TABLE aioveu_performance
-    MODIFY performance_grade VARCHAR(10) COMMENT '绩效等级';
+# ALTER TABLE aioveu_performance
+#     MODIFY performance_grade VARCHAR(10) COMMENT '绩效等级';
 
 -- 1.删除生成列performance_grade
 # SELECT
@@ -135,8 +136,8 @@ ALTER TABLE aioveu_performance
 
 -- 2.添加新的普通列performance_grade
 
-ALTER TABLE aioveu_performance
-    ADD COLUMN performance_grade VARCHAR(10) COMMENT '绩效等级';
+# ALTER TABLE aioveu_performance
+#     ADD COLUMN performance_grade VARCHAR(10) COMMENT '绩效等级';
 
 # //将SQL查询转换为Java代码的几种方法：
 #

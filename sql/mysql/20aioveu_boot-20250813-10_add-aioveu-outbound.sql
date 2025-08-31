@@ -15,16 +15,16 @@ use aioveu_boot;
 DROP TABLE IF EXISTS `aioveu_outbound`;
 
 CREATE TABLE `aioveu_outbound` (
-                                   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '出库ID（主键）',
+                                   `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '出库ID（主键）',
                                    `outbound_no` VARCHAR(50) NOT NULL COMMENT '出库单号（唯一）',
-                                   `material_id` INT UNSIGNED NOT NULL COMMENT '物资ID',
-                                   `warehouse_id` INT UNSIGNED NOT NULL COMMENT '仓库ID',
+                                   `material_id` BIGINT UNSIGNED NOT NULL COMMENT '物资ID',
+                                   `warehouse_id` BIGINT UNSIGNED NOT NULL COMMENT '仓库ID',
                                    `quantity` DECIMAL(12,4) UNSIGNED NOT NULL COMMENT '出库数量',
                                    `batch_number` VARCHAR(50) COMMENT '批次号',
                                    `out_time` DATETIME NOT NULL COMMENT '出库时间',
-                                   `operator_id` INT UNSIGNED NOT NULL COMMENT '操作员ID（关联员工表）',
-                                   `recipient_id` INT UNSIGNED COMMENT '领用人ID（关联员工表）',
-                                   `department_id` INT UNSIGNED COMMENT '领用部门ID',
+                                   `operator_id` BIGINT UNSIGNED NOT NULL COMMENT '操作员ID（关联员工表）',
+                                   `recipient_id` BIGINT UNSIGNED COMMENT '领用人ID（关联员工表）',
+                                   `department_id` BIGINT UNSIGNED COMMENT '领用部门ID',
                                    `purpose` VARCHAR(200) NOT NULL COMMENT '用途说明',
                                    `project_id` INT UNSIGNED COMMENT '关联项目ID',
                                    `status` TINYINT UNSIGNED NOT NULL DEFAULT 1 COMMENT '状态：1-待出库，2-已出库，3-已取消',
