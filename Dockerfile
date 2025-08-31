@@ -8,15 +8,27 @@
 #---------------------------------------------------------
 #确定基础镜像类型：
 #查看 Dockerfile 开头的 FROM 指令
+
+
+
+
+
 # 这是 Debian/Ubuntu 基础   使用方案一
 FROM openjdk:17-jdk-slim
+
+
+# 或者使用 Distroless 镜像
+#FROM gcr.io/distroless/java17-debian11
+
 
 # 这是 Alpine 基础   使用方案三
 #FROM openjdk:17-jdk-alpine
 
 
-# 维护者信息
-MAINTAINER aioveu <ambitiouschild@qq.com>
+# 维护者信息 替换弃用的 MAINTAINER
+#MAINTAINER aioveu <ambitiouschild@qq.com>
+LABEL maintainer="ambitiouschild@qq.com"
+
 
 #Dockerfile 中 RUN 指令使用 \ 续行符时，后续行不能为空行**（或仅含空格）。您的命令中可能在 && 和下一行之间存在多余空行。
 # 合并连续的 RUN 指令（减少镜像层 + 避免续行错误）
@@ -126,6 +138,9 @@ CMD java \
     -Djava.security.egd=file:/dev/./urandom \
     -Djdk.internal.platform.disable=true  \
     -jar /app.jar
+
+
+
 
 # 声明容器提供服务端口
 EXPOSE 8989
