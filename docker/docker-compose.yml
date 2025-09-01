@@ -21,20 +21,20 @@ services:
     networks:
       - aioveu-boot # 加入 "aioveu-boot" 网络
 
-#  redis:
-#    image: redis:7.2.3
-#    container_name: aioveu-boot-redis
-#    restart: unless-stopped
-#    command: redis-server /etc/redis/redis.conf  # 启动 Redis 服务并添加密码为：123456，默认不开启 Redis AOF 方式持久化配置
-#    environment:
-#      - TZ=Asia/Shanghai
-#    volumes:
-#      - ./redis/data:/data
-#      - ./redis/config/redis.conf:/etc/redis/redis.conf
-#    ports:
-#      - 6381:6379
-#    networks:
-#      - aioveu-boot
+  redis:
+    image: redis:7.2.3
+    container_name: aioveu-boot-redis
+    restart: unless-stopped
+    command: redis-server /etc/redis/redis.conf  # 启动 Redis 服务并添加密码为：123456，默认不开启 Redis AOF 方式持久化配置
+    environment:
+      - TZ=Asia/Shanghai
+    volumes:
+      - ./redis/data:/data
+      - ./redis/config/redis.conf:/etc/redis/redis.conf
+    ports:
+      - 6381:6379
+    networks:
+      - aioveu-boot
 
 #  minio:
 ##    image: minio/minio:latest
@@ -92,10 +92,10 @@ services:
 #    networks:
 #      - aioveu-boot
 
-  aioveu-boot-a:
-    image: aioveu-boot-a:v1.1.9
+  aioveu-boot:
+    image: aioveu-boot:v1.2.0
     pull_policy: never  # 关键设置，即使本地已有镜像，Docker Compose 在启动时仍尝试连接远程仓库
-    container_name: aioveu-boot-a
+    container_name: aioveu-boot
     restart: unless-stopped # 重启策略：除非手动停止容器，否则自动重启
     #    build:
     #      context: .

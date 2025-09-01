@@ -100,10 +100,10 @@ services:
 #    networks:
 #      - aioveu-boot
 
-  aioveu-boot-a:
-    image: aioveu-boot-a:v1.1.9
+  aioveu-boot:
+    image: aioveu-boot:v1.2.0
     pull_policy: never  # 关键设置，即使本地已有镜像，Docker Compose 在启动时仍尝试连接远程仓库  # 仅使用本地镜像
-    container_name: aioveu-boot-a
+    container_name: aioveu-boot
     #    build:
     #      context: .
     #      dockerfile: Dockerfile
