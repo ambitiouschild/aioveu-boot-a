@@ -108,6 +108,31 @@ services:
     #    build:
     #      context: .
     #      dockerfile: Dockerfile
+
+    #    environment:  配置文件设置
+    #      - SPRING_PROFILES_ACTIVE=prod
+    #      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/dbname?useSSL=false
+    #      - SPRING_DATASOURCE_USERNAME=user
+    #      - SPRING_DATASOURCE_PASSWORD=pass
+
+    #方式一：通过环境变量注入配置，Spring Boot 支持直接将 环境变量 映射到配置属性，无需额外代码。只需遵循以下命名规则
+    #    environment:
+    #      - SERVER_PORT=8081
+    #      - DATASOURCE_URL=jdbc:mysql://prod-db:3306/mydb
+    #      - DATASOURCE_USERNAME=admin
+    #      - DATASOURCE_PASSWORD=prod123
+
+    volumes:
+      - ./aioveu-boot/config/application.yml:/app/resources/application.yml  # 挂载本地配置目录
+      - ./aioveu-boot/config/application-dev.yml:/app/resources/application-dev.yml  # 挂载本地配置目录
+      - ./aioveu-boot/config/application-prod.yml:/app/resources/application-prod.yml  # 挂载本地配置目录
+
+      #五、总结
+      #•环境变量：适合简单配置（如端口、数据库连接信息），尤其是敏感信息，推荐优先使用。
+      #•挂载配置文件：适合复杂配置（如 YAML 结构、多环境配置），需注意文件路径和权限。
+      #•最佳实践：敏感信息（密码、密钥）必须通过环境变量传递，避免写入镜像或配置文件；非敏感配置可根据复杂度选择环境变量或挂载文件。
+      #通过以上方式，可实现镜像与配置解耦，灵活适配不同环境（开发、测试、生产）。
+
     ports:
       - 8989:8989
     networks:

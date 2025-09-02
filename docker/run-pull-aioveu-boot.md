@@ -1,4 +1,15 @@
 
+{
+"registry-mirrors": [
+"https://c1r17879.mirror.aliyuncs.com",  #首选建议：注册阿里云容器镜像服务获取专属加速地址
+"https://mirror.ccs.tencentyun.com",  #腾讯云
+"https://hub-mirror.c.163.com",    #网易蜂巢
+"https://mirror.baidubce.com" ,     #百度云
+"https://registry.docker-cn.com",   #Docker 中国官方镜像,已停止维护，不推荐，可能不稳定。
+"https://docker.mirrors.ustc.edu.cn" #中科大, 教育网源，适合校园用户。
+]
+}
+
 
 
 ```bash
