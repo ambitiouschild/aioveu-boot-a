@@ -206,8 +206,9 @@ oss:
 #    region:  cn-north-1 # 中国区域 北京  #us-east-1 # 添加区域配置   //MinIO 本身不强制要求区域  区域设置主要用于兼容 AWS S3 API 中国用户建议使用 cn-north-1
     # Region 类在 minio SDK 8.0+ 引入  旧版 SDK 可以忽略区域设置
     # (可选) 自定义域名：配置后，文件 URL 会使用该域名格式
-    custom-domain: https://minio.aioveu.com
-#    ustom-domain: https://my.aioveu.com
+#    custom-domain: https://minio.aioveu.com
+    custom-domain: http://localhost
+#    custom-domain: https://my.aioveu.com
   # 阿里云OSS对象存储服务
   aliyun:
     # 服务Endpoint

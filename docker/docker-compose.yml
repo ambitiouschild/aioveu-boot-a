@@ -70,7 +70,7 @@ services:
       - MINIO_ROOT_PASSWORD=minioaioveu
       - MINIO_BROWSER_REDIRECT_URL=http://localhost:9001  # 重要！
       - MINIO_BROWSER_WS_PATH=/ws/objectManager
-    volumes:
+#    volumes:
        # 不再挂载配置文件
 #      - type: bind
 #        source: ./minio/config/config.json
@@ -101,10 +101,10 @@ services:
       - aioveu-boot
 
   aioveu-boot:
-    image: aioveu-boot:v1.2.0
+    image: aioveu-boot:v1.2.1
     pull_policy: never  # 关键设置，即使本地已有镜像，Docker Compose 在启动时仍尝试连接远程仓库
     container_name: aioveu-boot
-    restart: unless-stopped # 重启策略：除非手动停止容器，否则自动重启
+#    restart: unless-stopped # 重启策略：除非手动停止容器，否则自动重启
     #    build:
     #      context: .
     #      dockerfile: Dockerfile
