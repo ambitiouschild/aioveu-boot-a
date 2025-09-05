@@ -58,8 +58,10 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     @Autowired
     private AioveuMaterialService aioveuMaterialService;
 
+
     @Autowired
     private AioveuSalesOrderService aioveuSalesOrderService;
+
 
     /**
     * 获取订单明细分页列表
@@ -168,13 +170,12 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     @Override
     public boolean saveAioveuSalesOrderDetail(AioveuSalesOrderDetailForm formData) {
 
-        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
-        NameValidator.validateEntityExists(
+        // 字段1：检查是否存在记录必须唯一
+        NameValidator.validateEntityUnique(
                 formData,
                 AioveuSalesOrderDetailForm::getOrderName,
                 AioveuSalesOrder::getOrderNo,
-                AioveuSalesOrderDetailForm::setOrderId,
-                AioveuSalesOrder::getId,
+                null,
                 aioveuSalesOrderService,
                 "订单： "
         );
@@ -223,16 +224,27 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
         }
 
-        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
-        NameValidator.validateEntityExists(
+        // 字段1：检查是否存在记录必须唯一
+        NameValidator.validateEntityUnique(
                 formData,
                 AioveuSalesOrderDetailForm::getOrderName,
                 AioveuSalesOrder::getOrderNo,
-                AioveuSalesOrderDetailForm::setOrderId,
-                AioveuSalesOrder::getId,
+                null,
                 aioveuSalesOrderService,
                 "订单： "
         );
+
+//
+//        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
+//        NameValidator.validateEntityExists(
+//                formData,
+//                AioveuSalesOrderDetailForm::getOrderName,
+//                AioveuSalesOrder::getOrderNo,
+//                AioveuSalesOrderDetailForm::setOrderId,
+//                AioveuSalesOrder::getId,
+//                aioveuSalesOrderService,
+//                "订单： "
+//        );
 
         // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
         NameValidator.validateEntityExists(

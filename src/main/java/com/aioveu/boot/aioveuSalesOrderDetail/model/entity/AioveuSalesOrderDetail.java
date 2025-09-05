@@ -26,6 +26,8 @@ public class AioveuSalesOrderDetail extends BaseEntity {
      * 订单ID
      */
     private Integer orderId;
+
+    private String orderName;
     /**
      * 物资ID
      */

@@ -5,9 +5,9 @@
 
 
 ```bash
-docker-compose -f ./docker-compose.yml -p aioveu-boot up -d
+#docker-compose -f ./docker-compose.yml -p aioveu-boot up -d
 
-# docker compose -f ./docker-compose.yml -p aioveu-boot up -d
+ docker compose -f ./docker-compose.yml -p aioveu-boot up -d
 
 ```
 ```bash
