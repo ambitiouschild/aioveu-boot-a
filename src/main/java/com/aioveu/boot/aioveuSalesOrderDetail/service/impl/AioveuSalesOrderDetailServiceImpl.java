@@ -170,15 +170,20 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
     @Override
     public boolean saveAioveuSalesOrderDetail(AioveuSalesOrderDetailForm formData) {
 
-        // 字段1：检查是否存在记录必须唯一
-        NameValidator.validateEntityUnique(
-                formData,
-                AioveuSalesOrderDetailForm::getOrderName,
-                AioveuSalesOrder::getOrderNo,
-                null,
-                aioveuSalesOrderService,
-                "订单： "
-        );
+
+        // 检查是否已存在相同部门名称的记录
+        LambdaQueryWrapper<AioveuSalesOrder> orderWrapper = new LambdaQueryWrapper<>();
+        orderWrapper.eq(AioveuSalesOrder::getOrderNo, formData.getOrderName());
+
+        AioveuSalesOrder salesOrder = aioveuSalesOrderService.getOne(orderWrapper);
+
+        // 检查是否已存在相同部门名称的记录
+        LambdaQueryWrapper<AioveuSalesOrderDetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuSalesOrderDetail::getOrderId, salesOrder.getId());
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new RuntimeException("订单已存在");
+        }
 
         // 字段2：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"
         NameValidator.validateEntityExists(
@@ -224,15 +229,19 @@ public class AioveuSalesOrderDetailServiceImpl extends ServiceImpl<AioveuSalesOr
 
         }
 
-        // 字段1：检查是否存在记录必须唯一
-        NameValidator.validateEntityUnique(
-                formData,
-                AioveuSalesOrderDetailForm::getOrderName,
-                AioveuSalesOrder::getOrderNo,
-                null,
-                aioveuSalesOrderService,
-                "订单： "
-        );
+        // 检查是否已存在相同部门名称的记录
+        LambdaQueryWrapper<AioveuSalesOrder> orderWrapper = new LambdaQueryWrapper<>();
+        orderWrapper.eq(AioveuSalesOrder::getOrderNo, formData.getOrderName());
+
+        AioveuSalesOrder salesOrder = aioveuSalesOrderService.getOne(orderWrapper);
+
+        // 检查是否已存在相同部门名称的记录
+        LambdaQueryWrapper<AioveuSalesOrderDetail> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(AioveuSalesOrderDetail::getOrderId, salesOrder.getId());
+        long count = this.count(queryWrapper);
+        if (count > 0) {
+            throw new RuntimeException("订单已存在");
+        }
 
 //
 //        // 字段1：检查是否存在记录（对于必须依赖外键的字段,必须存在，可重复） //在相关字段加注解  @NotNull(message = "不存在"

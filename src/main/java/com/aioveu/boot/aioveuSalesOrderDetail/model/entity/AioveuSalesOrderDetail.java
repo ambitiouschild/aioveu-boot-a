@@ -27,7 +27,6 @@ public class AioveuSalesOrderDetail extends BaseEntity {
      */
     private Integer orderId;
 
-    private String orderName;
     /**
      * 物资ID
      */
