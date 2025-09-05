@@ -75,7 +75,7 @@ services:
 #      - type: bind
 #        source: ./minio/config/config.json
 #        target: /root/.minio/config.json
-      - ./minio/data:/data
+#      - ./minio/data:/data
     networks:
       - aioveu-boot
 
@@ -93,8 +93,8 @@ services:
 #    restart: unless-stopped
     environment:
       PARAMS: '--spring.datasource.url=jdbc:mysql://mysql:3306/xxl_job?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai --spring.datasource.username=root --spring.datasource.password=775825 --spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver'
-    volumes:
-      - ./xxljob/logs:/data/applogs
+#    volumes:
+#      - ./xxljob/logs:/data/applogs
     ports:
       - 8080:8080
     networks:
@@ -122,10 +122,10 @@ services:
     #      - DATASOURCE_USERNAME=admin
     #      - DATASOURCE_PASSWORD=prod123
 
-    volumes:
-      - ./aioveu-boot/config/application.yml:/app/resources/application.yml  # 挂载本地配置目录
-      - ./aioveu-boot/config/application-dev.yml:/app/resources/application-dev.yml  # 挂载本地配置目录
-      - ./aioveu-boot/config/application-prod.yml:/app/resources/application-prod.yml  # 挂载本地配置目录
+#    volumes:
+#      - ./aioveu-boot/config/application.yml:/app/resources/application.yml  # 挂载本地配置目录
+#      - ./aioveu-boot/config/application-dev.yml:/app/resources/application-dev.yml  # 挂载本地配置目录
+#      - ./aioveu-boot/config/application-prod.yml:/app/resources/application-prod.yml  # 挂载本地配置目录
 
       #五、总结
       #•环境变量：适合简单配置（如端口、数据库连接信息），尤其是敏感信息，推荐优先使用。

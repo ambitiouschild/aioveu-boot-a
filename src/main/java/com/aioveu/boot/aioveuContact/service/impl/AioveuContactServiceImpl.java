@@ -136,10 +136,10 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
     @Override
     public boolean saveAioveuContact(AioveuContactForm formData) {
 
-        // 确保客户ID不为空
-        if (formData.getCustomerId() == null) {
-            throw new BusinessException("客户ID不能为空");
-        }
+//        // 确保客户ID不为空
+//        if (formData.getCustomerId() == null) {
+//            throw new BusinessException("客户ID不能为空");
+//        }
 
         // 处理主要联系人逻辑
         if (formData.getIsPrimary() == 1) {
@@ -202,10 +202,10 @@ public class AioveuContactServiceImpl extends ServiceImpl<AioveuContactMapper, A
             throw new ServiceException("记录不存在");
 
         }
-        // 确保客户ID不为空
-        if (formData.getCustomerId() == null) {
-            throw new BusinessException("客户ID不能为空");
-        }
+//        // 确保客户ID不为空
+//        if (formData.getCustomerId() == null) {
+//            throw new BusinessException("客户ID不能为空");
+//        }
 
         // 处理主要联系人逻辑
         if (formData.getIsPrimary() == 1) {
