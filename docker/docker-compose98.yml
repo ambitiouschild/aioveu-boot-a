@@ -101,7 +101,7 @@ services:
 #      - aioveu-boot
 
   aioveu-boot:
-    image: aioveu-boot:v1.2.0
+    image: aioveu-boot:v1.2.1
     pull_policy: never  # 关键设置，即使本地已有镜像，Docker Compose 在启动时仍尝试连接远程仓库  # 仅使用本地镜像
     container_name: aioveu-boot
     #    build:
@@ -119,10 +119,10 @@ services:
 #      - DATASOURCE_URL=jdbc:mysql://prod-db:3306/mydb
 #      - DATASOURCE_USERNAME=admin
 #      - DATASOURCE_PASSWORD=prod123
-    volumes:
-      - /opt/aioveu-boot/config/application.yml:/app/resources/application.yml  # 挂载本地配置目录
-      - /opt/aioveu-boot/config/application-dev.yml:/app/resources/application-dev.yml  # 挂载本地配置目录
-      - /opt/aioveu-boot/config/application-prod.yml:/app/resources/application-prod.yml  # 挂载本地配置目录
+#    volumes:
+#      - /opt/aioveu-boot/config/application.yml:/app/resources/application.yml  # 挂载本地配置目录
+#      - /opt/aioveu-boot/config/application-dev.yml:/app/resources/application-dev.yml  # 挂载本地配置目录
+#      - /opt/aioveu-boot/config/application-prod.yml:/app/resources/application-prod.yml  # 挂载本地配置目录
 
     #五、总结
     #•环境变量：适合简单配置（如端口、数据库连接信息），尤其是敏感信息，推荐优先使用。

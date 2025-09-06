@@ -49,6 +49,12 @@ ssh root@www.aioveu.com "docker version"
 ```
 
 ```bash
+# 1. 查看云服务器上的本地镜像（找到你要推送的镜像名和标签）
+docker images
+```
+
+
+```bash
 # 7. 部署容器
 docker compose -f ./docker-compose98.yml -p aioveu-boot up -d
 
